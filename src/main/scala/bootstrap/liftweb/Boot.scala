@@ -32,7 +32,7 @@ class Boot {
     Schemifier.schemify(true, Schemifier.infoF _, BadCode)
 
     // Build SiteMap
-    val entries = Menu(Loc("Home", List("index"), "Home")) :: Nil
+    val entries = Menu(Loc("Home", List("index"), "Home")) :: User.sitemap
     LiftRules.setSiteMap(SiteMap(entries: _*))
   }
 }
