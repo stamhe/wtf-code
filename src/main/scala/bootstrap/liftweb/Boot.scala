@@ -4,7 +4,8 @@ import _root_.net.liftweb.util._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
-import net.liftweb.mapper.DB
+import net.liftweb.mapper.{Schemifier, DB}
+import badcode.model.{BadCode, User}
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -26,6 +27,9 @@ class Boot {
 
     // where to search snippet
     LiftRules.addToPackages("badcode")
+
+    Schemifier.schemify(true, Schemifier.infoF _, User)
+    Schemifier.schemify(true, Schemifier.infoF _, BadCode)
 
     // Build SiteMap
     val entries = Menu(Loc("Home", List("index"), "Home")) :: Nil
