@@ -32,8 +32,13 @@ class Boot {
     Schemifier.schemify(true, Schemifier.infoF _, BadCode)
 
     // Build SiteMap
-    val entries = Menu(Loc("Home", List("index"), "Home")) :: User.sitemap
-    LiftRules.setSiteMap(SiteMap(entries: _*))
+    def sitemap() = SiteMap(
+      Menu("Home") / "index" :: // Simple menu form
+      Menu("Post") / "post" ::
+      // Menu entries for the User management stuff
+      User.sitemap :_*)
+
+    LiftRules.setSiteMapFunc(sitemap)
   }
 }
 
