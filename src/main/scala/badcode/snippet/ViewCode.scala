@@ -1,10 +1,10 @@
 package badcode.snippet
 
 import xml.{Text, NodeSeq}
-import badcode.model.BadCode
+import badcode.model.{User, Comment, BadCode}
 import net.liftweb.util.Helpers
 import Helpers._
-import net.liftweb.http.S
+import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
 
 class ViewCode {
@@ -24,5 +24,17 @@ class ViewCode {
         "author" -> i.author,
         "date" -> i.createdAt)
     }) openOr Text("Not found")
+  }
+
+  def addComment(in: NodeSeq): NodeSeq = {
+    var content = ""
+
+    def processAddComment() {
+      Comment.create.author(User.currentUser).code(code).content(content).save()
+    }
+
+    bind("entry", in,
+      "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
+      "submit" -> SHtml.submit("Add", processAddComment))
   }
 }

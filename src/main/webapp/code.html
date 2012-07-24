@@ -7,4 +7,9 @@
         <p>Author: <entry:author /></p>
         <p>Date: <entry:date /></p>
     </lift:ViewCode.view>
+
+    <lift:ViewCode.addComment form="POST">
+      <entry:content /><br />
+      <entry:submit />
+    </lift:ViewCode.addComment>
 </lift:surround>

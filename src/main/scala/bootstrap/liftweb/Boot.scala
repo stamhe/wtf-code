@@ -5,7 +5,7 @@ import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
-import badcode.model.{BadCode, User}
+import badcode.model.{Comment, BadCode, User}
 import net.liftweb.sitemap.Loc.Hidden
 
 /**
@@ -31,6 +31,7 @@ class Boot {
 
     Schemifier.schemify(true, Schemifier.infoF _, User)
     Schemifier.schemify(true, Schemifier.infoF _, BadCode)
+    Schemifier.schemify(true, Schemifier.infoF _, Comment)
 
     LiftRules.rewrite.append {
       case RewriteRequest(ParsePath(List("code", id), _, _, _), _, _) =>
