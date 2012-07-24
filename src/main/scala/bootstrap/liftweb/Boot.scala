@@ -36,6 +36,8 @@ class Boot {
     LiftRules.rewrite.append {
       case RewriteRequest(ParsePath(List("code", id), _, _, _), _, _) =>
         RewriteResponse("code" :: Nil, Map("id" -> id))
+      case RewriteRequest(ParsePath(List("user", nick), _, _, _), _, _) =>
+        RewriteResponse("user" :: Nil, Map("nick" -> nick))
     }
 
     // Build SiteMap
@@ -45,6 +47,7 @@ class Boot {
       Menu("Browse") / "browse" ::
       Menu("Feed") / "feed" ::
       Menu(Loc("Code", List("code") -> true, "Code", Hidden)) ::
+      Menu(Loc("User", List("user") -> true, "User", Hidden)) ::
       // Menu entries for the User management stuff
       User.sitemap :_*)
 

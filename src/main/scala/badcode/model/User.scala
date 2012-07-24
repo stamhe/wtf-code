@@ -1,13 +1,14 @@
 package badcode.model
 
-import net.liftweb.mapper.{MappedString, MetaMegaProtoUser, MegaProtoUser}
+import net.liftweb.mapper.{CreatedTrait, MappedString, MetaMegaProtoUser, MegaProtoUser}
 import net.liftweb.common.Full
 import net.liftweb.http.S
 
-class User extends MegaProtoUser[User] {
+class User extends MegaProtoUser[User] with CreatedTrait {
   def getSingleton = User
 
   object nickName extends MappedString(this, 16) {
+    override def dbIndexed_? = true
     override def displayName = S.??("Nickname")
   }
 }
