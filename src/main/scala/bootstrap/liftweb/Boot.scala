@@ -35,6 +35,7 @@ class Boot {
     def sitemap() = SiteMap(
       Menu("Home") / "index" :: // Simple menu form
       Menu("Post") / "post" ::
+      Menu("Browse") / "browse" ::
       // Menu entries for the User management stuff
       User.sitemap :_*)
 
