@@ -4,7 +4,7 @@ import xml.NodeSeq
 import net.liftweb.http.SHtml
 import net.liftweb.util.Helpers
 import Helpers._
-import badcode.model.BadCode
+import badcode.model.{User, BadCode}
 import java.util.Date
 
 class Post {
@@ -13,8 +13,7 @@ class Post {
     var description = ""
 
     def processPost () {
-      //TODO author
-      BadCode.create.content(content).description(description).date(new Date).save()
+      BadCode.create.author(User.currentUser).content(content).description(description).date(new Date).save()
     }
 
     Helpers.bind("entry", xhtml,
