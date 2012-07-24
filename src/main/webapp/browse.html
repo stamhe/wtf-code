@@ -1,10 +1,14 @@
 <lift:surround with="default" at="content">
-    <lift:Browse.howdy>
+    <lift:Browse.renderPage>
         <p>Code:<br />
         <entry:content /></p>
         <p>Description:<br />
         <entry:description /></p>
         <p>Autor: <entry:author /></p>
         <p>Date: <entry:date /></p>
-    </lift:Browse.howdy>
+    </lift:Browse.renderPage>
+
+    <lift:Browse.paginate>
+   		<nav:first/> | <nav:prev /> | <nav:allpages/>|  <nav:next/>  | <nav:last/> | <nav:records />
+   	</lift:Browse.paginate>
 </lift:surround>
