@@ -6,6 +6,7 @@ import _root_.net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
 import badcode.model.{BadCode, User}
+import net.liftweb.sitemap.Loc.Hidden
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -31,11 +32,17 @@ class Boot {
     Schemifier.schemify(true, Schemifier.infoF _, User)
     Schemifier.schemify(true, Schemifier.infoF _, BadCode)
 
+    LiftRules.rewrite.append {
+      case RewriteRequest(ParsePath(List("code", id), _, _, _), _, _) =>
+        RewriteResponse("code" :: Nil, Map("id" -> id))
+    }
+
     // Build SiteMap
     def sitemap() = SiteMap(
       Menu("Home") / "index" :: // Simple menu form
       Menu("Post") / "post" ::
       Menu("Browse") / "browse" ::
+      Menu(Loc("Code", List("code") -> true, "Code", Hidden)) ::
       // Menu entries for the User management stuff
       User.sitemap :_*)
 
