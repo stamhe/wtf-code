@@ -43,6 +43,7 @@ class Boot {
       Menu("Home") / "index" :: // Simple menu form
       Menu("Post") / "post" ::
       Menu("Browse") / "browse" ::
+      Menu("Feed") / "feed" ::
       Menu(Loc("Code", List("code") -> true, "Code", Hidden)) ::
       // Menu entries for the User management stuff
       User.sitemap :_*)
