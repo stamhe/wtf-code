@@ -13,7 +13,7 @@ class Post {
     var description = ""
 
     def processPost () {
-      BadCode.create.author(User.currentUser).content(content).description(description).date(new Date).save()
+      BadCode.create.author(User.currentUser).content(content).description(description).save()
     }
 
     Helpers.bind("entry", xhtml,

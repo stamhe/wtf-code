@@ -12,6 +12,6 @@ class Browse {
       "content" -> code.content,
       "description" -> code.description,
       "author" -> code.author,
-      "date" -> code.date))
+      "date" -> code.createdAt))
   }
 }
