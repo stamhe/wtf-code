@@ -26,6 +26,18 @@ class ViewCode {
     }) openOr Text("Not found")
   }
 
+  def comments(in: NodeSeq): NodeSeq = {
+    val real = code.open_!
+    val comments = real.getComments
+
+    comments.flatMap(
+      comment => bind("entry", in,
+        "content" -> comment.content,
+        "author" -> comment.author,
+        "date" -> comment.createdAt)
+    )
+  }
+
   def addComment(in: NodeSeq): NodeSeq = {
     var content = ""
 

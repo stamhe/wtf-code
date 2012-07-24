@@ -6,7 +6,9 @@ class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait {
   def getSingleton = Comment
 
   object author extends MappedLongForeignKey(this, User)
-  object code extends MappedLongForeignKey(this, BadCode)
+  object code extends MappedLongForeignKey(this, BadCode) {
+    override def dbIndexed_? = true
+  }
   object content extends MappedText(this)
 }
 
