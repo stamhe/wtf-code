@@ -1,15 +1,16 @@
 package badcode.model
 
-import net.liftweb.mapper.{CreatedTrait, MappedString, MetaMegaProtoUser, MegaProtoUser}
-import net.liftweb.common.Full
+import net.liftweb.mapper._
 import net.liftweb.http.S
+import net.liftweb.common.Full
 
 class User extends MegaProtoUser[User] with CreatedTrait {
   def getSingleton = User
 
   object nickName extends MappedString(this, 16) {
     override def dbIndexed_? = true
-    override def displayName = S.??("Nickname")
+    override def validations = valUnique(S.?("Nickname must be unique")) _ :: super.validations
+    override def displayName = S.?("Nickname")
   }
 }
 
