@@ -9,9 +9,10 @@
     </lift:ViewCode.view>
 
     <lift:ViewCode.comments>
-        <p>Comment: <entry:content /></p>
-        <p>Author: <entry:author /></p>
-        <p>Date: <entry:date /></p>
+        <div entry:anchor="">
+        <p><a entry:link_to_author=""><entry:author /></a> <time><entry:date /></time> <a entry:link_to_comment="">#</a><br />
+        <entry:content /></p>
+        </div>
     </lift:ViewCode.comments>
 
     <lift:ViewCode.addComment form="POST">

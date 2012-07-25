@@ -27,14 +27,16 @@ class ViewCode {
   }
 
   def comments(in: NodeSeq): NodeSeq = {
-    val real = code.open_!
-    val comments = real.getComments
+    val comments = code.open_!.getComments
 
     comments.flatMap(
       comment => bind("entry", in,
         "content" -> comment.content,
-        "author" -> comment.author,
-        "date" -> comment.createdAt)
+        "author" -> comment.author.open_!.nickName,
+        "date" -> comment.createdAt,
+        AttrBindParam("link_to_author", "/user/" + comment.author.open_!.nickName, "href"),
+        AttrBindParam("link_to_comment", "#comment_" + comment.id, "href"),
+        AttrBindParam("anchor", "comment_" + comment.id, "id"))
     )
   }
 
