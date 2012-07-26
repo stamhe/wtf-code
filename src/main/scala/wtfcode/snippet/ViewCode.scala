@@ -1,7 +1,7 @@
-package badcode.snippet
+package wtfcode.snippet
 
 import xml.{Text, NodeSeq}
-import badcode.model.{User, Comment, BadCode}
+import wtfcode.model.{User, Comment, Post}
 import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
@@ -11,7 +11,7 @@ class ViewCode {
   val id = S.param("id") openOr ""
 
   val code = try {
-    BadCode.findByKey(id.toLong)
+    Post.findByKey(id.toLong)
   } catch {
     case e: NumberFormatException => Empty
   }

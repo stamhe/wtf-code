@@ -5,7 +5,7 @@ import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
-import badcode.model.{Comment, BadCode, User}
+import wtfcode.model.{Post, Comment, User}
 import net.liftweb.sitemap.Loc.Hidden
 
 /**
@@ -27,10 +27,10 @@ class Boot {
     }
 
     // where to search snippet
-    LiftRules.addToPackages("badcode")
+    LiftRules.addToPackages("wtfcode")
 
     Schemifier.schemify(true, Schemifier.infoF _, User)
-    Schemifier.schemify(true, Schemifier.infoF _, BadCode)
+    Schemifier.schemify(true, Schemifier.infoF _, Post)
     Schemifier.schemify(true, Schemifier.infoF _, Comment)
 
     LiftRules.rewrite.append {

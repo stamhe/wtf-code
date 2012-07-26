@@ -1,16 +1,16 @@
-package badcode.snippet
+package wtfcode.snippet
 
 import xml.NodeSeq
-import badcode.model.BadCode
+import wtfcode.model.Post
 import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.PaginatorSnippet
 import net.liftweb.mapper.{MaxRows, StartAt}
 
-class Browse extends PaginatorSnippet[BadCode] {
+class Browse extends PaginatorSnippet[Post] {
   override def itemsPerPage = 20
-  override def count = BadCode.count
-  override def page = BadCode.findAll(StartAt(curPage * itemsPerPage), MaxRows(itemsPerPage))
+  override def count = Post.count
+  override def page = Post.findAll(StartAt(curPage * itemsPerPage), MaxRows(itemsPerPage))
 
   def renderPage(in: NodeSeq): NodeSeq =
     page.flatMap(code => Helpers.bind("entry", in,

@@ -1,19 +1,18 @@
-package badcode.snippet
+package wtfcode.snippet
 
 import xml.NodeSeq
 import net.liftweb.http.SHtml
 import net.liftweb.util.Helpers
 import Helpers._
-import badcode.model.{User, BadCode}
-import java.util.Date
+import wtfcode.model.{Post, User}
 
-class Post {
+class PostSnippet {
   def post(xhtml: NodeSeq): NodeSeq = {
     var content = ""
     var description = ""
 
     def processPost () {
-      BadCode.create.author(User.currentUser).content(content).description(description).save()
+      Post.create.author(User.currentUser).content(content).description(description).save()
     }
 
     Helpers.bind("entry", xhtml,

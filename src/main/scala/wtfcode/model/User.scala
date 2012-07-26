@@ -1,4 +1,4 @@
-package badcode.model
+package wtfcode.model
 
 import net.liftweb.mapper._
 import net.liftweb.http.S

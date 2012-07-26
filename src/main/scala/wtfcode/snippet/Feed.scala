@@ -1,9 +1,9 @@
-package badcode.snippet
+package wtfcode.snippet
 
 import xml.NodeSeq
 import net.liftweb.util.Helpers
 import Helpers._
-import badcode.model.Comment
+import wtfcode.model.Comment
 import net.liftweb.mapper.{MaxRows, Descending, OrderBy}
 
 class Feed {

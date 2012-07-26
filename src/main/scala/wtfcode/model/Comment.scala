@@ -1,4 +1,4 @@
-package badcode.model
+package wtfcode.model
 
 import net.liftweb.mapper._
 
@@ -8,7 +8,7 @@ class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait {
   override def createdAtIndexed_? = true
 
   object author extends MappedLongForeignKey(this, User)
-  object code extends MappedLongForeignKey(this, BadCode) {
+  object code extends MappedLongForeignKey(this, Post) {
     override def dbIndexed_? = true
   }
   object content extends MappedText(this)

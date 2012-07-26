@@ -1,4 +1,4 @@
-package badcode
+package wtfcode
 
 import _root_.java.io.File
 import _root_.junit.framework._

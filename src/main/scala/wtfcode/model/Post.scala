@@ -1,9 +1,9 @@
-package badcode.model
+package wtfcode.model
 
 import net.liftweb.mapper._
 
-class BadCode extends LongKeyedMapper[BadCode] with IdPK with CreatedTrait {
-  def getSingleton = BadCode
+class Post extends LongKeyedMapper[Post] with IdPK with CreatedTrait {
+  def getSingleton = Post
 
   object author extends MappedLongForeignKey(this, User)
   object content extends MappedText(this)
@@ -12,6 +12,6 @@ class BadCode extends LongKeyedMapper[BadCode] with IdPK with CreatedTrait {
   def getComments : List[Comment] = Comment.findAll(By(Comment.code, this))
 }
 
-object BadCode extends BadCode with LongKeyedMetaMapper[BadCode] {
-  override def dbTableName = "badcodes"
+object Post extends Post with LongKeyedMetaMapper[Post] {
+  override def dbTableName = "posts"
 }

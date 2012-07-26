@@ -1,10 +1,9 @@
-package badcode.snippet
+package wtfcode.snippet
 
 import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.S
-import badcode.model.{User, BadCode}
-import net.liftweb.common.Empty
+import wtfcode.model.User
 import net.liftweb.mapper.By
 import xml.{Text, NodeSeq}
 
