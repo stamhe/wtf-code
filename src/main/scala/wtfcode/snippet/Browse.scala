@@ -14,6 +14,7 @@ class Browse extends PaginatorSnippet[Post] {
 
   def renderPage(in: NodeSeq): NodeSeq =
     page.flatMap(code => Helpers.bind("entry", in,
+      "language" -> code.language.obj.map(_.name.toString).openOr("--"),
       "content" -> code.content,
       "description" -> code.description,
       "author" -> code.author,

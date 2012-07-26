@@ -5,10 +5,10 @@ import net.liftweb.mapper._
 class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait {
   def getSingleton = Comment
 
-  override def createdAtIndexed_? = true
+  override val createdAtIndexed_? = true
 
   object author extends MappedLongForeignKey(this, User)
-  object code extends MappedLongForeignKey(this, Post) {
+  object post extends MappedLongForeignKey(this, Post) {
     override def dbIndexed_? = true
   }
   object content extends MappedText(this)

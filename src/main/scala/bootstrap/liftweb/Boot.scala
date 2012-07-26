@@ -5,7 +5,7 @@ import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
-import wtfcode.model.{Post, Comment, User}
+import wtfcode.model._
 import net.liftweb.sitemap.Loc.Hidden
 
 /**
@@ -29,9 +29,13 @@ class Boot {
     // where to search snippet
     LiftRules.addToPackages("wtfcode")
 
-    Schemifier.schemify(true, Schemifier.infoF _, User)
-    Schemifier.schemify(true, Schemifier.infoF _, Post)
-    Schemifier.schemify(true, Schemifier.infoF _, Comment)
+    for (scheme <- List(Language, User, Post, Comment))
+      Schemifier.schemify(true, Schemifier.infoF _, scheme)
+
+    if (Language.count == 0) {
+      for (langName <- List("C", "C++", "Java", "PHP", "Python", "Scala"))
+        Language.create.name(langName).save()
+    }
 
     LiftRules.rewrite.append {
       case RewriteRequest(ParsePath(List("code", id), _, _, _), _, _) =>

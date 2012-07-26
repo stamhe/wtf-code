@@ -27,9 +27,7 @@ class ViewCode {
   }
 
   def comments(in: NodeSeq): NodeSeq = {
-    val comments = code.open_!.getComments
-
-    comments.flatMap(
+    code.open_!.comments.flatMap(
       comment => bind("entry", in,
         "content" -> comment.content,
         "author" -> comment.author.open_!.nickName,
@@ -44,7 +42,7 @@ class ViewCode {
     var content = ""
 
     def processAddComment() {
-      Comment.create.author(User.currentUser).code(code).content(content).save()
+      Comment.create.author(User.currentUser).post(code).content(content).save()
     }
 
     bind("entry", in,
