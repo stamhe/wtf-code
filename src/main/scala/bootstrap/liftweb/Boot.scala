@@ -7,6 +7,7 @@ import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
 import wtfcode.model.{Post, Comment, User}
 import net.liftweb.sitemap.Loc.Hidden
+import wtfcode.util.WTFDateTimeConverter
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -52,6 +53,8 @@ class Boot {
       User.sitemap :_*)
 
     LiftRules.setSiteMapFunc(sitemap)
+
+    LiftRules.dateTimeConverter.default.set(() => WTFDateTimeConverter)
   }
 }
 
