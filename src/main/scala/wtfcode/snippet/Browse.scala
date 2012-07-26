@@ -13,9 +13,13 @@ class Browse extends PaginatorSnippet[Post] {
   override def page = Post.findAll(StartAt(curPage * itemsPerPage), MaxRows(itemsPerPage))
 
   def renderPage(in: NodeSeq): NodeSeq =
-    page.flatMap(code => Helpers.bind("entry", in,
+    page.flatMap(code => bind("entry", in,
       "content" -> code.content,
       "description" -> code.description,
       "author" -> code.author,
-      "date" -> code.createdAt))
+      "date" -> code.createdAt,
+      "id" -> code.id,
+      "author" -> code.author.open_!.nickName,
+      AttrBindParam("link_to_author", code.author.open_!.link, "href"),
+      AttrBindParam("link_to_code", code.link, "href")))
 }
