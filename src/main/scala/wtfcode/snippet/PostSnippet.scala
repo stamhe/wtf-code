@@ -1,7 +1,7 @@
 package wtfcode.snippet
 
 import xml.NodeSeq
-import net.liftweb.http.SHtml
+import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers
 import Helpers._
 import wtfcode.model.{Post, User}
@@ -12,7 +12,9 @@ class PostSnippet {
     var description = ""
 
     def processPost () {
-      Post.create.author(User.currentUser).content(content).description(description).save()
+      val post = Post.create.author(User.currentUser).content(content).description(description)
+      post.save()
+      S.redirectTo("/code/" + post.id)
     }
 
     Helpers.bind("entry", xhtml,
