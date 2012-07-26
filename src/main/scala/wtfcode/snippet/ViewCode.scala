@@ -19,6 +19,7 @@ class ViewCode {
   def view(in: NodeSeq): NodeSeq = {
     code map ({
       i => bind("entry", in,
+        "language" -> i.getLanguage,
         "content" -> i.content,
         "description" -> i.description,
         "author" -> i.author,
@@ -30,11 +31,11 @@ class ViewCode {
     code.open_!.comments.flatMap(
       comment => bind("entry", in,
         "content" -> comment.content,
-        "author" -> comment.author.open_!.nickName,
+        "author" -> comment.author.map(_.nickName.toString).openOr("Guest"),
         "date" -> comment.createdAt,
-        AttrBindParam("link_to_author", "/user/" + comment.author.open_!.nickName, "href"),
-        AttrBindParam("link_to_comment", "#comment_" + comment.id, "href"),
-        AttrBindParam("anchor", "comment_" + comment.id, "id"))
+        AttrBindParam("link_to_author", comment.author.map(_.link).openOr("#"), "href"),
+        AttrBindParam("link_to_comment", comment.link, "href"),
+        AttrBindParam("anchor", comment.anchor, "id"))
     )
   }
 

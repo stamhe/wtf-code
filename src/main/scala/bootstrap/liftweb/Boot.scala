@@ -7,6 +7,7 @@ import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
 import wtfcode.model._
 import net.liftweb.sitemap.Loc.Hidden
+import wtfcode.util.WTFDateTimeConverter
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -29,6 +30,9 @@ class Boot {
     // where to search snippet
     LiftRules.addToPackages("wtfcode")
 
+    // I18n resources
+    LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
+
     for (scheme <- List(Language, User, Post, Comment))
       Schemifier.schemify(true, Schemifier.infoF _, scheme)
 
@@ -46,16 +50,18 @@ class Boot {
 
     // Build SiteMap
     def sitemap() = SiteMap(
-      Menu("Home") / "index" :: // Simple menu form
-      Menu("Post") / "post" ::
-      Menu("Browse") / "browse" ::
-      Menu("Feed") / "feed" ::
-      Menu(Loc("Code", List("code") -> true, "Code", Hidden)) ::
-      Menu(Loc("User", List("user") -> true, "User", Hidden)) ::
+      Menu(S.?("menu.home")) / "index" :: // Simple menu form
+      Menu(S.?("menu.post")) / "post" ::
+      Menu(S.?("menu.browse")) / "browse" ::
+      Menu(S.?("menu.feed")) / "feed" ::
+      Menu(Loc("Code", List("code") -> true, S.?("menu.code"), Hidden)) ::
+      Menu(Loc("User", List("user") -> true, S.?("menu.user"), Hidden)) ::
       // Menu entries for the User management stuff
       User.sitemap :_*)
 
     LiftRules.setSiteMapFunc(sitemap)
+
+    LiftRules.dateTimeConverter.default.set(() => WTFDateTimeConverter)
   }
 }
 

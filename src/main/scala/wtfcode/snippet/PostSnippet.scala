@@ -1,7 +1,7 @@
 package wtfcode.snippet
 
 import xml.NodeSeq
-import net.liftweb.http.SHtml
+import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers
 import Helpers._
 import wtfcode.model.{Language, Post, User}
@@ -14,9 +14,10 @@ class PostSnippet {
     var langId: Long = 0
 
     def processPost() {
-      Post.create.author(User.currentUser).content(content)
-        .description(description).language(Language.find(langId))
-        .save()
+      val post = Post.create.author(User.currentUser).content(content).
+        description(description).language(Language.find(langId))
+      post.save()
+      S.redirectTo(post.link)
     }
 
     val languages = Language.findAll().map(lang => (lang.id.toString, lang.name.toString))
