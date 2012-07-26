@@ -12,6 +12,8 @@ class User extends MegaProtoUser[User] with CreatedTrait {
     override def validations = valUnique(S.?("Nickname must be unique")) _ :: super.validations
     override def displayName = S.?("Nickname")
   }
+
+  def link: String = "/user/" + nickName
 }
 
 object User extends User with MetaMegaProtoUser[User] {

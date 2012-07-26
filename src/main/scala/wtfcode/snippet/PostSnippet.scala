@@ -14,7 +14,7 @@ class PostSnippet {
     def processPost () {
       val post = Post.create.author(User.currentUser).content(content).description(description)
       post.save()
-      S.redirectTo("/code/" + post.id)
+      S.redirectTo(post.link)
     }
 
     Helpers.bind("entry", xhtml,
