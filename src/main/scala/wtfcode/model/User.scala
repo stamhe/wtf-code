@@ -12,6 +12,11 @@ class User extends MegaProtoUser[User] with CreatedTrait {
     override def validations = valUnique(S ? "Nickname must be unique") _ :: super.validations
     override def displayName = S ? "Nickname"
   }
+  object aboutMe extends MappedTextarea(this, 1024) {
+    override def displayName = S.?("About me")
+    override def textareaRows = 10
+    override def textareaCols = 80
+  }
 
   def link: String = "/user/" + nickName
 }
@@ -25,4 +30,6 @@ object User extends User with MetaMegaProtoUser[User] {
   override val skipEmailValidation = true //FIXME
 
   override def signupFields = List(nickName, email, password)
+
+  override def editFields = List(email, locale, timezone, aboutMe)
 }
