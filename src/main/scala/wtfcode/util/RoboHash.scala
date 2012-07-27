@@ -10,5 +10,5 @@ object RoboHash {
 
   def url(s: String): String = BASE_URL + s + "?set=set3&size=" + SIZE + "x" + SIZE
 
-  def fromIp(ip: String): String = url(ip.substring(ip.length / 2))
+  def fromIp(ip: String): String = if (ip != null) url(ip.substring(ip.length / 2)) else url("None")
 }

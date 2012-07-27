@@ -8,7 +8,7 @@ import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
 import wtfcode.util.RoboHash
 import net.liftweb.textile.TextileParser
-import net.liftweb.http.js.JsCmds.SetHtml
+import net.liftweb.http.js.JsCmds.{JsReturn, SetHtml}
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -34,18 +34,31 @@ class ViewCode {
   }
 
   def vote(in: NodeSeq): NodeSeq = {
-    val user = User.currentUser openOr null
-    val post = code.open_!
-    SHtml.ajaxForm(
-      bind("vote", in,
-        "rating" -> code.open_!.rating,
-        "voteOn" -> SHtml.ajaxButton(Text("++"), () => applyVote(post.voteOn(user))),
-        "voteAgainst" -> SHtml.ajaxButton(Text("--"), () => applyVote(post.voteAgainst(user)))
-      )
+    code.map { post =>
+      SHtml.ajaxForm(
+        bind("vote", in,
+          "rating" -> post.rating,
+          "voteOn" -> SHtml.ajaxButton(Text("++"), () => applyVote(post.voteOn _)),
+          "voteAgainst" -> SHtml.ajaxButton(Text("--"), () => applyVote(post.voteAgainst _))
+        )
     )
+    } openOr {
+      bind("vote", in,
+        "voteOn" -> Text("++"),
+        "rating" -> Text("0"),
+        "voteAgainst" -> Text("--")
+      )
+    }
   }
 
-  def applyVote(newValue: Int) = SetHtml("post-rating-value", Text(newValue.toString))
+  def applyVote(update: User => Int) = {
+    val maybeUser = User.currentUser
+    val post = code.open_!
+    val newValue: Int = if(maybeUser.isEmpty || !post.canVote(maybeUser.open_!)) post.rating else {
+      update(maybeUser.open_!)
+    }
+    SetHtml("post-rating-value", Text(newValue.toString))
+  }
 
   def comments(in: NodeSeq): NodeSeq = {
     code.open_!.comments.flatMap(

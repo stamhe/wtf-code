@@ -19,16 +19,19 @@ with CreatedTrait with SaveIP with OneToMany[Long, Post] with ManyToMany {
 
   def getLanguage = this.language.obj.map(_.name.toString).openOr("None")
 
-  // TODO (roman): Add validation
-  def voteOn(user: User): Int = {
-    rating(rating + 1)
+  def canVote(user: User) =
+    PostVote.count(By(PostVote.post, this), By(PostVote.user, user)) == 0
+
+  private def updateVotes(user: User, func: Int => Int): Int = {
+    PostVote.create.post(this).user(user).save()
+    rating(func(rating))
+    save
     rating
   }
 
-  def voteAgainst(user: User): Int = {
-    rating(rating - 1)
-    rating
-  }
+  def voteOn(user: User): Int = updateVotes(user, _ + 1)
+
+  def voteAgainst(user: User): Int = updateVotes(user, _ - 1)
 
   def link: String = "/code/" + id
 }
