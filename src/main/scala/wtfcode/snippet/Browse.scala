@@ -6,6 +6,7 @@ import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.PaginatorSnippet
 import net.liftweb.mapper.{MaxRows, StartAt}
+import net.liftweb.textile.TextileParser
 
 class Browse extends PaginatorSnippet[Post] {
   override def itemsPerPage = 20
@@ -17,7 +18,8 @@ class Browse extends PaginatorSnippet[Post] {
       "id" -> code.id,
       "language" -> code.getLanguage,
       "content" -> code.content,
-      "description" -> code.description,
+      "description" -> TextileParser.toHtml(code.description),
+      "rating" -> code.rating,
       "date" -> code.createdAt,
       "author" -> code.author.map(_.nickName.toString).openOr("Guest"),
       AttrBindParam("link_to_author", code.author.map(_.link).openOr("#"), "href"),

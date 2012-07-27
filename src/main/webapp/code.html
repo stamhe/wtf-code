@@ -8,6 +8,14 @@
         <entry:description /></p>
         <p>Author: <entry:author /></p>
         <p>Date: <entry:date /></p>
+        <lift:ViewCode.vote>
+            <vote:voteAgainst/>
+            <p id="post-rating">
+                <lift:loc locid="post.rating.text">Rating:</lift:loc>
+                <span id="post-rating-value"><vote:rating/></span>
+            </p>
+            <vote:voteOn/>
+        </lift:ViewCode.vote>
     </lift:ViewCode.view>
 
     <lift:ViewCode.comments>

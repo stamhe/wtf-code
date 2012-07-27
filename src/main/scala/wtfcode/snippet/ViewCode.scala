@@ -7,6 +7,8 @@ import Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
 import wtfcode.util.RoboHash
+import net.liftweb.textile.TextileParser
+import net.liftweb.http.js.JsCmds.SetHtml
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -22,16 +24,30 @@ class ViewCode {
       i => bind("entry", in,
         "language" -> i.getLanguage,
         "content" -> i.content,
-        "description" -> i.description,
+        "description" -> TextileParser.toHtml(i.description),
         "author" -> i.author,
         "date" -> i.createdAt)
     }) openOr Text("Not found")
   }
 
+  def vote(in: NodeSeq): NodeSeq = {
+    val user = User.currentUser openOr null
+    val post = code.open_!
+    SHtml.ajaxForm(
+      bind("vote", in,
+        "rating" -> code.open_!.rating,
+        "voteOn" -> SHtml.ajaxButton(Text("++"), () => applyVote(post.voteOn(user))),
+        "voteAgainst" -> SHtml.ajaxButton(Text("--"), () => applyVote(post.voteAgainst(user)))
+      )
+    )
+  }
+
+  def applyVote(newValue: Int) = SetHtml("post-rating-value", Text(newValue.toString))
+
   def comments(in: NodeSeq): NodeSeq = {
     code.open_!.comments.flatMap(
       comment => bind("entry", in,
-        "content" -> comment.content,
+        "content" -> TextileParser.toHtml(comment.content),
         "author" -> comment.author.map(_.nickName.toString).openOr("Guest"),
         "date" -> comment.createdAt,
         AttrBindParam("avatar_url", RoboHash.fromIp(comment.ipAddress), "src"),
