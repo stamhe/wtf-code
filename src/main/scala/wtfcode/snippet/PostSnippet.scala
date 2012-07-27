@@ -16,7 +16,8 @@ class PostSnippet {
     def processPost() {
       val post = Post.create.author(User.currentUser).content(content).
         description(description).language(Language.find(langId))
-      post.save()
+
+      post.save
       S.redirectTo(post.link)
     }
 

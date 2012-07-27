@@ -33,7 +33,7 @@ class Boot {
     // I18n resources
     LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
 
-    for (scheme <- List(Language, User, Post, Comment))
+    for (scheme <- List(Language, User, Post, PostVote, Comment))
       Schemifier.schemify(true, Schemifier.infoF _, scheme)
 
     if (Language.count == 0) {
@@ -50,12 +50,12 @@ class Boot {
 
     // Build SiteMap
     def sitemap() = SiteMap(
-      Menu(S.?("menu.home")) / "index" :: // Simple menu form
-      Menu(S.?("menu.post")) / "post" ::
-      Menu(S.?("menu.browse")) / "browse" ::
-      Menu(S.?("menu.feed")) / "feed" ::
-      Menu(Loc("Code", List("code") -> true, S.?("menu.code"), Hidden)) ::
-      Menu(Loc("User", List("user") -> true, S.?("menu.user"), Hidden)) ::
+      Menu(S ? "menu.home") / "index" :: // Simple menu form
+      Menu(S ? "menu.post") / "post" ::
+      Menu(S ? "menu.browse") / "browse" ::
+      Menu(S ? "menu.feed") / "feed" ::
+      Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)) ::
+      Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)) ::
       // Menu entries for the User management stuff
       User.sitemap :_*)
 

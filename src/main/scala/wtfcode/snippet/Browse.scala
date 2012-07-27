@@ -19,6 +19,7 @@ class Browse extends PaginatorSnippet[Post] {
       "language" -> code.getLanguage,
       "content" -> code.content,
       "description" -> TextileParser.toHtml(code.description),
+      "rating" -> code.rating,
       "date" -> code.createdAt,
       "author" -> code.author.map(_.nickName.toString).openOr("Guest"),
       AttrBindParam("link_to_author", code.author.map(_.link).openOr("#"), "href"),
