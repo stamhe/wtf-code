@@ -1,7 +1,5 @@
 <lift:surround with="default" at="content">
-    <lift:Feed.comments>
-        <p>Comment: <entry:content /></p>
-        <p>Author: <entry:author /></p>
-        <p>Date: <entry:date /></p>
+    <lift:Feed.comments eager_eval="true">
+        <lift:embed what="/templates-hidden/comment"/>
     </lift:Feed.comments>
 </lift:surround>

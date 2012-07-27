@@ -1,14 +1,6 @@
 <lift:surround with="default" at="content">
-    <lift:Browse.renderPage>
-        <p>Language<br/>
-        <entry:language /></p>
-        <p><a entry:link_to_code="">Post #<entry:id /></a><br />
-        <code><entry:content /></code></p>
-        <p>Description:<br />
-        <entry:description /></p>
-        <p>Author: <a entry:link_to_author=""><entry:author /></a></p>
-        <p>Date: <time><entry:date /></time></p>
-        <p>Rating: <entry:rating/></p>
+    <lift:Browse.renderPage eager_eval="true">
+        <lift:embed what="/templates-hidden/code"/>
     </lift:Browse.renderPage>
 
     <lift:Browse.paginate>

@@ -22,11 +22,14 @@ class ViewCode {
   def view(in: NodeSeq): NodeSeq = {
     code map ({
       i => bind("entry", in,
+        "id" -> i.id,
         "language" -> i.getLanguage,
         "content" -> i.content,
         "description" -> TextileParser.toHtml(i.description),
         "author" -> i.author,
-        "date" -> i.createdAt)
+        "date" -> i.createdAt,
+        AttrBindParam("link_to_author", i.author.map(_.link).openOr("#"), "href"),
+        AttrBindParam("link_to_code", i.link, "href"))
     }) openOr Text("Not found")
   }
 

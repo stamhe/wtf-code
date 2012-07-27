@@ -1,0 +1,17 @@
+<div>
+<p><a entry:link_to_code="">Post #<entry:id /></a></p>
+<p>Language:<br/><entry:language/></p>
+<p>Code:<br /><code><entry:content /></code></p>
+<p>Description:<br /><entry:description /></p>
+<p>Author: <a entry:link_to_author=""><entry:author /></a></p>
+<p>Date: <time><entry:date /></time></p>
+
+<lift:ViewCode.vote>
+    <vote:voteAgainst/>
+    <p id="post-rating">
+        <lift:loc locid="post.rating.text">Rating:</lift:loc>
+        <span id="post-rating-value"><vote:rating/></span>
+    </p>
+    <vote:voteOn/>
+</lift:ViewCode.vote>
+</div>
