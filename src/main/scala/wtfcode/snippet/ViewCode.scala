@@ -6,6 +6,7 @@ import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
+import net.liftweb.textile.TextileParser
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -21,7 +22,7 @@ class ViewCode {
       i => bind("entry", in,
         "language" -> i.getLanguage,
         "content" -> i.content,
-        "description" -> i.description,
+        "description" -> TextileParser.toHtml(i.description),
         "author" -> i.author,
         "date" -> i.createdAt)
     }) openOr Text("Not found")
@@ -30,7 +31,7 @@ class ViewCode {
   def comments(in: NodeSeq): NodeSeq = {
     code.open_!.comments.flatMap(
       comment => bind("entry", in,
-        "content" -> comment.content,
+        "content" -> TextileParser.toHtml(comment.content),
         "author" -> comment.author.map(_.nickName.toString).openOr("Guest"),
         "date" -> comment.createdAt,
         AttrBindParam("link_to_author", comment.author.map(_.link).openOr("#"), "href"),

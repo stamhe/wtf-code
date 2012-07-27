@@ -22,7 +22,7 @@ class PostSnippet {
 
     val languages = Language.findAll().map(lang => (lang.id.toString, lang.name.toString))
 
-    Helpers.bind("entry", xhtml,
+    bind("entry", xhtml,
       "language" -> SHtml.select(languages, Empty, l => langId = l.toLong),
       "content" -> SHtml.textarea(content, content = _ , "cols" -> "80", "rows" -> "8"),
       "description" -> SHtml.textarea(description, description = _ , "cols" -> "80", "rows" -> "8"),
