@@ -2,7 +2,7 @@ package wtfcode.model
 
 import net.liftweb.mapper._
 
-class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait {
+class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait with SaveIP {
   def getSingleton = Comment
 
   override val createdAtIndexed_? = true

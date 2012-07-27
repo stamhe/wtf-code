@@ -2,7 +2,7 @@ package wtfcode.model
 
 import net.liftweb.mapper._
 
-class Post extends LongKeyedMapper[Post] with IdPK with CreatedTrait with OneToMany[Long, Post] {
+class Post extends LongKeyedMapper[Post] with IdPK with CreatedTrait with SaveIP with OneToMany[Long, Post] {
   def getSingleton = Post
 
   object language extends MappedLongForeignKey(this, Language)
