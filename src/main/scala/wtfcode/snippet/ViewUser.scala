@@ -16,7 +16,8 @@ class ViewUser {
     user map ({
       i => bind("entry", in,
         "nick" -> i.nickName,
-        "date" -> i.createdAt)
+        "date" -> i.createdAt,
+        "aboutMe" -> i.aboutMe.get)
     }) openOr Text("Not found")
   }
 }
