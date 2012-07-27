@@ -1,9 +1,20 @@
 <lift:surround with="default" at="content">
+    <div class="span12">
     <lift:Browse.renderPage eager_eval="true">
         <lift:embed what="/templates-hidden/code"/>
+        <hr/>
     </lift:Browse.renderPage>
 
     <lift:Browse.paginate>
-        <nav:first/> | <nav:prev /> | <nav:allpages/> |  <nav:next/>  | <nav:last/> | <nav:records />
+        <div class="pagination">
+            <ul>
+                <li><nav:first/></li>
+                <li><nav:prev/></li>
+                <li><nav:allpages/></li>
+                <li><nav:next/></li>
+                <li><nav:last/></li>
+            </ul>
+        </div>
     </lift:Browse.paginate>
+    </div>
 </lift:surround>

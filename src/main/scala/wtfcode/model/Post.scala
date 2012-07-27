@@ -14,7 +14,7 @@ with CreatedTrait with SaveIP with OneToMany[Long, Post] with ManyToMany {
     override def defaultValue = 0
   }
 
-  object comments extends MappedOneToMany(Comment, Comment.post, OrderBy(Comment.createdAt, Descending))
+  object comments extends MappedOneToMany(Comment, Comment.post, OrderBy(Comment.createdAt, Ascending))
   object votes extends MappedManyToMany(PostVote, PostVote.post, PostVote.user, User)
 
   def getLanguage = this.language.obj.map(_.name.toString).openOr("None")
