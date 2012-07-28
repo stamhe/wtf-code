@@ -8,7 +8,7 @@ import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
 import wtfcode.util.RoboHash
 import net.liftweb.textile.TextileParser
-import net.liftweb.http.js.JsCmds.{JsReturn, SetHtml}
+import net.liftweb.http.js.JsCmds.SetHtml
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -26,7 +26,7 @@ class ViewCode {
         "language" -> i.getLanguage,
         "content" -> i.content,
         "description" -> TextileParser.toHtml(i.description),
-        "author" -> i.author,
+        "author" -> i.author.map(_.nickName.get).openOr("Guest"),
         "date" -> i.createdAt,
         AttrBindParam("link_to_author", i.author.map(_.link).openOr("#"), "href"),
         AttrBindParam("link_to_code", i.link, "href"))
@@ -64,7 +64,7 @@ class ViewCode {
     code.open_!.comments.flatMap(
       comment => bind("entry", in,
         "content" -> TextileParser.toHtml(comment.content),
-        "author" -> comment.author.map(_.nickName.toString).openOr("Guest"),
+        "author" -> comment.author.map(_.nickName.get).openOr("Guest"),
         "date" -> comment.createdAt,
         AttrBindParam("avatar_url", RoboHash.fromIp(comment.ipAddress), "src"),
         AttrBindParam("link_to_author", comment.author.map(_.link).openOr("#"), "href"),
