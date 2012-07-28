@@ -28,6 +28,7 @@ class ViewCode {
         "description" -> TextileParser.toHtml(i.description),
         "author" -> i.author.map(_.nickName.get).openOr("Guest"),
         "date" -> i.createdAt,
+        "commentsNum" -> i.comments.size,
         AttrBindParam("link_to_author", i.author.map(_.link).openOr("#"), "href"),
         AttrBindParam("link_to_code", i.link, "href"))
     }) openOr Text("Not found")
