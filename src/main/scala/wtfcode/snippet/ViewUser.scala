@@ -6,6 +6,7 @@ import net.liftweb.http.S
 import wtfcode.model.User
 import net.liftweb.mapper.By
 import xml.{Text, NodeSeq}
+import net.liftweb.textile.TextileParser
 
 class ViewUser {
   val nick = S.param("nick") openOr ""
@@ -17,7 +18,7 @@ class ViewUser {
       i => bind("entry", in,
         "nick" -> i.nickName,
         "date" -> i.createdAt,
-        "aboutMe" -> i.aboutMe.get)
+        "aboutMe" -> TextileParser.toHtml(i.aboutMe.get))
     }) openOr Text("Not found")
   }
 }
