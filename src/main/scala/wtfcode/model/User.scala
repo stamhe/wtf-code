@@ -4,7 +4,7 @@ import net.liftweb.mapper._
 import net.liftweb.http.S
 import net.liftweb.common.Full
 
-class User extends MegaProtoUser[User] with CreatedTrait {
+class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, User] {
   def getSingleton = User
 
   object nickName extends MappedString(this, 16) {
@@ -17,6 +17,7 @@ class User extends MegaProtoUser[User] with CreatedTrait {
     override def textareaRows = 10
     override def textareaCols = 80
   }
+  object bookmarks extends MappedOneToMany(Bookmark, Bookmark.user, OrderBy(Bookmark.createdAt, Descending))
 
   def link: String = "/user/" + nickName
 }

@@ -33,7 +33,7 @@ class Boot {
     // I18n resources
     LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
 
-    for (scheme <- List(Language, User, Post, PostVote, Comment))
+    for (scheme <- List(Language, User, Post, PostVote, Comment, Bookmark))
       Schemifier.schemify(true, Schemifier.infoF _, scheme)
 
     if (Language.count == 0) {
@@ -54,6 +54,7 @@ class Boot {
       Menu(S ? "menu.post") / "post" ::
       Menu(S ? "menu.browse") / "browse" ::
       Menu(S ? "menu.feed") / "feed" ::
+      Menu(S ? "menu.bookmarks") / "bookmarks" ::
       Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)) ::
       Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)) ::
       // Menu entries for the User management stuff

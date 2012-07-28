@@ -1,0 +1,9 @@
+<lift:surround with="default" at="content">
+    <lift:Bookmarks.renderPage eager_eval="true">
+        <lift:embed what="/templates-hidden/code"/>
+    </lift:Bookmarks.renderPage>
+
+    <lift:Bookmarks.paginate eager_eval="true">
+        <lift:embed what="/templates-hidden/paginator"/>
+    </lift:Bookmarks.paginate>
+</lift:surround>

@@ -5,16 +5,8 @@
         <hr/>
     </lift:Browse.renderPage>
 
-    <lift:Browse.paginate>
-        <div class="pagination">
-            <ul>
-                <li><nav:first/></li>
-                <li><nav:prev/></li>
-                <li><nav:allpages/></li>
-                <li><nav:next/></li>
-                <li><nav:last/></li>
-            </ul>
-        </div>
+    <lift:Browse.paginate eager_eval="true">
+        <lift:embed what="/templates-hidden/paginator"/>
     </lift:Browse.paginate>
     </div>
 </lift:surround>
