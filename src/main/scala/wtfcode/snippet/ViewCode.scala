@@ -6,7 +6,7 @@ import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
-import wtfcode.util.{CodeBinder, RoboHash}
+import wtfcode.util.{CommentBinder, CodeBinder, RoboHash}
 import net.liftweb.textile.TextileParser
 import net.liftweb.http.js.JsCmds.SetHtml
 
@@ -54,14 +54,7 @@ class ViewCode {
 
   def comments(in: NodeSeq): NodeSeq = {
     code.open_!.comments.flatMap(
-      comment => bind("entry", in,
-        "content" -> TextileParser.toHtml(comment.content),
-        "author" -> comment.author.map(_.nickName.get).openOr("Guest"),
-        "date" -> comment.createdAt,
-        AttrBindParam("avatar_url", RoboHash.fromIp(comment.ipAddress), "src"),
-        AttrBindParam("link_to_author", comment.author.map(_.link).openOr("#"), "href"),
-        AttrBindParam("link_to_comment", comment.link, "href"),
-        AttrBindParam("anchor", comment.anchor, "id"))
+      comment => CommentBinder(in, comment)
     )
   }
 
