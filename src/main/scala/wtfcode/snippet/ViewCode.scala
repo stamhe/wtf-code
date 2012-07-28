@@ -6,7 +6,7 @@ import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
-import wtfcode.util.RoboHash
+import wtfcode.util.{CodeBinder, RoboHash}
 import net.liftweb.textile.TextileParser
 import net.liftweb.http.js.JsCmds.SetHtml
 
@@ -21,16 +21,7 @@ class ViewCode {
 
   def view(in: NodeSeq): NodeSeq = {
     code map ({
-      i => bind("entry", in,
-        "id" -> i.id,
-        "language" -> i.getLanguage,
-        "content" -> i.content,
-        "description" -> TextileParser.toHtml(i.description),
-        "author" -> i.author.map(_.nickName.get).openOr("Guest"),
-        "date" -> i.createdAt,
-        "commentsNum" -> i.comments.size,
-        AttrBindParam("link_to_author", i.author.map(_.link).openOr("#"), "href"),
-        AttrBindParam("link_to_code", i.link, "href"))
+      i => CodeBinder(in, i)
     }) openOr Text("Not found")
   }
 
