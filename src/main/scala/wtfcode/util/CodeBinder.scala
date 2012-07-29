@@ -17,8 +17,18 @@ object CodeBinder {
       "author" -> post.author.map(_.nickName.get).openOr("Guest"),
       "date" -> post.createdAt,
       "commentsNum" -> post.comments.size,
-      "bookmark" -> SHtml.a(() => {User.currentUser.map(_.bookmark(post)); JsCmds.Noop}, Text("Bookmark")),
+      "bookmark" -> bookmarkAction(post),
       AttrBindParam("link_to_author", post.author.map(_.link).openOr("#"), "href"),
       AttrBindParam("link_to_code", post.link, "href"))
+  }
+
+  private def bookmarkAction(post: Post) = {
+    User.currentUser map {
+      user =>
+        SHtml.a(() => {
+          user.bookmark(post)
+          JsCmds.Noop
+        }, Text("Bookmark"))
+    }
   }
 }

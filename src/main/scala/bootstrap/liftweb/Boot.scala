@@ -6,7 +6,7 @@ import _root_.net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
 import wtfcode.model._
-import net.liftweb.sitemap.Loc.Hidden
+import net.liftweb.sitemap.Loc.{If, Hidden}
 import wtfcode.util.WTFDateTimeConverter
 
 /**
@@ -54,7 +54,7 @@ class Boot {
       Menu(S ? "menu.post") / "post" ::
       Menu(S ? "menu.browse") / "browse" ::
       Menu(S ? "menu.feed") / "feed" ::
-      Menu(S ? "menu.bookmarks") / "bookmarks" ::
+      Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))) ::
       Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)) ::
       Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)) ::
       // Menu entries for the User management stuff
