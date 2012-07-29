@@ -1,23 +1,23 @@
 <div class="post">
-<h3><a entry:link_to_code="">Post #<entry:id /></a></h3>
-<p>Language: <em><entry:language/></em></p>
-<p>Code:<br />
-    <pre><code><entry:content /></code></pre>
-</p>
-<div>
-    <span>Description:</span><br />
-    <p class="well"><entry:description /></p>
-</div>
-<p>Author: <a entry:link_to_author=""><entry:author /></a></p>
-<p>Date: <time><entry:date /></time></p>
-<p>Comments: <entry:commentsNum /></p>
-
-<lift:ViewCode.vote>
-    <p id="post-rating">
-        <vote:voteAgainst/>
-        <lift:loc locid="post.rating.text">Rating:</lift:loc>
-        <span id="post-rating-value"><vote:rating/></span>
-        <vote:voteOn/>
+    <div class="row">
+        <h3 class="span10"><a entry:link_to_code="">Post #<entry:id /></a></h3>
+        <lift:ViewCode.vote>
+        <div id="post-rating" class="span2 pull-right">
+            <vote:voteAgainst/>
+            <span id="post-rating-value"><vote:rating/></span>
+            <vote:voteOn/>
+        </div>
+        </lift:ViewCode.vote>
+    </div>
+    <p>Language: <em><entry:language/></em></p>
+    <p>Code:<br />
+    <pre class="prettyprint linenums"><code><entry:content /></code></pre>
     </p>
-</lift:ViewCode.vote>
+    <div>
+        <span>Description:</span><br />
+        <p class="well"><entry:description /></p>
+    </div>
+    <p>Author: <a entry:link_to_author=""><entry:author /></a></p>
+    <p>Date: <time><entry:date /></time></p>
+    <p>Comments: <entry:commentsNum /></p>
 </div>
