@@ -9,8 +9,6 @@ class Language extends LongKeyedMapper[Language] with IdPK with CreatedTrait wit
 
   def getSingleton = Language
 
-  override def createdAtIndexed_? = true
-
   object name extends MappedText(this)
 
   object posts extends MappedOneToMany(Post, Post.language, OrderBy(Post.createdAt, Descending))
