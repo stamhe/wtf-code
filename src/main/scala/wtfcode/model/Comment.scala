@@ -12,7 +12,7 @@ class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait with 
   object content extends MappedText(this)
 
   def anchor: String = "comment_" + id
-  def link: String = "#" + anchor
+  def link: String = post.foreign.map(_.link).openOr("") + "#" + anchor
 }
 
 object Comment extends Comment with LongKeyedMetaMapper[Comment] {
