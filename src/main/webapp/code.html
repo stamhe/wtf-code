@@ -3,10 +3,13 @@
         <lift:embed what="/templates-hidden/code"/>
     </lift:ViewCode.view>
 
-    <lift:ViewCode.comments eager_eval="true">
-        <lift:embed what="/templates-hidden/comment"/>
-        <hr/>
-    </lift:ViewCode.comments>
+    <div id="comments">
+        <lift:ViewCode.comments eager_eval="true">
+            <lift:embed what="/templates-hidden/comment"/>
+        </lift:ViewCode.comments>
+    </div>
+
+    <div id="add"></div>
 
     <lift:ViewCode.addComment form="POST">
       <entry:content /><br />

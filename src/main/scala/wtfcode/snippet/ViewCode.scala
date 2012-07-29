@@ -6,9 +6,9 @@ import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
-import wtfcode.util.{CommentBinder, CodeBinder, RoboHash}
-import net.liftweb.textile.TextileParser
+import wtfcode.util.{CommentBinder, CodeBinder}
 import net.liftweb.http.js.JsCmds.SetHtml
+import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -30,8 +30,8 @@ class ViewCode {
       SHtml.ajaxForm(
         bind("vote", in,
           "rating" -> post.rating,
-          "voteOn" -> SHtml.ajaxButton(Text("++"), () => applyVote(post.voteOn _)),
-          "voteAgainst" -> SHtml.ajaxButton(Text("--"), () => applyVote(post.voteAgainst _))
+          "voteOn" -> SHtml.a(() => applyVote(post.voteOn _), Text("++")),
+          "voteAgainst" -> SHtml.a(() => applyVote(post.voteAgainst _), Text("--"))
         )
     )
     } openOr {
@@ -61,12 +61,21 @@ class ViewCode {
   def addComment(in: NodeSeq): NodeSeq = {
     var content = ""
 
-    def processAddComment() {
-      Comment.create.author(User.currentUser).post(code).content(content).save()
+    def createComment(): Comment = {
+      val comment = Comment.create.author(User.currentUser).post(code).content(content)
+      comment.save()
+      comment
     }
 
-    bind("entry", in,
-      "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
-      "submit" -> SHtml.submit("Add", processAddComment))
+    SHtml.ajaxForm(
+      bind("entry", in,
+        "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
+        "submit" -> SHtml.ajaxSubmit(S ? "comment.add", () => {
+          val newComment = createComment()
+          val template = S.runTemplate("templates-hidden" :: "comment" :: Nil)
+          AppendHtml("comments", CommentBinder(template.open_!, newComment))
+        })
+      )
+    )
   }
 }
