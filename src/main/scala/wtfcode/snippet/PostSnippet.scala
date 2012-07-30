@@ -27,6 +27,6 @@ class PostSnippet {
       "language" -> SHtml.select(languages, Empty, l => langId = l.toLong),
       "content" -> SHtml.textarea(content, content = _ , "cols" -> "80", "rows" -> "8"),
       "description" -> SHtml.textarea(description, description = _ , "cols" -> "80", "rows" -> "8"),
-      "submit" -> SHtml.submit("Add", processPost))
+      "submit" -> SHtml.submit(S ? "post.add", processPost, "class" -> "btn btn-primary"))
   }
 }

@@ -5,13 +5,16 @@ import wtfcode.model.{User, Comment, Post}
 import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
-import net.liftweb.common.Empty
+import net.liftweb.common.{Full, Empty}
 import wtfcode.util.{CommentBinder, CodeBinder}
 import net.liftweb.http.js.JsCmds.SetHtml
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
+import java.util.UUID
 
 class ViewCode {
   val id = S.param("id") openOr ""
+
+  def postVoteId(id: Long) = "post_" + id.toString + "_rating_value"
 
   val code = try {
     Post.findByKey(id.toLong)
@@ -26,19 +29,27 @@ class ViewCode {
   }
 
   def vote(in: NodeSeq): NodeSeq = {
-    code.map { post =>
-      SHtml.ajaxForm(
-        bind("vote", in,
+    val user = User.currentUser
+    code match {
+      case Full(post) if user.isDefined && post.canVote(user.open_!) => SHtml.ajaxForm(
+        bind("entry", in,
           "rating" -> post.rating,
           "voteOn" -> SHtml.a(() => applyVote(post.voteOn _), Text("++")),
-          "voteAgainst" -> SHtml.a(() => applyVote(post.voteAgainst _), Text("--"))
+          "voteAgainst" -> SHtml.a(() => applyVote(post.voteAgainst _), Text("--")),
+          AttrBindParam("id", postVoteId(post.id.is), "id")
         )
-    )
-    } openOr {
-      bind("vote", in,
-        "voteOn" -> Text("++"),
+      )
+      case Full(post) => bind("entry", in,
+        "rating" -> post.rating,
+        "voteOn" -> Text(if (user.isDefined) "++" else ""),
+        "voteAgainst" -> Text(if (user.isDefined) "--" else ""),
+        AttrBindParam("id", postVoteId(post.id.is), "id")
+      )
+      case _ => bind("entry", in,
+        "voteOn" -> Text(""),
         "rating" -> Text("0"),
-        "voteAgainst" -> Text("--")
+        "voteAgainst" -> Text(""),
+        AttrBindParam("id", UUID.randomUUID().toString, "id")
       )
     }
   }
@@ -49,7 +60,8 @@ class ViewCode {
     val newValue: Int = if(maybeUser.isEmpty || !post.canVote(maybeUser.open_!)) post.rating else {
       update(maybeUser.open_!)
     }
-    SetHtml("post-rating-value", Text(newValue.toString))
+    val template = S.runTemplate(List("templates-hidden", "rating")).open_!
+    SetHtml(postVoteId(post.id.is), vote(template))
   }
 
   def comments(in: NodeSeq): NodeSeq = {

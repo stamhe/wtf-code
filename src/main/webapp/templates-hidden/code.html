@@ -1,13 +1,11 @@
-<div class="post">
+<div class="post" xmlns:lift="http://www.w3.org/1999/html">
     <div class="row">
         <h3 class="span10"><a entry:link_to_code="">Post #<entry:id /></a></h3>
-        <lift:ViewCode.vote>
-        <div class="post-rating span2 pull-right">
-            <vote:voteAgainst/>
-            <span id="post-rating-value"><vote:rating/></span>
-            <vote:voteOn/>
+        <div class="post-rating pull-right">
+            <lift:ViewCode.vote eager_eval="true">
+                <lift:embed what="/templates-hidden/rating"/>
+            </lift:ViewCode.vote>
         </div>
-        </lift:ViewCode.vote>
     </div>
     <p>Language: <em><entry:language/></em></p>
     <p>Code:<br />
