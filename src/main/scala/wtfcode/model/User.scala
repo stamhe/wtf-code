@@ -20,15 +20,6 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
   object bookmarks extends MappedOneToMany(Bookmark, Bookmark.user, OrderBy(Bookmark.createdAt, Descending))
 
   def link: String = "/user/" + nickName
-
-  def bookmark(post: Post) = {
-    val bookmark = bookmarks.find(_.post == post)
-    bookmark map {
-      _.delete_!
-    } getOrElse {
-      Bookmark.create.user(this).post(post).save()
-    }
-  }
 }
 
 object User extends User with MetaMegaProtoUser[User] {

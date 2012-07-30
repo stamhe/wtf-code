@@ -1,11 +1,12 @@
 package wtfcode.util
 
-import xml.{Text, NodeSeq}
-import wtfcode.model.{User, Post}
+import xml.NodeSeq
+import wtfcode.model.{Bookmark, User, Post}
 import net.liftweb.util.Helpers._
 import net.liftweb.textile.TextileParser
-import net.liftweb.http.SHtml
-import net.liftweb.http.js.JsCmds
+import net.liftweb.http.{S, SHtml}
+import net.liftweb.mapper.By
+import net.liftweb.http.js.jquery.JqJsCmds.Hide
 
 object CodeBinder {
   def apply(template: NodeSeq, post: Post): NodeSeq = {
@@ -23,12 +24,22 @@ object CodeBinder {
   }
 
   private def bookmarkAction(post: Post) = {
+    val id = "bookmark_" + post.id
     User.currentUser map {
       user =>
-        SHtml.a(() => {
-          user.bookmark(post)
-          JsCmds.Noop
-        }, Text("Bookmark"))
+        val maybeBookmark = Bookmark.find(By(Bookmark.user, user), By(Bookmark.post, post))
+        maybeBookmark map {
+          bookmark =>
+            SHtml.a(() => {
+              bookmark.delete_!
+              Hide(id)
+            }, <i class="icon-star" id={id} title={S ? "Remove from bookmarks"}></i>)
+        } getOrElse {
+          SHtml.a(() => {
+            Bookmark.create.user(user).post(post).save()
+            Hide(id)
+          }, <i class="icon-star-empty" id={id} title={S ? "Add to bookmarks"}></i>)
+        }
     }
   }
 }

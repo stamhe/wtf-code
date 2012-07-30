@@ -7,8 +7,13 @@ class Bookmark extends LongKeyedMapper[Bookmark] with IdPK with CreatedTrait {
 
   override val createdAtIndexed_? = true
 
-  object user extends MappedLongForeignKey(this, User)
-  object post extends MappedLongForeignKey(this, Post)
+  object user extends MappedLongForeignKey(this, User) {
+    override def dbIndexed_? = true
+  }
+
+  object post extends MappedLongForeignKey(this, Post) {
+    override def dbIndexed_? = true
+  }
 }
 
 object Bookmark extends Bookmark with LongKeyedMetaMapper[Bookmark] {

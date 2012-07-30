@@ -2,7 +2,7 @@ package wtfcode.snippet
 import _root_.scala.xml.NodeSeq
 import _root_.net.liftweb.util.Helpers
 import Helpers._
-import wtfcode.model.{Comment, User, Post}
+import wtfcode.model.{Bookmark, Comment, User, Post}
 
 class MainPage {
   def howdy(in: NodeSeq): NodeSeq = {
@@ -10,7 +10,8 @@ class MainPage {
       "time" -> (new _root_.java.util.Date).toString,
       "codes" -> Post.count,
       "users" -> User.count,
-      "comments" -> Comment.count
+      "comments" -> Comment.count,
+      "bookmarks" -> Bookmark.count
     )
   }
 }
