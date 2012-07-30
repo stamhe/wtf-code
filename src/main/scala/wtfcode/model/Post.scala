@@ -20,6 +20,7 @@ with CreatedTrait with SaveIP with OneToMany[Long, Post] with ManyToMany {
   def getLanguage = this.language.obj.map(_.name.toString).openOr("None")
 
   def canVote(user: User) =
+    author != user &&
     PostVote.count(By(PostVote.post, this), By(PostVote.user, user)) == 0
 
   private def updateVotes(user: User, func: Int => Int): Int = {

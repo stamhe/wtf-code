@@ -11,5 +11,4 @@ target/
 
 #h2 db
 
-lift_proto.db.h2.db
-lift_proto.db.trace.db
+*.db
