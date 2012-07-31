@@ -12,3 +12,6 @@ target/
 #h2 db
 
 *.db
+
+# sbt history
+.history
