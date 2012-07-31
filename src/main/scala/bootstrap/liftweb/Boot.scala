@@ -34,7 +34,7 @@ class Boot {
     // I18n resources
     LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
 
-    Schemifier.schemify(true, Schemifier.infoF _, Language, User, Post, PostVote, Comment, Bookmark)
+    Schemifier.schemify(true, Schemifier.infoF _, Language, User, Post, PostVote, Comment, CommentVote, Bookmark)
 
     if (Language.count == 0) {
       for (langName <- List("C", "C++", "Java", "PHP", "Python", "Scala"))

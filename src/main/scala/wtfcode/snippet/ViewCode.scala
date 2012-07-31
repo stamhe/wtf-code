@@ -41,7 +41,7 @@ class ViewCode {
 
     def processAdd(): JsCmd = {
       val newComment = createComment()
-      newComment.save()
+      newComment.save
 
       val template = S.runTemplate("templates-hidden" :: "comment" :: Nil)
       AppendHtml("comments", CommentBinder(template.open_!, newComment))
