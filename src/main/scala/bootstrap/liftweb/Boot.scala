@@ -8,6 +8,7 @@ import net.liftweb.mapper.{Schemifier, DB}
 import wtfcode.model._
 import net.liftweb.sitemap.Loc.{If, Hidden}
 import wtfcode.util.WTFDateTimeConverter
+import net.liftweb.sitemap.Loc.If
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -33,31 +34,33 @@ class Boot {
     // I18n resources
     LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
 
-    for (scheme <- List(Language, User, Post, PostVote, Comment, Bookmark))
-      Schemifier.schemify(true, Schemifier.infoF _, scheme)
+    Schemifier.schemify(true, Schemifier.infoF _, Language, User, Post, PostVote, Comment, Bookmark)
 
     if (Language.count == 0) {
       for (langName <- List("C", "C++", "Java", "PHP", "Python", "Scala"))
         Language.create.name(langName).save()
     }
 
-    LiftRules.rewrite.append {
-      case RewriteRequest(ParsePath(List("code", id), _, _, _), _, _) =>
+    LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
+      case RewriteRequest(ParsePath("code" :: id :: Nil, _, _, _), _, _) =>
         RewriteResponse("code" :: Nil, Map("id" -> id))
-      case RewriteRequest(ParsePath(List("user", nick), _, _, _), _, _) =>
-        RewriteResponse("user" :: Nil, Map("nick" -> nick))
-    }
+      case RewriteRequest(ParsePath("lang" :: name :: Nil, _, _, _), _, _) =>
+        RewriteResponse("lang-filter" :: Nil, Map("lang" -> name))
+      case RewriteRequest(ParsePath("user" :: nick :: Nil, _, _, _), _, _) =>
+      RewriteResponse("user" :: Nil, Map("nick" -> nick))
+    })
 
     // Build SiteMap
     def sitemap() = SiteMap(
       Menu(S ? "menu.home") / "index" :: // Simple menu form
-      Menu(S ? "menu.post") / "post" ::
-      Menu(S ? "menu.browse") / "browse" ::
-      Menu(S ? "menu.feed") / "feed" ::
-      Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))) ::
-      Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)) ::
-      Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)) ::
-      // Menu entries for the User management stuff
+        Menu(S ? "menu.post") / "post" ::
+        Menu(S ? "menu.browse") / "browse" ::
+        Menu(S ? "menu.feed") / "feed" ::
+        Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))) ::
+        Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)) ::
+        Menu(Loc("Lang", List("lang-filter") -> true, S ? "menu.lang", Hidden)) ::
+        Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)) ::
+        // Menu entries for the User management stuff
       User.sitemap :_*)
 
     LiftRules.setSiteMapFunc(sitemap)

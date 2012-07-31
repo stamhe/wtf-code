@@ -12,6 +12,14 @@ class Language extends LongKeyedMapper[Language] with IdPK with CreatedTrait wit
   object name extends MappedText(this)
 
   object posts extends MappedOneToMany(Post, Post.language, OrderBy(Post.createdAt, Descending))
+
+  object postNumber extends MappedLong(this) {
+    override def defaultValue = 0L
+  }
+
+  def link = "/lang/"  + this.name.is
+
+  def orderedByPopularity() = Language.findAll(OrderBy(postNumber, Descending))
 }
 
 object Language extends Language with LongKeyedMetaMapper[Language] {

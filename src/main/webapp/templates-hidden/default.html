@@ -24,15 +24,22 @@
             </div>
         </div>
         <div class="container">
-        <lift:bind name="content" />
-        <lift:msgs />
+            <div class="language-nav row-fluid">
+                <ul class="nav nav-pills">
+                    <lift:LanguageFilter eager_eval="true">
+                        <lift:embed what="/templates-hidden/lang-label"/>
+                    </lift:LanguageFilter>
+                </ul>
+            </div>
+            <lift:bind name="content" />
+            <lift:msgs />
 
-        <footer class="footer">
-            <hr/>
-            <p>Build with <a href="http://liftweb.net"><em>Lift</em></a></p>
-            <p>Robots lovingly delivered by <a href="http://robohash.org">Robohash.org</a></p>
-        </footer>
+            <footer class="footer">
+                <hr/>
+                <p>Build with <a href="http://liftweb.net"><em>Lift</em></a>.</p>
+                <p>Robots lovingly delivered by <a href="http://robohash.org">Robohash.org</a>.</p>
+            </footer>
         <script src="/ui/bootstrap/js/bootstrap.min.js"></script>
-    </div>
+        </div>
     </body>
 </html>

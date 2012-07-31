@@ -17,12 +17,16 @@ class PostSnippet {
     var langId: Long = 0
 
     def createPost(): Post = {
-      Post.create.author(User.currentUser).content(content).description(description).language(Language.find(langId))
+      val lang = Language.find(langId).open_!
+      val post = Post.create.author(User.currentUser).content(content).description(description).language(lang)
+      lang.postNumber(lang.postNumber.is + 1)
+      post.save
+      lang.save()
+      post
     }
 
     def processPost() {
       val post = createPost()
-      post.save
       S.redirectTo(post.link)
     }
 

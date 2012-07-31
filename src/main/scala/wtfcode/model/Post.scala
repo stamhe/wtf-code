@@ -6,7 +6,9 @@ class Post extends LongKeyedMapper[Post] with IdPK
 with CreatedTrait with SaveIP with OneToMany[Long, Post] with ManyToMany {
   def getSingleton = Post
 
-  object language extends MappedLongForeignKey(this, Language)
+  object language extends MappedLongForeignKey(this, Language) {
+    override def dbIndexed_? = true
+  }
   object author extends MappedLongForeignKey(this, User)
   object content extends MappedText(this)
   object description extends MappedText(this)
