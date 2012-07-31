@@ -20,7 +20,7 @@ class PostSnippet {
       Post.create.author(User.currentUser).content(content).description(description).language(Language.find(langId))
     }
 
-    def processPost() {
+    def processPost(): JsCmd = {
       val post = createPost()
       post.save
       S.redirectTo(post.link)
