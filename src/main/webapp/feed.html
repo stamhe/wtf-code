@@ -1,5 +1,9 @@
-<lift:surround with="default" at="content">
-    <lift:Feed.comments eager_eval="true">
+<lift:surround with="default" at="content" xmlns:lift="http://liftweb.net/">
+    <lift:Feed.renderPage eager_eval="true">
         <lift:embed what="/templates-hidden/comment"/>
-    </lift:Feed.comments>
+    </lift:Feed.renderPage>
+
+    <lift:Feed.paginate eager_eval="true">
+        <lift:embed what="/templates-hidden/paginator"/>
+    </lift:Feed.paginate>
 </lift:surround>
