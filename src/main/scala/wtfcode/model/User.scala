@@ -9,17 +9,17 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
 
   object nickName extends MappedString(this, 16) {
     override def dbIndexed_? = true
-    override def validations = valUnique(S ? "Nickname must be unique") _ :: super.validations
-    override def displayName = S ? "Nickname"
+    override def validations = valUnique(S ? "user.uniqueNickname") _ :: super.validations
+    override def displayName = S ? "user.nickname"
   }
   object aboutMe extends MappedTextarea(this, 1024) {
-    override def displayName = S.?("About me")
+    override def displayName = S ? "user.aboutMe"
     override def textareaRows = 10
     override def textareaCols = 80
   }
   object bookmarks extends MappedOneToMany(Bookmark, Bookmark.user, OrderBy(Bookmark.createdAt, Descending))
 
-  def link: String = "/user/" + nickName
+  def link = "/user/" + nickName
 }
 
 object User extends User with MetaMegaProtoUser[User] {
