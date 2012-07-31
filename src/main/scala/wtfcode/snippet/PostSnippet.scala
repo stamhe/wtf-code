@@ -25,7 +25,7 @@ class PostSnippet {
       post
     }
 
-    def processPost() {
+    def processPost(): JsCmd = {
       val post = createPost()
       S.redirectTo(post.link)
     }
