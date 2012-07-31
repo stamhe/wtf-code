@@ -17,16 +17,18 @@ class PostSnippet {
     var langId: Long = 0
 
     def createPost(): Post = {
-      val lang = Language.find(langId).open_!
-      val post = Post.create.author(User.currentUser).content(content).description(description).language(lang)
-      lang.postNumber(lang.postNumber.is + 1)
-      post.save
-      lang.save()
-      post
+      val language = Language.find(langId)
+      Post.create.author(User.currentUser).content(content).description(description).language(language)
     }
 
     def processPost(): JsCmd = {
       val post = createPost()
+      post.save
+
+      val language = post.language.open_!
+      language.postNumber(language.postNumber.is + 1)
+      language.save()
+
       S.redirectTo(post.link)
     }
 
