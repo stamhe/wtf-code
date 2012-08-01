@@ -1,7 +1,7 @@
 package wtfcode.snippet
 
 import xml.{Text, NodeSeq}
-import wtfcode.model.{User, Comment, Post}
+import wtfcode.model.{LastSeen, User, Comment, Post}
 import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
@@ -21,6 +21,7 @@ class ViewCode {
   }
 
   def view(in: NodeSeq): NodeSeq = {
+    LastSeen.update(User.currentUser, code)
     code map ({
       i => CodeBinder(in, i)
     }) openOr Text("Not found")
