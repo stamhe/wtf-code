@@ -1,17 +1,20 @@
-#idea
+# idea
 
 *.iml
 *.ipr
 *.iws
 .idea/
 
-#maven
+# maven
 
 target/
 
-#h2 db
+# h2 db
 
 *.db
 
 # sbt history
 .history
+
+# ensime
+.ensime*
