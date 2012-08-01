@@ -7,6 +7,7 @@ import wtfcode.model.User
 import net.liftweb.mapper.By
 import xml.{Text, NodeSeq}
 import net.liftweb.textile.TextileParser
+import wtfcode.util.Avatar
 
 class ViewUser {
   val nick = S.param("nick") openOr ""
@@ -16,6 +17,7 @@ class ViewUser {
   def profile(in: NodeSeq): NodeSeq = {
     user map ({
       i => bind("entry", in,
+        AttrBindParam("avatar_url", Avatar(user, null), "src"),
         "nick" -> i.nickName,
         "date" -> i.createdAt,
         "aboutMe" -> TextileParser.toHtml(i.aboutMe.get))
