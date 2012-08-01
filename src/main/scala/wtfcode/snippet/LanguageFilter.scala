@@ -15,10 +15,11 @@ import net.liftweb.common.{Full, Box, Empty}
 class LanguageFilter extends PaginatorSnippet[Post] {
 
   override def itemsPerPage = 20
-  override def count = Post.count(By(Post.language, Language.find(By(Language.name, lang))))
-  override def page = Post.findAll(By(Post.language, Language.find(By(Language.name, lang))), OrderBy(Post.id, Descending))
+  override def count = Post.count(searchCondition)
+  override def page = Post.findAll(searchCondition, OrderBy(Post.id, Descending))
 
   private val lang = S.param("lang") openOr ""
+  private val searchCondition = By(Post.language, Language.find(By(Language.name, lang)))
 
   def render(xhtml: NodeSeq): NodeSeq = {
     Language.orderedByPopularity().flatMap { l =>

@@ -9,7 +9,8 @@ import net.liftweb.common.Empty
 import wtfcode.util.{CommentBinder, CodeBinder}
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
 import net.liftweb.http.js.JsCmd
-import net.liftweb.http.js.JsCmds.SetHtml
+import net.liftweb.http.js.JE._
+import net.liftweb.http.js.JsCmds._
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -33,6 +34,10 @@ class ViewCode {
     )
   }
 
+  lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).open_!
+
+  private val DeletePreviewCmd = JsRaw(""" $("#preview").remove(); """).cmd
+
   def addComment(in: NodeSeq): NodeSeq = {
     var content = ""
 
@@ -44,15 +49,16 @@ class ViewCode {
       val newComment = createComment()
       newComment.save
 
-      val template = S.runTemplate("templates-hidden" :: "comment" :: Nil)
-      AppendHtml("comments", CommentBinder(template.open_!, newComment))
+      DeletePreviewCmd &
+      AppendHtml("comments", CommentBinder(commentTemplate, newComment))
     }
 
     def processPreview(): JsCmd = {
       val newComment = createComment()
 
-      val template = S.runTemplate("templates-hidden" :: "comment" :: Nil)
-      SetHtml("preview", CommentBinder(template.open_!, newComment))
+      DeletePreviewCmd &
+      AppendHtml("comments", <div id="preview"/>) &
+      SetHtml("preview", CommentBinder(commentTemplate, newComment))
     }
 
     SHtml.ajaxForm(
