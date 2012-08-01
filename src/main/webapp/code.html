@@ -10,8 +10,14 @@
     </div>
 
     <div id="add"></div>
-    <lift:ViewCode.addComment form="POST">
-      <entry:content /><br />
-      <entry:submit /> <entry:preview />
+    <lift:ViewCode.addComment id="add-comment" form="POST"
+                              class="form-horizontal">
+      <fieldset>
+      <entry:content />
+      <div class="form-actions">
+        <entry:submit/>
+        <entry:preview/>
+      </div>
+      </fieldset>
     </lift:ViewCode.addComment>
 </lift:surround>

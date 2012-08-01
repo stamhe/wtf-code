@@ -64,8 +64,8 @@ class ViewCode {
     SHtml.ajaxForm(
       bind("entry", in,
         "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
-        "submit" -> SHtml.ajaxSubmit(S ? "comment.add", () => processAdd()),
-        "preview" -> SHtml.ajaxSubmit(S ? "comment.preview", () => processPreview())
+        "submit" -> SHtml.ajaxSubmit(S ? "comment.add", () => processAdd(), "class" -> "btn btn-primary"),
+        "preview" -> SHtml.ajaxSubmit(S ? "comment.preview", () => processPreview(), "class" -> "btn")
       )
     )
   }
