@@ -36,7 +36,8 @@ class ViewCode {
 
   lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).open_!
 
-  private val DeletePreviewCmd = JsRaw(""" $("#preview").remove(); """).cmd
+  private val DeletePreviewCmd = JsRaw("""jQuery("#preview").remove()""").cmd
+  private val EnableAddCommentButton = JsRaw("""wtfCode_enableAddCommentButton()""").cmd
 
   def addComment(in: NodeSeq): NodeSeq = {
     var content = ""
@@ -50,6 +51,8 @@ class ViewCode {
       newComment.save
 
       DeletePreviewCmd &
+      EnableAddCommentButton &
+      JsHideId("add-comment") &
       AppendHtml("comments", CommentBinder(commentTemplate, newComment))
     }
 

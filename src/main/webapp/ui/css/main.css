@@ -5,7 +5,7 @@ body {
 }
 textarea {
   font-family: Monaco,Consolas,monospace;
-  font-size: 16px;
+  font-size: 14px;
   width: 700px;
 }
 code {
@@ -34,6 +34,9 @@ span.inc, span.dec {
 span.language-label {
   font-weight: bold;
   font-size: 13px;
+}
+#add-comment-button {
+  margin: 0px 0px 20px;
 }
 #add-comment {
   width: 500px;

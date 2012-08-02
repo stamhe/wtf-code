@@ -9,15 +9,26 @@
         </lift:ViewCode.comments>
     </div>
 
-    <div id="add"></div>
+    <div id="add">
+      <button id="add-comment-button" class="btn">
+          <lift:loc>comment.add</lift:loc>
+      </button>
+    </div>
+
     <lift:ViewCode.addComment id="add-comment" form="POST"
+                              style="display: none;"
                               class="form-horizontal">
       <fieldset>
       <entry:content />
       <div class="form-actions">
         <entry:submit/>
         <entry:preview/>
+        <button class="btn btn-cancel pull-right">
+            <lift:loc>button.cancel</lift:loc>
+        </button>
       </div>
       </fieldset>
     </lift:ViewCode.addComment>
+
+    <script src="/ui/js/comments.js"></script>
 </lift:surround>
