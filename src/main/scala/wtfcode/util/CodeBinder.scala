@@ -24,7 +24,8 @@ object CodeBinder {
       "bookmark" -> bookmarkAction(post),
       "rate" -> RateBinder(S.runTemplate(List("templates-hidden", "rating")).open_!, post),
       AttrBindParam("link_to_author", post.author.map(_.link).openOr("#"), "href"),
-      AttrBindParam("link_to_code", post.link, "href"))
+      AttrBindParam("link_to_code", post.link, "href"),
+      AttrBindParam("lang_code", post.language.obj.map {_.code.is} openOr "", "class"))
   }
 
   private def mkAddBookmarkItem(id: String) = <i class="icon-star-empty" id={id} title={S ? "bookmark.add"}></i>

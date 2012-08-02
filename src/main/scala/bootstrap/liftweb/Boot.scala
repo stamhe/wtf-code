@@ -38,8 +38,8 @@ class Boot {
       Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen)
 
     if (Language.count == 0) {
-      for (langName <- List("C", "C++", "Java", "PHP", "Python", "Scala"))
-        Language.create.name(langName).save()
+      for (name <- List("C", "C++", "C#", "Java", "JavaScript", "PHP", "Python", "Scala"))
+        Language.create.name(name).code(Language.mangleName(name)).save()
     }
 
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {

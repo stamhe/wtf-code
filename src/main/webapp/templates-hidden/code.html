@@ -7,11 +7,12 @@
     </div>
     <div>
         <p>
-            <span><lift:loc>post.lang</lift:loc></span><em><entry:language/></em>
+          <span><lift:loc>post.lang</lift:loc></span>
+          <em><entry:language/></em>
         </p>
         <p>
-            <span><lift:loc>post.code</lift:loc></span>
-        <pre><code><entry:content /></code></pre>
+          <span><lift:loc>post.code</lift:loc></span>
+          <pre><code entry:lang_code=""><entry:content /></code></pre>
         </p>
     </div>
     <div>
@@ -20,9 +21,18 @@
         <p class="well"><entry:description /></p>
     </div>
     <div>
-        <p>Author: <a entry:link_to_author=""><entry:author /></a></p>
-        <p>Date: <time><entry:date /></time></p>
-        <p>Comments: <entry:commentsNum /> new <entry:newCommentsNum /></p>
+        <p>
+          <span><lift:loc>post.author</lift:loc></span>
+          <a entry:link_to_author=""><entry:author /></a>
+        </p>
+        <p>
+          <span><lift:loc>post.date</lift:loc></span>
+          <time><entry:date /></time>
+        </p>
+        <p>
+          <span><lift:loc>post.comments</lift:loc></span>
+          <entry:commentsNum /> (+<entry:newCommentsNum />)
+        </p>
         <entry:bookmark />
     </div>
     <hr/>
