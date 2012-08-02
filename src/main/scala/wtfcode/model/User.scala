@@ -3,13 +3,22 @@ package wtfcode.model
 import net.liftweb.mapper._
 import net.liftweb.http.S
 import net.liftweb.common.Full
+import net.liftweb.util.FieldError
+import xml.Text
 
 class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, User] {
   def getSingleton = User
 
   object nickName extends MappedString(this, 16) {
+    def reserved(value: String): List[FieldError] = {
+      value match {
+        case "Guest" => List(FieldError(this, Text(S ? "user.nicknameReserved")))
+        case _ => Nil
+      }
+    }
+
     override def dbIndexed_? = true
-    override def validations = valUnique(S ? "user.uniqueNickname") _ :: super.validations
+    override def validations = valUnique(S ? "user.uniqueNickname") _ :: reserved _ :: super.validations
     override def displayName = S ? "user.nickname"
   }
   object aboutMe extends MappedTextarea(this, 1024) {
