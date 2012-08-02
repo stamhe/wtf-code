@@ -11,5 +11,6 @@ $("#add-comment-button").live("click", function() {
 });
 $("#add-comment .btn-cancel").live("click", function() {
     $("#add-comment").hide();
+    $("#preview").remove();
     wtfCode_enableAddCommentButton();
 });

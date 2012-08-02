@@ -19,14 +19,21 @@
                               style="display: none;"
                               class="form-horizontal">
       <fieldset>
-      <entry:content />
-      <div class="form-actions">
-        <entry:submit/>
-        <entry:preview/>
-        <button class="btn btn-cancel pull-right">
+        <entry:content />
+        <p class="help-block">
+          <lift:loc>comment.usingTextile</lift:loc>
+          <a href="http://redcloth.org/hobix.com/textile/" target="_blank">
+            <lift:loc>comment.textileReference</lift:loc>
+          </a>
+        </p>
+
+        <div class="form-actions">
+          <entry:submit/>
+          <entry:preview/>
+          <button class="btn btn-cancel pull-right">
             <lift:loc>button.cancel</lift:loc>
-        </button>
-      </div>
+          </button>
+        </div>
       </fieldset>
     </lift:ViewCode.addComment>
 
