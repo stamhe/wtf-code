@@ -19,7 +19,7 @@ class LanguageFilter extends PaginatorSnippet[Post] {
   override def page = Post.findAll(searchCondition, OrderBy(Post.id, Descending))
 
   private val lang = S.param("lang") openOr ""
-  private val searchCondition = By(Post.language, Language.find(By(Language.name, lang)))
+  private val searchCondition = By(Post.language, Language.find(By(Language.code, lang)))
 
   def render(xhtml: NodeSeq): NodeSeq = {
     Language.orderedByPopularity().flatMap { l =>
