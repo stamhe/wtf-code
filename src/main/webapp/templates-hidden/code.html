@@ -1,19 +1,14 @@
 <div class="post">
     <div class="row">
-        <h3 class="span10"><a entry:link_to_code="">Post #<entry:id /></a></h3>
+        <h3 class="span10">
+          <a entry:link_to_lang_filter=""><entry:language/></a> /
+          <a entry:link_to_code="">Post #<entry:id /></a></h3>
         <div class="post-rating pull-right">
             <entry:rate/>
         </div>
     </div>
     <div>
-        <p>
-          <span><lift:loc>post.lang</lift:loc></span>
-          <em><entry:language/></em>
-        </p>
-        <p>
-          <span><lift:loc>post.code</lift:loc></span>
-          <pre><code entry:lang_code=""><entry:content /></code></pre>
-        </p>
+      <pre><code entry:lang_code=""><entry:content /></code></pre>
     </div>
     <div>
         <span><lift:loc>post.description</lift:loc></span>

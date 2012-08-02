@@ -12,6 +12,7 @@ import net.liftweb.common.Full
 object CodeBinder {
 
   def apply(template: NodeSeq, post: Post): NodeSeq = {
+    val langObj = post.language.obj
     bind("entry", template,
       "id" -> post.id,
       "language" -> post.getLanguage,
@@ -23,9 +24,10 @@ object CodeBinder {
       "newCommentsNum" -> LastSeen.unseenCount(User.currentUser, Full(post)),
       "bookmark" -> bookmarkAction(post),
       "rate" -> RateBinder(S.runTemplate(List("templates-hidden", "rating")).open_!, post),
-      AttrBindParam("link_to_author", post.author.map(_.link).openOr("#"), "href"),
+      AttrBindParam("link_to_author", post.author.map {_.link} openOr "#", "href"),
       AttrBindParam("link_to_code", post.link, "href"),
-      AttrBindParam("lang_code", post.language.obj.map {_.code.is} openOr "", "class"))
+      AttrBindParam("link_to_lang_filter", langObj.map {_.link} openOr "#", "href"),
+      AttrBindParam("lang_code", langObj.map {_.code.is} openOr "", "class"))
   }
 
   private def mkAddBookmarkItem(id: String) = <i class="icon-star-empty" id={id} title={S ? "bookmark.add"}></i>
