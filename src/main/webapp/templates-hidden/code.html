@@ -5,17 +5,25 @@
             <entry:rate/>
         </div>
     </div>
-    <p>Language: <em><entry:language/></em></p>
-    <p>Code:<br />
-    <pre class="prettyprint linenums"><code><entry:content /></code></pre>
-    </p>
     <div>
-        <span>Description:</span><br />
+        <p>
+            <span><lift:loc>post.lang</lift:loc></span><em><entry:language/></em>
+        </p>
+        <p>
+            <span><lift:loc>post.code</lift:loc></span>
+        <pre><code><entry:content /></code></pre>
+        </p>
+    </div>
+    <div>
+        <span><lift:loc>post.description</lift:loc></span>
+        <br />
         <p class="well"><entry:description /></p>
     </div>
-    <p>Author: <a entry:link_to_author=""><entry:author /></a></p>
-    <p>Date: <time><entry:date /></time></p>
-    <p>Comments: <entry:commentsNum /></p>
-    <entry:bookmark />
+    <div>
+        <p>Author: <a entry:link_to_author=""><entry:author /></a></p>
+        <p>Date: <time><entry:date /></time></p>
+        <p>Comments: <entry:commentsNum /></p>
+        <entry:bookmark />
+    </div>
     <hr/>
 </div>
