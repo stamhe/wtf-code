@@ -1,14 +1,13 @@
 package wtfcode.util
 
 import xml.NodeSeq
-import wtfcode.model.{Bookmark, User, Post}
+import wtfcode.model.{LastSeen, Bookmark, User, Post}
 import net.liftweb.util.Helpers._
 import net.liftweb.textile.TextileParser
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.mapper.By
 import net.liftweb.http.js.jquery.JqJsCmds.Hide
 import net.liftweb.common.Full
-import net.liftweb.http.js.JsCmds.SetHtml
 
 object CodeBinder {
 
@@ -21,6 +20,7 @@ object CodeBinder {
       "author" -> post.author.map(_.nickName.get).openOr("Guest"),
       "date" -> post.createdAt,
       "commentsNum" -> post.comments.size,
+      "newCommentsNum" -> LastSeen.unseenCount(User.currentUser, Full(post)),
       "bookmark" -> bookmarkAction(post),
       "rate" -> RateBinder(S.runTemplate(List("templates-hidden", "rating")).open_!, post),
       AttrBindParam("link_to_author", post.author.map(_.link).openOr("#"), "href"),
@@ -28,8 +28,8 @@ object CodeBinder {
       AttrBindParam("lang_code", post.language.obj.map {_.code.is} openOr "", "class"))
   }
 
-  private def mkAddBookmarkItem(id: String) = <i class="icon-star" id={id} title={S ? "bookmark.add"}></i>
-  private def mkRemBookmarkItem(id: String) = <i class="icon-star-empty" id={id} title={S ? "bookmark.remove"}></i>
+  private def mkAddBookmarkItem(id: String) = <i class="icon-star-empty" id={id} title={S ? "bookmark.add"}></i>
+  private def mkRemBookmarkItem(id: String) = <i class="icon-star" id={id} title={S ? "bookmark.remove"}></i>
 
   private def bookmarkAction(post: Post) = {
     val id = "bookmark_" + post.id
