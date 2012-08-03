@@ -19,7 +19,12 @@
                               style="display: none;"
                               class="form-horizontal">
       <fieldset>
-        <entry:content />
+        <div id="content-group" class="control-group">
+          <div class="controls">
+            <entry:content />
+            <span id="content-inline-help" class="help-inline"/>
+          </div>
+        </div>
         <p class="help-block">
           <lift:loc>comment.usingTextile</lift:loc>
           <a href="http://redcloth.org/hobix.com/textile/" target="_blank">
