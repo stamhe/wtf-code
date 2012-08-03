@@ -11,12 +11,15 @@ class Language extends LongKeyedMapper[Language] with IdPK with CreatedTrait wit
 
   object name extends MappedText(this)
 
-  object code extends MappedText(this)
+  object code extends MappedText(this) {
+    override def dbIndexed_? = true
+  }
 
   object posts extends MappedOneToMany(Post, Post.language, OrderBy(Post.createdAt, Descending))
 
 
   object postNumber extends MappedLong(this) {
+    override def dbIndexed_? = true
     override def defaultValue = 0L
   }
 
