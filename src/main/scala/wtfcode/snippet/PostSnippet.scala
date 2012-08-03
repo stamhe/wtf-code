@@ -8,7 +8,7 @@ import wtfcode.model.{Language, Post, User}
 import net.liftweb.common.Empty
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds.SetHtml
-import wtfcode.util.{JqRemoveClass, JqAddClass, CodeBinder}
+import wtfcode.util.{SyntaxHighlighter, JqRemoveClass, JqAddClass, CodeBinder}
 import net.liftweb.http.js.jquery.JqJE.JqId
 import net.liftweb.http.js.JE.Str
 
@@ -45,7 +45,7 @@ class PostSnippet {
     def processPreview(): JsCmd = {
       val post = createPost()
       val template = S.runTemplate("templates-hidden" :: "code" :: Nil)
-      SetHtml("preview", CodeBinder(template.open_!, post))
+      SetHtml("preview", CodeBinder(template.open_!, post)) & SyntaxHighlighter.highlightPage()
     }
 
     def compilationError(s: String): JsCmd = {

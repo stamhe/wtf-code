@@ -6,12 +6,20 @@ import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.common.Empty
-import wtfcode.util.{JqRemoveClass, JqAddClass, CommentBinder, CodeBinder}
+import wtfcode.util._
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.js.jquery.JqJE.{JqRemove, JqId}
+import wtfcode.util.JqAddClass
+import wtfcode.util.JqRemoveClass
+import net.liftweb.http.js.jquery.JqJE.JqId
+import xml.Text
+import net.liftweb.http.js.JsCmds.SetHtml
+import net.liftweb.http.js.jquery.JqJE.JqRemove
+import net.liftweb.http.js.JE.Str
+import net.liftweb.http.js.JE.JsRaw
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -62,7 +70,8 @@ class ViewCode {
       DeletePreviewCmd &
       EnableAddCommentButton &
       JsHideId("add-comment") &
-      AppendHtml("comments", CommentBinder(commentTemplate, newComment))
+      AppendHtml("comments", CommentBinder(commentTemplate, newComment)) &
+      SyntaxHighlighter.highlightPage()
     }
 
     def processPreview(): JsCmd = {
@@ -70,7 +79,8 @@ class ViewCode {
 
       DeletePreviewCmd &
       AppendHtml("comments", <div id="preview"/>) &
-      SetHtml("preview", CommentBinder(commentTemplate, newComment))
+      SetHtml("preview", CommentBinder(commentTemplate, newComment)) &
+      SyntaxHighlighter.highlightBlock("preview")
     }
 
     def compilationError(s: String): JsCmd = {
