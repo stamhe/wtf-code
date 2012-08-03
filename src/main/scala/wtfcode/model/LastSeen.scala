@@ -3,6 +3,9 @@ package wtfcode.model
 import net.liftweb.mapper._
 import net.liftweb.common.{Full, Box}
 
+/**
+ * Be careful. You can't unsee this.
+ */
 class LastSeen extends LongKeyedMapper[LastSeen] with IdPK with UpdatedTrait {
   def getSingleton = LastSeen
 
@@ -33,8 +36,25 @@ object LastSeen extends LastSeen with LongKeyedMetaMapper[LastSeen] {
     if (user.isEmpty || post.isEmpty)
       return 0
 
+    val seenAt = getSeenAt(user.open_!, post.open_!)
+    post.open_!.comments.count(comment => seen(comment, user.open_!, seenAt))
+  }
+
+  def unseen(comment: Comment): Boolean = {
+    User.currentUser.map { user =>
+      val post = comment.post.foreign.open_!
+      val seenAt = getSeenAt(user, post)
+
+      seen(comment, user, seenAt)
+    } openOr (false)
+  }
+
+  def getSeenAt(user: User, post: Post): Long = {
     val maybeSeen = LastSeen.find(By(LastSeen.user, user), By(LastSeen.post, post))
-    val seenAt = maybeSeen.map(_.updatedAt).map(_.toLong).openOr(0L)
-    post.open_!.comments.count(comment => comment.createdAt.toLong > seenAt && comment.author.foreign != user)
+    maybeSeen.map(_.updatedAt).map(_.toLong).openOr(0L)
+  }
+
+  private def seen(comment: Comment, user: User, seenAt: Long): Boolean = {
+    comment.createdAt.toLong > seenAt && comment.author.foreign != user
   }
 }
