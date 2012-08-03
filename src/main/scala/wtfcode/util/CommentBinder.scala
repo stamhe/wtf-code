@@ -1,7 +1,7 @@
 package wtfcode.util
 
 import xml.NodeSeq
-import wtfcode.model.Comment
+import wtfcode.model.{LastSeen, Comment}
 import net.liftweb.util.Helpers._
 import net.liftweb.textile.TextileParser
 import net.liftweb.http.S
@@ -16,6 +16,14 @@ object CommentBinder {
       AttrBindParam("avatar_url", Avatar(comment.author, comment.ipAddress), "src"),
       AttrBindParam("link_to_author", comment.author.map(_.link).openOr("#"), "href"),
       AttrBindParam("link_to_comment", comment.link, "href"),
+      AttrBindParam("unseen", unseen(comment), "class"),
       AttrBindParam("anchor", comment.anchor, "id"))
+  }
+
+  private def unseen(comment: Comment): String = {
+    if (LastSeen.unseen(comment))
+      "unseen"
+    else
+      ""
   }
 }

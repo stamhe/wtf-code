@@ -44,3 +44,7 @@ span.language-label {
 #add-comment {
   width: 500px;
 }
+div .unseen
+{
+    background-color: #FFF9DF;
+}

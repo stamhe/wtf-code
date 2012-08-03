@@ -23,16 +23,17 @@ class ViewCode {
   }
 
   def view(in: NodeSeq): NodeSeq = {
-    LastSeen.update(User.currentUser, code)
     code map ({
       i => CodeBinder(in, i)
     }) openOr Text("Not found")
   }
 
   def comments(in: NodeSeq): NodeSeq = {
-    code.open_!.comments.flatMap(
+    val ret = code.open_!.comments.flatMap(
       comment => CommentBinder(in, comment)
     )
+    LastSeen.update(User.currentUser, code)
+    ret
   }
 
   lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).open_!
