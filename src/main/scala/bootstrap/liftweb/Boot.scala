@@ -1,13 +1,13 @@
 package bootstrap.liftweb
 
-import _root_.net.liftweb.util._
-import _root_.net.liftweb.http._
-import _root_.net.liftweb.sitemap._
+import net.liftweb.util._
+import net.liftweb.http._
+import net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
 import wtfcode.model._
-import net.liftweb.sitemap.Loc.{If, Hidden}
-import wtfcode.util.WTFDateTimeConverter
+import net.liftweb.sitemap.Loc.Hidden
+import wtfcode.util.{Atom, WTFDateTimeConverter}
 import net.liftweb.sitemap.Loc.If
 
 /**
@@ -41,6 +41,8 @@ class Boot {
       for (name <- List("C", "C++", "C#", "Java", "JavaScript", "PHP", "Python", "Scala"))
         Language.create.name(name).code(Language.mangleName(name)).save()
     }
+
+    LiftRules.dispatch.prepend(Atom.dispatch)
 
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
       case RewriteRequest(ParsePath("code" :: id :: Nil, _, _, _), _, _) =>
