@@ -3,7 +3,7 @@ package wtfcode.model
 import net.liftweb.mapper._
 
 class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait
-with SaveIP with Rated with ManyToMany {
+with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
   def getSingleton = Comment
 
   override val createdAtIndexed_? = true
@@ -11,11 +11,17 @@ with SaveIP with Rated with ManyToMany {
   object author extends MappedLongForeignKey(this, User)
   object post extends MappedLongForeignKey(this, Post)
   object content extends MappedText(this)
+  object responseTo extends MappedLongForeignKey(this, Comment) {
+    override def dbIndexed_? = true
+  }
+  
   object rating extends MappedInt(this) {
     override def defaultValue = 0
   }
 
   object votes extends MappedManyToMany(CommentVote, CommentVote.comment, CommentVote.user, User)
+
+  object answers extends MappedOneToMany(Comment, Comment.responseTo, OrderBy(Comment.createdAt, Ascending))
 
   def anchor = "comment_" + id
   def link = post.foreign.map(_.link).openOr("") + "#" + anchor
