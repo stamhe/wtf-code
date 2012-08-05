@@ -5,11 +5,16 @@ import net.liftweb.mapper._
 import net.liftweb.util.Helpers
 import net.liftweb.textile.TextileParser
 
-object CommentFeed extends AtomFeed[Comment] {
+class CommentFeed(val param: String) extends AtomFeed[Comment] {
 
-  val LIMIT = 20
+  def count = Comment.count
 
-  def entries = Comment.findAll(OrderBy(Comment.createdAt, Descending), MaxRows(LIMIT))
+  def path = "comments"
+
+  def entries = Comment.findAll(
+    OrderBy(Comment.createdAt, Descending),
+    StartAt(curPage * itemsPerPage),
+    MaxRows(itemsPerPage))
 
   def feedId = "urn:feed:comments:" + entries.headOption.map(_.id).map(_.get).getOrElse(0L)
 

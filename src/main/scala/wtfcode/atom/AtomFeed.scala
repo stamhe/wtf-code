@@ -6,7 +6,25 @@ import java.text.SimpleDateFormat
 
 trait AtomFeed[T] {
 
+  def param: String
+
+  val curPage: Long = try {
+    param.toLong
+  } catch {
+    case e: NumberFormatException => 0
+  }
+
+  val hasNext = (curPage + 1) * itemsPerPage < count
+
   def entries: List[T]
+
+  def itemsPerPage = 20
+
+  def count: Long
+
+  def path: String
+
+  def nextLink: NodeSeq = <link rel="next" href={"/atom/" + path + "/" + (curPage + 1) }/>
 
   def feedId: String
 
@@ -14,6 +32,7 @@ trait AtomFeed[T] {
 
   def feed(): Node = {
     <feed xmlns="http://www.w3.org/2005/Atom">
+      {if (hasNext) nextLink}
       <title>WtfCode</title>
       <id>{feedId}</id>
       <updated>{format(feedUpdated)}</updated>
