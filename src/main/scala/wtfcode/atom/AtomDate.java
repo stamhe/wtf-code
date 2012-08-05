@@ -15,7 +15,7 @@
  * copyright in this work, please see the NOTICE file in the top level
  * directory of this distribution.
  */
-package wtfcode.util;
+package wtfcode.atom;
 
 import java.io.Serializable;
 import java.util.Calendar;

@@ -7,7 +7,8 @@ import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
 import wtfcode.model._
 import net.liftweb.sitemap.Loc.Hidden
-import wtfcode.util.{Atom, WTFDateTimeConverter}
+import wtfcode.atom.AtomDispatcher
+import wtfcode.util.WTFDateTimeConverter
 import net.liftweb.sitemap.Loc.If
 
 /**
@@ -42,7 +43,7 @@ class Boot {
         Language.create.name(name).code(Language.mangleName(name)).save()
     }
 
-    LiftRules.dispatch.prepend(Atom.dispatch)
+    LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
 
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
       case RewriteRequest(ParsePath("code" :: id :: Nil, _, _, _), _, _) =>
