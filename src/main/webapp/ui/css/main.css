@@ -44,7 +44,10 @@ span.language-label {
 #add-comment {
   width: 500px;
 }
-div .unseen
-{
-    background-color: #FFF9DF;
+.compile-error {
+  color: red;
+  padding-bottom: 20px;
+}
+div .unseen {
+  background-color: #FFF9DF;
 }

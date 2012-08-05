@@ -85,13 +85,13 @@ class ViewCode {
     }
 
     def compilationError(s: String): JsCmd = {
-      SetHtml("content-inline-help", Text(S ? "comment.compilationError" + ": " + s)) &
-      (JqId("content-group") ~> JqAddClass(Str ("error"))).cmd
+      SetHtml("errors", Text(S ? "comment.compilationError" + ": " + s)) &
+      (JqId("errors") ~> JqAddClass(Str ("compile-error"))).cmd
     }
 
     def clearErrors(): JsCmd = {
-      SetHtml("content-inline-help", Text("")) &
-      (JqId("content-group") ~> JqRemoveClass(Str ("error"))).cmd
+      SetHtml("errors", Text("")) &
+      (JqId("errors") ~> JqRemoveClass(Str ("compile-error"))).cmd
     }
 
     SHtml.ajaxForm(
