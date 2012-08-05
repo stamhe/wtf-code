@@ -5,11 +5,16 @@ import net.liftweb.mapper._
 import net.liftweb.util.Helpers
 import net.liftweb.mapper.MaxRows
 
-object PostFeed extends AtomFeed[Post] {
+class PostFeed(val param: String) extends AtomFeed[Post] {
 
-  val LIMIT = 20
+  def count = Post.count
 
-  def entries = Post.findAll(OrderBy(Post.createdAt, Descending), MaxRows(LIMIT))
+  def path = "posts"
+
+  def entries = Post.findAll(
+    OrderBy(Post.createdAt, Descending),
+    StartAt(curPage * itemsPerPage),
+    MaxRows(itemsPerPage))
 
   def feedId = "urn:feed:posts:" + entries.headOption.map(_.id).map(_.get).getOrElse(0L)
 
