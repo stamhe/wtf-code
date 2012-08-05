@@ -1,7 +1,8 @@
 package wtfcode.atom
 
-import java.util.Date
+import java.util.{TimeZone, Date}
 import xml.{Node, NodeSeq}
+import java.text.SimpleDateFormat
 
 trait AtomFeed[T] {
 
@@ -44,5 +45,9 @@ trait AtomFeed[T] {
     </entry>
   }
 
-  def format(date: Date): String = AtomDate.format(date)
+  def format(date: Date): String = {
+    val atomFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    atomFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
+    atomFormat.format(date)
+  }
 }
