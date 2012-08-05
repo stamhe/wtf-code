@@ -1,11 +1,14 @@
 <lift:surround with="default" at="content" xmlns:lift="http://liftweb.net/">
-    <div class="span12">
+  <head_merge>
+    <link rel="alternate" type="application/atom+xml" href="/atom/posts"></link>
+  </head_merge>
+  <div class="span12">
     <lift:Browse.renderPage eager_eval="true">
-        <lift:embed what="/templates-hidden/code"/>
+      <lift:embed what="/templates-hidden/code"/>
     </lift:Browse.renderPage>
-
+    
     <lift:Browse.paginate eager_eval="true">
-        <lift:embed what="/templates-hidden/paginator"/>
+      <lift:embed what="/templates-hidden/paginator"/>
     </lift:Browse.paginate>
-    </div>
+  </div>
 </lift:surround>
