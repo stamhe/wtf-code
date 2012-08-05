@@ -33,6 +33,11 @@
       <name>java.net Maven2 Repository</name>
       <url>http://download.java.net/maven/2/</url>
     </repository>
+    <repository>
+      <id>onhippo-repo</id>
+      <name>Enonic Repository</name>
+      <url>http://repo.enonic.com/maven/</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -89,6 +94,12 @@
       <artifactId>scala-compiler</artifactId>
       <version>${scala.version}</version>
       <scope>test</scope>
+    </dependency>
+    <!-- Captcha -->
+    <dependency>
+      <groupId>nl.captcha</groupId>
+      <artifactId>simplecaptcha</artifactId>
+      <version>1.2.1</version>
     </dependency>
   </dependencies>
 
