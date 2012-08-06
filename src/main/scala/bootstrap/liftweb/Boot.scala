@@ -72,6 +72,9 @@ class Boot {
 
     LiftRules.setSiteMapFunc(sitemap)
 
+    // Use HTML5 for rendering
+    LiftRules.htmlProperties.default.set((r: Req) => new Html5Properties(r.userAgent))
+
     LiftRules.dateTimeConverter.default.set(() => WTFDateTimeConverter)
   }
 }

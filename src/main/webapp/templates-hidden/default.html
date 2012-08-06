@@ -1,4 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:lift="http://liftweb.net/">
+<!DOCTYPE html>
+<html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta name="description" content="" />
@@ -16,23 +17,27 @@
             <div class="navbar-inner">
                 <div class="container">
                     <div class="nav-collapse">
-                    <lift:Menu.builder
-                            ul:class="nav"
-                            li_item:class="active"/>
+                      <div class="lift:Menu.builder?ul:class=nav;li_item:class=active"/>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="language-nav row-fluid">
-                <ul class="nav nav-pills">
-                    <lift:LanguageFilter eager_eval="true">
-                        <lift:embed what="/templates-hidden/lang-label"/>
-                    </lift:LanguageFilter>
-                </ul>
+                  <div class="lift:LanguageFilter?eager_eval=true">
+                    <ul class="nav nav-pills lang-filters">
+                      <li>
+                        <a class="lang-filter-link">
+                          <span class="language-label">
+                            <span class="name"></span>(<span class="count"></span>)
+                          </span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
             </div>
-            <lift:bind name="content" />
-            <lift:msgs />
+          <div id="lift:content_id='real_content'"></div>
+          <div class="lift:msgs"></div>
 
             <footer class="footer">
                 <hr/>

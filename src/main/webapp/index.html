@@ -1,16 +1,13 @@
-<lift:surround with="default" at="content">
-    <div class="hero-unit">
-
-    <p>
-        <lift:MainPage.howdy>
-            <span>Welcome to WtfCode at <b:time/></span><br/>
-            <span>Codes: <b:codes/></span><br/>
-            <span>Users: <b:users/></span><br/>
-            <span>Comments: <b:comments/></span><br/>
-            <span>Bookmarks: <b:bookmarks/></span><br/>
-            <span>Last seen: <b:last_seen/></span><br/>
-        </lift:MainPage.howdy>
-    </p>
+<div class="lift:surround?with=default;at=real_content" id="real_content">
+  <div class="hero-unit">
+    <div class="lift:MainPage.howdy">
+      <span>Welcome to WtfCode at <span class="time"></span></span><br/>
+      <span>Codes: <span class="codes"></span></span><br/>
+      <span>Users: <span class="users"></span></span><br/>
+      <span>Comments: <span class="comments"></span></span><br/>
+      <span>Bookmarks: <span class="bookmarks"></span></span><br/>
+      <span>Last seen: <span class="last_seen"></span></span><br/>
     </div>
-</lift:surround>
+  </div>
+</div>
 

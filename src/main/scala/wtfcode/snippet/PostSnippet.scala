@@ -77,6 +77,7 @@ class PostSnippet {
         "language" -> SHtml.select(languages, Empty, l => langId = l.toLong),
         "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
         "description" -> SHtml.textarea(description, description = _, "cols" -> "80", "rows" -> "8"),
+        "reCaptcha" -> ReCaptcha.captchaXhtml(),
         "captchaAnswer" -> SHtml.text(captchaAnswer, captchaAnswer = _),
         "submit" -> SHtml.ajaxSubmit(S ? "post.add", () => process(processPost), "class" -> "btn btn-primary"),
         "preview" -> SHtml.ajaxSubmit(S ? "post.preview", () => process(processPreview), "class" -> "btn btn-primary")))
