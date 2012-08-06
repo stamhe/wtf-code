@@ -32,7 +32,7 @@ class ViewCode {
 
   def view(in: NodeSeq): NodeSeq = {
     code map ({
-      i => CodeBinder(in, i)
+      i => CodeBinder(i)(in)
     }) openOr Text("Not found")
   }
 

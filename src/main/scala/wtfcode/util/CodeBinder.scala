@@ -11,23 +11,23 @@ import net.liftweb.common.Full
 
 object CodeBinder {
 
-  def apply(template: NodeSeq, post: Post): NodeSeq = {
+  def apply(post: Post): (NodeSeq => NodeSeq) = {
     val langObj = post.language.obj
-    bind("entry", template,
-      "id" -> post.id,
-      "language" -> post.getLanguage,
-      "content" -> post.content,
-      "description" -> TextileParser.toHtml(post.description),
-      "author" -> post.author.map(_.nickName.get).openOr("Guest"),
-      "date" -> post.createdAt,
-      "commentsNum" -> post.comments.size,
-      "newCommentsNum" -> LastSeen.unseenCount(User.currentUser, Full(post)),
-      "bookmark" -> bookmarkAction(post),
-      "rate" -> RateBinder(S.runTemplate(List("templates-hidden", "rating")).open_!, post),
-      AttrBindParam("link_to_author", post.author.map {_.link} openOr "#", "href"),
-      AttrBindParam("link_to_code", post.link, "href"),
-      AttrBindParam("link_to_lang_filter", langObj.map {_.link} openOr "#", "href"),
-      AttrBindParam("lang_code", langObj.map {_.code.is} openOr "", "class"))
+    val ratingTemplate = S.runTemplate(List("templates-hidden", "rating")).open_!
+    ".id *" #> post.id &
+      ".language *" #> post.getLanguage &
+      ".content *" #> post.content &
+      ".description *" #> TextileParser.toHtml(post.description) &
+      ".author *" #> post.author.map(_.nickName.get).openOr("Guest") &
+      ".date *" #> post.createdAt &
+      ".commentsNum *" #> post.comments.size &
+      ".newCommentsNum *" #> LastSeen.unseenCount(User.currentUser, Full(post)) &
+      ".bookmark *" #> bookmarkAction(post) &
+      ".post-rating *" #> RateBinder(post)(ratingTemplate) &
+      ".link_to_author [href]" #> post.author.map {_.link}.openOr("#") &
+      ".link_to_code [href]" #> post.link &
+      ".link_to_lang_filter [href]" #> langObj.map {_.link}.openOr("#") &
+      ".lang_code [href]" #> langObj.map {_.code.is}.openOr("")
   }
 
   private def mkAddBookmarkItem(id: String) = <i class="icon-star-empty" id={id} title={S ? "bookmark.add"}></i>

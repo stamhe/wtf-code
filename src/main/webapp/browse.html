@@ -1,14 +1,21 @@
-<lift:surround with="default" at="content" xmlns:lift="http://liftweb.net/">
+<!DOCTYPE html>
+<html>
+<body class="lift:content_id=real_content">
+<div class="lift:surround?with=default;at=content" id="real_content">
+
   <head_merge>
-    <link rel="alternate" type="application/atom+xml" href="/atom/posts"></link>
+    <link rel="alternate" type="application/atom+xml" href="/atom/posts">
   </head_merge>
+
   <div class="span12">
-    <lift:Browse.renderPage eager_eval="true">
-      <lift:embed what="/templates-hidden/code"/>
-    </lift:Browse.renderPage>
-    
-    <lift:Browse.paginate eager_eval="true">
-      <lift:embed what="/templates-hidden/paginator"/>
-    </lift:Browse.paginate>
+    <div class="posts lift:Browse.renderPage?eager_eval=true">
+      <div class="lift:embed?what=/templates-hidden/code"></div>
+    </div>
+
+    <div class="lift:Browse.paginate?eager_eval=true">
+      <div class="lift:embed?what=/templates-hidden/paginator"></div>
+    </div>
   </div>
-</lift:surround>
+</div>
+</body>
+</html>

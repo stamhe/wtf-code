@@ -31,7 +31,6 @@ class LanguageFilter extends PaginatorSnippet[Post] {
       })
   }
 
-  def renderPage(xhtml: NodeSeq): NodeSeq = {
-    page.flatMap { p => CodeBinder(xhtml, p) }
-  }
+  def renderPage() =
+    ".posts *" #> ((in: NodeSeq) => page.flatMap { p => CodeBinder(p)(in) })
 }

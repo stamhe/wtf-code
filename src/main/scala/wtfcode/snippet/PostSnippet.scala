@@ -56,8 +56,8 @@ class PostSnippet {
 
     def processPreview(): JsCmd = {
       val post = createPost()
-      val template = S.runTemplate("templates-hidden" :: "code" :: Nil)
-      SetHtml("preview", CodeBinder(template.open_!, post)) & SyntaxHighlighter.highlightPage()
+      val template = S.runTemplate("templates-hidden" :: "code" :: Nil).open_!
+      SetHtml("preview", CodeBinder(post)(template)) & SyntaxHighlighter.highlightPage()
     }
 
     def compilationError(s: String): JsCmd = {

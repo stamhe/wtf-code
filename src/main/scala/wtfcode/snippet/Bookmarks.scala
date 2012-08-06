@@ -13,5 +13,5 @@ class Bookmarks extends PaginatorSnippet[Bookmark] {
   override def page = User.currentUser.map(_.bookmarks.slice(startAt, startAt + itemsPerPage)).openOr(Nil)
 
   def renderPage(in: NodeSeq): NodeSeq =
-    page.flatMap(bookmark => CodeBinder(in, bookmark.post.open_!))
+    page.flatMap(bookmark => CodeBinder(bookmark.post.open_!)(in))
 }

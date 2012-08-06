@@ -1,34 +1,33 @@
 <div class="post">
     <div class="row">
-        <h3 class="span10">
-          <a entry:link_to_lang_filter=""><entry:language/></a> /
-          <a entry:link_to_code=""><lift:loc>post.post</lift:loc> #<entry:id /></a></h3>
-        <div class="post-rating pull-right">
-            <entry:rate/>
-        </div>
+      <h3 class="span10">
+        <a class="link_to_lang_filter"><span class="language"></span></a> /
+        <a class="link_to_code"><lift:loc>post.post</lift:loc> #<span class="entry-id"></span></a>
+      </h3>
+      <div class="post-rating pull-right"></div>
     </div>
     <div>
-      <pre><code entry:lang_code=""><entry:content /></code></pre>
+      <pre><code class="content"></code></pre>
     </div>
     <div>
         <span><lift:loc>post.description</lift:loc></span>
         <br />
-        <p class="well"><entry:description /></p>
+        <p class="well description"></p>
     </div>
     <div>
         <p>
           <span><lift:loc>post.author</lift:loc></span>
-          <a entry:link_to_author=""><entry:author /></a>
+          <a class="link-to-author"></a>
         </p>
         <p>
           <span><lift:loc>post.date</lift:loc></span>
-          <time><entry:date /></time>
+          <span class="time"></span>
         </p>
         <p>
           <span><lift:loc>post.comments</lift:loc></span>
-          <entry:commentsNum /> (+<entry:newCommentsNum />)
+          <span class="commentsNum"></span> (+<span class="newCommentsNum"></span>)
         </p>
-        <entry:bookmark />
+        <span class="bookmark"></span>
     </div>
     <hr/>
 </div>
