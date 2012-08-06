@@ -17,7 +17,7 @@
             <div class="navbar-inner">
                 <div class="container">
                     <div class="nav-collapse">
-                      <div class="lift:Menu.builder?ul:class=nav;li_item:class=active"/>
+                      <div class="lift:Menu.builder?ul:class=nav;li_item:class=active"></div>
                     </div>
                 </div>
             </div>
@@ -25,27 +25,19 @@
         <div class="container">
             <div class="language-nav row-fluid">
                   <div class="lift:LanguageFilter?eager_eval=true">
-                    <ul class="nav nav-pills lang-filters">
-                      <li>
-                        <a class="lang-filter-link">
-                          <span class="language-label">
-                            <span class="name"></span>(<span class="count"></span>)
-                          </span>
-                        </a>
-                      </li>
-                    </ul>
+                    <div class="lift:embed?what=/templates-hidden/lang-label"></div>
                   </div>
             </div>
-          <div id="lift:content_id='real_content'"></div>
+          <div id="content"></div>
           <div class="lift:msgs"></div>
 
-            <footer class="footer">
-                <hr/>
-                <p>Build with <a href="http://liftweb.net"><em>Lift</em></a>.</p>
-                <p>Robots lovingly delivered by <a href="http://robohash.org">Robohash.org</a>.</p>
-            </footer>
-            <script src="/ui/bootstrap/js/bootstrap.min.js"></script>
-            <script>wtfCode_highlightPage();</script>
+          <footer class="footer">
+            <hr/>
+            <p>Build with <a href="http://liftweb.net"><em>Lift</em></a>.</p>
+            <p>Robots lovingly delivered by <a href="http://robohash.org">Robohash.org</a>.</p>
+          </footer>
+          <script src="/ui/bootstrap/js/bootstrap.min.js"></script>
+          <script>wtfCode_highlightPage();</script>
         </div>
     </body>
 </html>
