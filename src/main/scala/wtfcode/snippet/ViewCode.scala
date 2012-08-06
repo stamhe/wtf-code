@@ -9,7 +9,6 @@ import net.liftweb.common.Empty
 import wtfcode.util._
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
 import net.liftweb.http.js.JsCmd
-import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.js.jquery.JqJE.{JqRemove, JqId}
 import wtfcode.util.JqAddClass
@@ -37,7 +36,7 @@ class ViewCode {
   }
 
   def comments() = {
-    val transform = ".comments *" #> ((in: NodeSeq) =>
+    val transform = "#comments *" #> ((in: NodeSeq) =>
       code.open_!.comments.flatMap { comment => CommentBinder(comment)(in) }
     )
     LastSeen.update(User.currentUser, code)
@@ -49,7 +48,7 @@ class ViewCode {
   private val DeletePreviewCmd = (JqId("preview") ~> JqRemove()).cmd
   private val EnableAddCommentButton = JsRaw("""wtfCode_enableAddCommentButton()""").cmd
 
-  def addComment(in: NodeSeq): NodeSeq = {
+  def addComment() = {
     var content = ""
 
     def createComment(): Comment = {
@@ -94,12 +93,8 @@ class ViewCode {
       (JqId("errors") ~> JqRemoveClass(Str ("compile-error"))).cmd
     }
 
-    SHtml.ajaxForm(
-      bind("entry", in,
-        "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
-        "submit" -> SHtml.ajaxSubmit(S ? "comment.add", () => process(processAdd), "class" -> "btn btn-primary"),
-        "preview" -> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn")
-      )
-    )
+    ".content" #> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8") &
+    ".submit" #> SHtml.ajaxSubmit(S ? "comment.add", () => process(processAdd), "class" -> "btn btn-primary") &
+    ".preview" #> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn")
   }
 }

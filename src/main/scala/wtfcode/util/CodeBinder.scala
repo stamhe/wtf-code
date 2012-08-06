@@ -14,7 +14,7 @@ object CodeBinder {
   def apply(post: Post): (NodeSeq => NodeSeq) = {
     val langObj = post.language.obj
     val ratingTemplate = S.runTemplate(List("templates-hidden", "rating")).open_!
-    ".id *" #> post.id &
+    ".entry-id *" #> post.id &
       ".language *" #> post.getLanguage &
       ".content *" #> post.content &
       ".description *" #> TextileParser.toHtml(post.description) &
