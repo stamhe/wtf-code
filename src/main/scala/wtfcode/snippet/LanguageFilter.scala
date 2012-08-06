@@ -21,16 +21,16 @@ class LanguageFilter extends PaginatorSnippet[Post] {
   private val lang = S.param("lang") openOr ""
   private val searchCondition = By(Post.language, Language.find(By(Language.code, lang)))
 
-  def render(xhtml: NodeSeq): NodeSeq = {
-    Language.orderedByPopularity().flatMap { l =>
-      bind("lang", xhtml,
-        "name" -> l.name.is,
-        "count" -> l.postNumber.is,
-        AttrBindParam("lang_filter_link", l.link, "href")
-    )}
+  def render() = {
+    val langs = Language.orderedByPopularity()
+    ".lang-filters *" #> ((ns: NodeSeq) =>
+      langs.flatMap { l =>
+        (".name *" #> l.name.is &
+          ".count *" #> l.postNumber.is &
+          ".lang-filter-link [href]" #> l.link)(ns)
+      })
   }
 
-  def renderPage(xhtml: NodeSeq): NodeSeq = {
-    page.flatMap { p => CodeBinder(xhtml, p) }
-  }
+  def renderPage() =
+    ".posts *" #> ((in: NodeSeq) => page.flatMap { p => CodeBinder(p)(in) })
 }

@@ -19,7 +19,7 @@ import net.liftweb.http.js.JsCmds.SetHtml
 import net.liftweb.http.js.JE.Str
 
 class PostSnippet {
-  def post(xhtml: NodeSeq): NodeSeq = {
+  def post() = {
     var content = ""
     var description = ""
     var captchaAnswer = ""
@@ -33,11 +33,7 @@ class PostSnippet {
     def process(func: () => JsCmd): JsCmd = {
       val cmd : JsCmd = if (content.trim.length < 1) {
         compilationError(S ? "post.codeNotFound")
-      } else if (SimpleCaptcha.getSessionCaptcha.getAnswer != captchaAnswer) {
-        // TODO: Update captcha frame to avoid simple brute force hack
-        compilationError(S ? "post.wrongCaptchaAnswer")
       } else {
-        SimpleCaptcha.clearSessionCaptcha()
         func()
       }
       clearErrors() & cmd
@@ -56,8 +52,8 @@ class PostSnippet {
 
     def processPreview(): JsCmd = {
       val post = createPost()
-      val template = S.runTemplate("templates-hidden" :: "code" :: Nil)
-      SetHtml("preview", CodeBinder(template.open_!, post)) & SyntaxHighlighter.highlightPage()
+      val template = S.runTemplate("templates-hidden" :: "code" :: Nil).open_!
+      SetHtml("preview", CodeBinder(post)(template)) & SyntaxHighlighter.highlightPage()
     }
 
     def compilationError(s: String): JsCmd = {
@@ -72,13 +68,11 @@ class PostSnippet {
 
     val languages = Language.findAll().map(lang => (lang.id.toString, lang.name.toString))
 
-    SHtml.ajaxForm(
-      bind("entry", xhtml,
-        "language" -> SHtml.select(languages, Empty, l => langId = l.toLong),
-        "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
-        "description" -> SHtml.textarea(description, description = _, "cols" -> "80", "rows" -> "8"),
-        "captchaAnswer" -> SHtml.text(captchaAnswer, captchaAnswer = _),
-        "submit" -> SHtml.ajaxSubmit(S ? "post.add", () => process(processPost), "class" -> "btn btn-primary"),
-        "preview" -> SHtml.ajaxSubmit(S ? "post.preview", () => process(processPreview), "class" -> "btn btn-primary")))
+    ".language" #> SHtml.select(languages, Empty, l => langId = l.toLong) &
+      ".content" #> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8") &
+      ".description" #> SHtml.textarea(description, description = _, "cols" -> "80", "rows" -> "8") &
+      ".reCaptcha" #> ReCaptcha.captchaXhtml() &
+      ".submit" #> SHtml.ajaxSubmit(S ? "post.add", () => process(processPost), "class" -> "btn btn-primary") &
+      ".preview" #> SHtml.ajaxSubmit(S ? "post.preview", () => process(processPreview), "class" -> "btn btn-primary")
   }
 }

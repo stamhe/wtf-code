@@ -1,46 +1,49 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:lift="http://liftweb.net/">
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <link rel="stylesheet" href="/ui/bootstrap/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/ui/css/main.css"/>
-        <script id="jquery" src="http://code.jquery.com/jquery.min.js"></script>
-        <link rel="stylesheet" href="/ui/highlight/idea.css"/>
-        <script src="/ui/highlight/highlight.pack.js"></script>
-        <script src="/ui/js/syntax.js"></script>
-        <title>wtfcode:wtfcode:1.0</title>
-    </head>
-    <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <div class="nav-collapse">
-                    <lift:Menu.builder
-                            ul:class="nav"
-                            li_item:class="active"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="language-nav row-fluid">
-                <ul class="nav nav-pills">
-                    <lift:LanguageFilter eager_eval="true">
-                        <lift:embed what="/templates-hidden/lang-label"/>
-                    </lift:LanguageFilter>
-                </ul>
-            </div>
-            <lift:bind name="content" />
-            <lift:msgs />
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <link rel="stylesheet" href="/ui/bootstrap/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/ui/css/main.css"/>
+  <script id="jquery" src="http://code.jquery.com/jquery.min.js"></script>
+  <link rel="stylesheet" href="/ui/highlight/idea.css"/>
+  <script src="/ui/highlight/highlight.pack.js"></script>
+  <script src="/ui/js/syntax.js"></script>
+  <title>wtfcode:wtfcode:1.0</title>
+</head>
+<body>
+<!-- Main menu -->
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <div class="nav-collapse">
+        <div class="lift:Menu.builder?ul:class=nav;li_item:class=active"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-            <footer class="footer">
-                <hr/>
-                <p>Build with <a href="http://liftweb.net"><em>Lift</em></a>.</p>
-                <p>Robots lovingly delivered by <a href="http://robohash.org">Robohash.org</a>.</p>
-            </footer>
-            <script src="/ui/bootstrap/js/bootstrap.min.js"></script>
-            <script>wtfCode_highlightPage();</script>
-        </div>
-    </body>
+<div class="container">
+  <!-- Language filter -->
+  <div class="language-nav row-fluid">
+    <div class="lift:LanguageFilter?eager_eval=true">
+      <div class="lift:embed?what=/templates-hidden/lang-label"></div>
+    </div>
+  </div>
+
+  <div id="content"></div>
+  <div class="lift:msgs"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <hr/>
+    <p>Build with <a href="http://liftweb.net"><em>Lift</em></a>.</p>
+    <p>Robots lovingly delivered by <a href="http://robohash.org">Robohash.org</a>.</p>
+  </footer>
+
+  <script src="/ui/bootstrap/js/bootstrap.min.js"></script>
+  <script>wtfCode_highlightPage();</script>
+</div>
+</body>
 </html>

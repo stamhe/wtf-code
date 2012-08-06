@@ -1,12 +1,13 @@
-<lift:surround with="default" at="content">
-  <lift:ViewCode.view eager_eval="true">
-    <lift:embed what="/templates-hidden/code"/>
-  </lift:ViewCode.view>
+<!DOCTYPE html>
+<html>
+<body class="lift:content_id=real_content">
+<div class="lift:surround?with=default;at=content" id="real_content">
+  <div class="lift:ViewCode.view?eager_eval=true">
+    <div class="lift:embed?what=/templates-hidden/code"></div>
+  </div>
 
-  <div id="comments">
-    <lift:ViewCode.comments eager_eval="true">
-      <lift:embed what="/templates-hidden/comment"/>
-    </lift:ViewCode.comments>
+  <div id="comments" class="lift:ViewCode.comments?eager_eval=true">
+    <div class="lift:embed?what=/templates-hidden/comment"></div>
   </div>
 
   <div id="add">
@@ -16,11 +17,11 @@
     </button>
   </div>
 
-  <lift:ViewCode.addComment id="add-comment" form="POST"
-                            style="display: none;">
+  <div class="lift:ViewCode.addComment" id="add-comment" style="display: none;">
+    <form class="lift:form.ajax">
     <fieldset>
 
-      <entry:content />
+      <div class="content"></div>
       <div id="errors"></div>
 
       <p class="help-block">
@@ -31,14 +32,15 @@
       </p>
 
       <div class="form-actions">
-        <entry:submit/>
-        <entry:preview/>
+        <div class="submit"></div>
+        <div class="preview"></div>
         <button class="btn btn-cancel pull-right">
           <lift:loc>button.cancel</lift:loc>
         </button>
       </div>
     </fieldset>
-  </lift:ViewCode.addComment>
+    </form>
+  </div>
 
   <script src="/ui/js/comments.js"></script>
-</lift:surround>
+</div>

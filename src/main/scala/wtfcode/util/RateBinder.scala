@@ -47,4 +47,34 @@ object RateBinder {
         )
     }
   }
+
+  def apply(model: Rated with IdPK): (NodeSeq => NodeSeq) = {
+
+    def voteId(obj: AnyRef, id: Long) =
+      obj.getClass.getSimpleName + "_" + id.toString + "_rating_value"
+
+    def applyVote(update: User => Int) = {
+      val maybeUser = User.currentUser
+      if(!maybeUser.isEmpty && model.canVote(maybeUser.open_!)) {
+        update(maybeUser.open_!)
+      }
+
+      val template = S.runTemplate(List("templates-hidden", "rating")).open_!
+      SetHtml(voteId(model, model.id.is), apply(model)(template))
+    }
+
+    val maybeUser = User.currentUser
+    maybeUser match {
+      case Full(user) if model.canVote(user) =>
+        ".rating *" #> model.currentRating &
+        ".vote-on *" #> SHtml.a(() => applyVote(model.voteOn _), Text("++")) &
+        ".vote-against *" #> SHtml.a(() => applyVote(model.voteAgainst _), Text("--")) &
+        ".model-rating [id]" #> voteId(model, model.id.is)
+      case _ =>
+        ".rating" #> model.currentRating &
+        ".vote-on" #> Text(if (maybeUser.isDefined) "++" else "") &
+        ".vote-against" #> Text(if (maybeUser.isDefined) "--" else "") &
+        ".model-rating [id]" #> voteId(model, model.id.is)
+    }
+  }
 }

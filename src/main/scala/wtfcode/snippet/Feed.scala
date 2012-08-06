@@ -2,6 +2,7 @@ package wtfcode.snippet
 
 import xml.NodeSeq
 import wtfcode.model.Comment
+import net.liftweb.util.Helpers._
 import net.liftweb.mapper.{StartAt, MaxRows, Descending, OrderBy}
 import wtfcode.util.CommentBinder
 import net.liftweb.http.PaginatorSnippet
@@ -14,6 +15,6 @@ class Feed extends PaginatorSnippet[Comment] {
     StartAt(curPage * itemsPerPage),
     MaxRows(itemsPerPage))
 
-  def renderPage(in: NodeSeq): NodeSeq =
-    page.flatMap(comment => CommentBinder(in, comment))
+  def renderPage =
+  ".comments *" #> ((in : NodeSeq) => page.flatMap { comment => CommentBinder(comment)(in) })
 }

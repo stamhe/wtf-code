@@ -9,7 +9,6 @@ import net.liftweb.common.Empty
 import wtfcode.util._
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
 import net.liftweb.http.js.JsCmd
-import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.http.js.jquery.JqJE.{JqRemove, JqId}
 import wtfcode.util.JqAddClass
@@ -32,16 +31,16 @@ class ViewCode {
 
   def view(in: NodeSeq): NodeSeq = {
     code map ({
-      i => CodeBinder(in, i)
+      i => CodeBinder(i)(in)
     }) openOr Text("Not found")
   }
 
-  def comments(in: NodeSeq): NodeSeq = {
-    val ret = code.open_!.comments.flatMap(
-      comment => CommentBinder(in, comment)
+  def comments() = {
+    val transform = "#comments *" #> ((in: NodeSeq) =>
+      code.open_!.comments.flatMap { comment => CommentBinder(comment)(in) }
     )
     LastSeen.update(User.currentUser, code)
-    ret
+    transform
   }
 
   lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).open_!
@@ -49,7 +48,7 @@ class ViewCode {
   private val DeletePreviewCmd = (JqId("preview") ~> JqRemove()).cmd
   private val EnableAddCommentButton = JsRaw("""wtfCode_enableAddCommentButton()""").cmd
 
-  def addComment(in: NodeSeq): NodeSeq = {
+  def addComment() = {
     var content = ""
 
     def createComment(): Comment = {
@@ -71,7 +70,7 @@ class ViewCode {
       DeletePreviewCmd &
       EnableAddCommentButton &
       JsHideId("add-comment") &
-      AppendHtml("comments", CommentBinder(commentTemplate, newComment)) &
+      AppendHtml("comments", CommentBinder(newComment)(commentTemplate)) &
       SyntaxHighlighter.highlightPage()
     }
 
@@ -80,7 +79,7 @@ class ViewCode {
 
       DeletePreviewCmd &
       AppendHtml("comments", <div id="preview"/>) &
-      SetHtml("preview", CommentBinder(commentTemplate, newComment)) &
+      SetHtml("preview", CommentBinder(newComment)(commentTemplate)) &
       SyntaxHighlighter.highlightBlock("preview")
     }
 
@@ -94,12 +93,8 @@ class ViewCode {
       (JqId("errors") ~> JqRemoveClass(Str ("compile-error"))).cmd
     }
 
-    SHtml.ajaxForm(
-      bind("entry", in,
-        "content" -> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8"),
-        "submit" -> SHtml.ajaxSubmit(S ? "comment.add", () => process(processAdd), "class" -> "btn btn-primary"),
-        "preview" -> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn")
-      )
-    )
+    ".content" #> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8") &
+    ".submit" #> SHtml.ajaxSubmit(S ? "comment.add", () => process(processAdd), "class" -> "btn btn-primary") &
+    ".preview" #> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn")
   }
 }

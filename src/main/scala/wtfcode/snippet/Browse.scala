@@ -2,6 +2,7 @@ package wtfcode.snippet
 
 import xml.NodeSeq
 import wtfcode.model.Post
+import net.liftweb.util.Helpers._
 import net.liftweb.http.PaginatorSnippet
 import net.liftweb.mapper.{Descending, OrderBy, MaxRows, StartAt}
 import wtfcode.util.CodeBinder
@@ -14,6 +15,6 @@ class Browse extends PaginatorSnippet[Post] {
     StartAt(curPage * itemsPerPage),
     MaxRows(itemsPerPage))
 
-  def renderPage(in: NodeSeq): NodeSeq =
-    page.flatMap(code => CodeBinder(in, code))
+  def renderPage() =
+    ".posts *" #> ((in: NodeSeq) => page.flatMap { code => CodeBinder(code)(in) })
 }

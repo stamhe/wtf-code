@@ -97,6 +97,11 @@
     </dependency>
     <!-- Captcha -->
     <dependency>
+      <groupId>net.tanesha.recaptcha4j</groupId>
+      <artifactId>recaptcha4j</artifactId>
+      <version>0.0.7</version>
+    </dependency>
+    <dependency>
       <groupId>nl.captcha</groupId>
       <artifactId>simplecaptcha</artifactId>
       <version>1.2.1</version>
