@@ -1,14 +1,15 @@
-<lift:surround with="default" at="content">
-    <div class="row">
-    <lift:PostSnippet.post form="POST" class="form-horizontal">
-      <div id="preview"/>
+<div class="lift:surround?with=default;at=content">
+  <div class="row">
+    <div id="preview"></div>
+    <div class="form-horizontal lift:PostSnippet.post">
+      <form class="lift:form.ajax">
       <fieldset>
           <div class="control-group">
               <label class="control-label">
                   <lift:loc>post.lang</lift:loc>
               </label>
               <div class="controls">
-                  <entry:language/>
+                  <span class="language"></span>
               </div>
           </div>
 
@@ -17,8 +18,8 @@
                   <lift:loc>post.code</lift:loc>
               </label>
               <div class="controls">
-                  <entry:content />
-                  <span id="content-inline-help" class="help-inline"/>
+                  <div class="content"></div>
+                  <span id="content-inline-help" class="help-inline"></span>
               </div>
           </div>
           <div class="control-group">
@@ -26,7 +27,7 @@
               <lift:loc>post.description</lift:loc>
             </label>
             <div class="controls">
-              <entry:description />
+              <div class="description"></div>
             </div>
           </div>
         <div class="control-group">
@@ -34,17 +35,16 @@
             <lift:loc>captcha</lift:loc>
           </label>
           <div class="controls">
-            <entry:captchaAnswer/>
-            <img src="/captcha" alt="Captcha"/>
+            <div class="reCaptcha"></div>
           </div>
         </div>
         <div>
-          <entry:reCaptcha/>
         </div>
         <div class="form-actions">
-          <entry:submit/> <entry:preview/>
+          <div class="submit"></div> <div class="preview"></div>
         </div>
       </fieldset>
-    </lift:PostSnippet.post>
+      </form>
     </div>
-</lift:surround>
+  </div>
+</div>
