@@ -17,8 +17,15 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
       }
     }
 
+    def allowedChars(value: String): List[FieldError] = {
+      value.matches("\\p{Alnum}[\\p{Alnum}-]+\\p{Alnum}") match {
+        case true => Nil
+        case false => List(FieldError(this, Text(S ? "user.nicknameBadChars")))
+      }
+    }
+
     override def dbIndexed_? = true
-    override def validations = valUnique(S ? "user.uniqueNickname") _ :: reserved _ :: super.validations
+    override def validations = valUnique(S ? "user.uniqueNickname") _ :: reserved _ :: allowedChars _ :: super.validations
     override def displayName = S ? "user.nickname"
   }
   object aboutMe extends MappedTextarea(this, 1024) {
