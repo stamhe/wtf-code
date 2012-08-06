@@ -22,11 +22,13 @@ class LanguageFilter extends PaginatorSnippet[Post] {
   private val searchCondition = By(Post.language, Language.find(By(Language.code, lang)))
 
   def render() = {
+    val langs = Language.orderedByPopularity()
     ".lang-filters *" #> ((ns: NodeSeq) =>
-      Language.orderedByPopularity().flatMap { l =>
-        (".name *" #> l.name.is & ".count *" #> l.postNumber.is & ".lang-filter-link [href]" #> l.link)(ns)
-      }
-      )
+      langs.flatMap { l =>
+        (".name *" #> l.name.is &
+          ".count *" #> l.postNumber.is &
+          ".lang-filter-link [href]" #> l.link)(ns)
+      })
   }
 
   def renderPage(xhtml: NodeSeq): NodeSeq = {

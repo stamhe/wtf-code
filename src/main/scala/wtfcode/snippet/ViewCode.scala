@@ -36,12 +36,12 @@ class ViewCode {
     }) openOr Text("Not found")
   }
 
-  def comments(in: NodeSeq): NodeSeq = {
-    val ret = code.open_!.comments.flatMap(
-      comment => CommentBinder(in, comment)
+  def comments() = {
+    val transform = ".comments *" #> ((in: NodeSeq) =>
+      code.open_!.comments.flatMap { comment => CommentBinder(comment)(in) }
     )
     LastSeen.update(User.currentUser, code)
-    ret
+    transform
   }
 
   lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).open_!
@@ -71,7 +71,7 @@ class ViewCode {
       DeletePreviewCmd &
       EnableAddCommentButton &
       JsHideId("add-comment") &
-      AppendHtml("comments", CommentBinder(commentTemplate, newComment)) &
+      AppendHtml("comments", CommentBinder(newComment)(commentTemplate)) &
       SyntaxHighlighter.highlightPage()
     }
 
@@ -80,7 +80,7 @@ class ViewCode {
 
       DeletePreviewCmd &
       AppendHtml("comments", <div id="preview"/>) &
-      SetHtml("preview", CommentBinder(commentTemplate, newComment)) &
+      SetHtml("preview", CommentBinder(newComment)(commentTemplate)) &
       SyntaxHighlighter.highlightBlock("preview")
     }
 

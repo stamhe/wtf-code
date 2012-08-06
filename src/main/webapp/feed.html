@@ -1,12 +1,13 @@
-<lift:surround with="default" at="content" xmlns:lift="http://liftweb.net/">
+<!DOCTYPE html>
+<html>
+<body class="lift:content_id=real_content">
+<div class="lift:surround?with=default;at=content" id="real_content">
   <head_merge>
     <link rel="alternate" type="application/atom+xml" href="/atom/comments"></link>
   </head_merge>
-  <lift:Feed.renderPage eager_eval="true">
-    <lift:embed what="/templates-hidden/comment"/>
-  </lift:Feed.renderPage>
-  
-  <lift:Feed.paginate eager_eval="true">
-    <lift:embed what="/templates-hidden/paginator"/>
-  </lift:Feed.paginate>
-</lift:surround>
+  <div class="comments lift:Feed.renderPage?eager_eval=true">
+    <div class="lift:embed?what=/templates-hidden/comment"></div>
+  </div>
+</div>
+</body>
+</html>
