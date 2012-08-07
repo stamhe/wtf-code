@@ -40,7 +40,7 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
 }
 
 object Comment extends Comment with LongKeyedMetaMapper[Comment] {
-  val MinRating = 5
+  val MinRating = -5
 
   override def dbTableName = "comments"
 }
