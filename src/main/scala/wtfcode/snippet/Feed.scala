@@ -3,7 +3,7 @@ package wtfcode.snippet
 import xml.NodeSeq
 import wtfcode.model.Comment
 import net.liftweb.util.Helpers._
-import net.liftweb.mapper.{StartAt, MaxRows, Descending, OrderBy}
+import net.liftweb.mapper._
 import wtfcode.util.CommentBinder
 import net.liftweb.http.PaginatorSnippet
 
@@ -11,6 +11,7 @@ class Feed extends PaginatorSnippet[Comment] {
   override def itemsPerPage = 20
   override def count = Comment.count
   override def page = Comment.findAll(
+    By_>=(Comment.rating, Comment.MinRating),
     OrderBy(Comment.createdAt, Descending),
     StartAt(curPage * itemsPerPage),
     MaxRows(itemsPerPage))

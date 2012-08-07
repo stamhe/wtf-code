@@ -39,5 +39,7 @@ with SaveIP with Rated with OneToMany[Long, Post] with ManyToMany {
 }
 
 object Post extends Post with LongKeyedMetaMapper[Post] {
+  val MinRating = -11
+
   override def dbTableName = "posts"
 }

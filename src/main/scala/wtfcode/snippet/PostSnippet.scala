@@ -22,7 +22,6 @@ class PostSnippet {
   def post() = {
     var content = ""
     var description = ""
-    var captchaAnswer = ""
     var langId: Long = 0
 
     def createPost(): Post = {

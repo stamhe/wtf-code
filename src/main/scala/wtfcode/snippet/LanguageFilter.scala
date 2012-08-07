@@ -3,7 +3,7 @@ package wtfcode.snippet
 import xml.{Text, NodeSeq}
 import net.liftweb.util.Helpers._
 import wtfcode.model.{Language, Post}
-import net.liftweb.mapper.{Descending, OrderBy, By}
+import net.liftweb.mapper._
 import net.liftweb.http.{SHtml, S, PaginatorSnippet}
 import wtfcode.util.CodeBinder
 import net.liftweb.common.{Full, Box, Empty}
@@ -15,11 +15,12 @@ import net.liftweb.common.{Full, Box, Empty}
 class LanguageFilter extends PaginatorSnippet[Post] {
 
   override def itemsPerPage = 20
-  override def count = Post.count(searchCondition)
-  override def page = Post.findAll(searchCondition, OrderBy(Post.id, Descending))
+  override def count = Post.count(searchCondition, ratingFilter)
+  override def page = Post.findAll(searchCondition, ratingFilter, OrderBy(Post.id, Descending))
 
   private val lang = S.param("lang") openOr ""
   private val searchCondition = By(Post.language, Language.find(By(Language.code, lang)))
+  private val ratingFilter = By_>=(Post.rating, Post.MinRating)
 
   def render() = {
     val langs = Language.orderedByPopularity()
