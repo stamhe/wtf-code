@@ -52,7 +52,7 @@ object ReCaptcha {
     </xml:group>
   }
 
-  protected def validateCaptcha(): List[FieldError] = {
+  def validateCaptcha(): List[FieldError] = {
     def checkAnswer(remoteAddr: String, challenge: String, uresponse: String): Box[String] = {
       val reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse)
       reCaptchaResponse.isValid match {
@@ -78,7 +78,7 @@ object ReCaptcha {
    * to load a new Captcha with ajax
    * @return JsCmd
    */
-  protected def reloadCaptcha(): JsCmd = JsFunc("Recaptcha.reload").cmd
+  def reloadCaptcha(): JsCmd = JsFunc("Recaptcha.reload").cmd
 
   case class FakeFieldIdentifier(override val uniqueFieldId: Box[String]) extends FieldIdentifier
 

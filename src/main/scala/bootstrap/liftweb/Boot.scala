@@ -45,10 +45,6 @@ class Boot {
 
     LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
 
-    LiftRules.liftRequest.append {
-      case Req("captcha" :: _, _, _) => false
-    }
-
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
       case RewriteRequest(ParsePath("code" :: id :: Nil, _, _, _), _, _) =>
         RewriteResponse("code" :: Nil, Map("id" -> id))

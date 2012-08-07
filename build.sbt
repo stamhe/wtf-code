@@ -10,8 +10,7 @@ scanDirectories in Compile := Nil
 
 resolvers ++= Seq(
   "Scala Tools Releases" at "http://scala-tools.org/repo-releases/",
-  "Java.net Maven2 Repository" at "http://download.java.net/maven/2/",
-  "Enonic Repository" at "http://repo.enonic.com/maven/"
+  "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 )
 
 libraryDependencies ++= {
@@ -30,6 +29,5 @@ libraryDependencies ++= Seq(
   "javax.servlet" % "servlet-api" % "2.5" % "provided->default",
   "com.h2database" % "h2" % "1.2.138",
   "ch.qos.logback" % "logback-classic" % "0.9.26" % "compile->default",
-  "net.tanesha.recaptcha4j" % "recaptcha4j" % "0.0.7",
-  "nl.captcha" % "simplecaptcha" % "1.2.1"
+  "net.tanesha.recaptcha4j" % "recaptcha4j" % "0.0.7"
 )
