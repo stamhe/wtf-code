@@ -17,6 +17,7 @@ import net.liftweb.sitemap.Loc.If
  */
 class Boot {
   def boot {
+    DefaultConnectionIdentifier.jndiName = "java:jboss/datasources/PostgreSQLDS"
     if (!DB.jndiJdbcConnAvailable_?) {
       val vendor =
         new StandardDBVendor(Props.get("db.driver") openOr "org.h2.Driver",
