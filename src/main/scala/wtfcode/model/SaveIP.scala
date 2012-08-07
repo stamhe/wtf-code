@@ -12,7 +12,7 @@ trait SaveIP {
   protected class MyIPAddress(obj: self.type) extends MappedText[MapperType](obj.asInstanceOf[MapperType]) {
     override def defaultValue =
       Props.productionMode match {
-        case true => S.request.flatMap(_.header("X-Forwarded-For")).openOr("NULL")
+        case true => S.request.flatMap(_.header("X-Forwarded-For").map(_.split(",")(0))).openOr("NULL")
         case false => S.containerRequest.map(_.remoteAddress).openOr("NULL")
       }
   }
