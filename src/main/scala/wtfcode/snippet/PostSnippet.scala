@@ -1,16 +1,13 @@
 package wtfcode.snippet
 
-import xml.{Text, NodeSeq}
 import net.liftweb.http.{S, SHtml}
-import net.liftweb.util.{FieldError, Helpers}
+import net.liftweb.util.Helpers
 import Helpers._
 import wtfcode.model.{Language, Post, User}
 import net.liftweb.common.Empty
 import net.liftweb.http.js.JsCmd
-import net.liftweb.http.js.JsCmds.SetHtml
 import wtfcode.util._
-import net.liftweb.http.js.jquery.JqJE.JqId
-import net.liftweb.http.js.JE.{JsRaw, Str}
+import net.liftweb.http.js.JE.Str
 import wtfcode.util.JqAddClass
 import wtfcode.util.JqRemoveClass
 import net.liftweb.http.js.jquery.JqJE.JqId
@@ -70,7 +67,7 @@ class PostSnippet {
       (JqId("content-group") ~> JqRemoveClass(Str ("error"))).cmd
     }
 
-    val languages = Language.findAll().map(lang => (lang.id.toString, lang.name.toString))
+    val languages = Language.orderedByPopularity().map(lang => (lang.id.toString, lang.name.toString))
 
     ".language" #> SHtml.select(languages, Empty, l => langId = l.toLong) &
       ".content" #> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8") &
