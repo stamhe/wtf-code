@@ -36,7 +36,7 @@ class Boot {
     LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
 
     Schemifier.schemify(true, Schemifier.infoF _,
-      Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen)
+      Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen, Notification)
 
     if (Language.count == 0) {
       for (name <- List("C", "C++", "C#", "Java", "JavaScript", "PHP", "Python", "Scala"))
@@ -61,6 +61,7 @@ class Boot {
         Menu(S ? "menu.browse") / "browse" ::
         Menu(S ? "menu.feed") / "feed" ::
         Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))) ::
+        Menu(Loc("Notifications", "notifications" :: Nil, S ? "menu.notifications", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))) ::
         Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)) ::
         Menu(Loc("Lang", List("lang-filter") -> true, S ? "menu.lang", Hidden)) ::
         Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)) ::

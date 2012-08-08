@@ -14,7 +14,7 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
   object responseTo extends MappedLongForeignKey(this, Comment) {
     override def dbIndexed_? = true
   }
-  
+
   object rating extends MappedInt(this) {
     override def defaultValue = 0
   }
@@ -43,4 +43,20 @@ object Comment extends Comment with LongKeyedMetaMapper[Comment] {
   val MinRating = -5
 
   override def dbTableName = "comments"
+
+  override def afterSave = sendNotifications _ :: super.afterSave
+
+  private def sendNotifications(comment: Comment) {
+    //new comment to post
+    comment.post.map { post =>
+      post.author.map { author =>
+          Notification.create.user(author).save()
+    }}
+
+    //new response to comment
+    comment.responseTo.map { to =>
+      to.author.map { author =>
+        Notification.create.user(author).save()
+    }}
+  }
 }

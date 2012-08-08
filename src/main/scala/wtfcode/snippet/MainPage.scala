@@ -1,5 +1,6 @@
 package wtfcode.snippet
-import _root_.net.liftweb.util.Helpers
+
+import net.liftweb.util.Helpers
 import Helpers._
 import wtfcode.model._
 
@@ -10,6 +11,7 @@ class MainPage {
     ".users" #> User.count &
     ".comments" #> Comment.count &
     ".bookmarks" #> Bookmark.count &
-    ".last_seen" #> LastSeen.count
+    ".last_seen" #> LastSeen.count &
+    ".notifications" #> Notification.count
   }
 }
