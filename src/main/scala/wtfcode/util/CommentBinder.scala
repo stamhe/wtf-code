@@ -19,6 +19,6 @@ object CommentBinder {
     ".anchor-link [href]" #> comment.anchor
   }
 
-  private def unseen(comment: Comment) =
-    if (LastSeen.unseen(comment)) "unseen" else ""
+  private def unseen(comment: Comment): Option[String] =
+    if (LastSeen.unseen(comment)) Some("unseen") else None
 }

@@ -1,6 +1,6 @@
 package wtfcode.snippet
 
-import xml.{Text, NodeSeq}
+import xml.NodeSeq
 import wtfcode.model.{LastSeen, User, Comment, Post}
 import net.liftweb.util.Helpers
 import Helpers._
@@ -10,7 +10,6 @@ import wtfcode.util._
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
 import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
-import net.liftweb.http.js.jquery.JqJE.{JqRemove, JqId}
 import wtfcode.util.JqAddClass
 import wtfcode.util.JqRemoveClass
 import net.liftweb.http.js.jquery.JqJE.JqId
@@ -36,11 +35,14 @@ class ViewCode {
   }
 
   def comments() = {
-    val transform = "#comments *" #> ((in: NodeSeq) =>
+    "#comments *" #> ((in: NodeSeq) =>
       code.open_!.comments.flatMap { comment => CommentBinder(comment)(in) }
     )
+  }
+
+  def updateUnseen() = {
     LastSeen.update(User.currentUser, code)
-    transform
+    NodeSeq.Empty
   }
 
   lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).open_!
