@@ -44,9 +44,12 @@ object Comment extends Comment with LongKeyedMetaMapper[Comment] {
 
   override def dbTableName = "comments"
 
-  override def afterSave = sendNotifications _ :: super.afterSave
+  override def beforeSave = sendNotifications _ :: super.beforeSave
 
   private def sendNotifications(comment: Comment) {
+    if (comment.saved_?)
+      return
+
     //new comment to post
     comment.post.map { post =>
       post.author.map { author =>
