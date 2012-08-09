@@ -36,11 +36,15 @@ class Boot {
     LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
 
     Schemifier.schemify(true, Schemifier.infoF _,
-      Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen, Notification)
+      Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen, Notification, Tag, PostTags)
 
     if (Language.count == 0) {
       for (name <- List("C", "C++", "C#", "Java", "JavaScript", "PHP", "Python", "Scala"))
         Language.create.name(name).code(Language.mangleName(name)).save()
+    }
+
+    if (Tag.count == 0) {
+      List("php-dates", "lab", "boolshit").map(Tag.create.value(_).save())
     }
 
     LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
@@ -54,19 +58,24 @@ class Boot {
       RewriteResponse("user" :: Nil, Map("nick" -> nick))
     })
 
+    def helloMessage() = {
+      val usr = User.currentUser
+      usr.map { u => S ? ("user.hello", u.nickName.is) }.openOr(S ? "user.notLoggedIn")
+    }
+
     // Build SiteMap
     def sitemap() = SiteMap(
-      Menu(S ? "menu.home") / "index" :: // Simple menu form
-        Menu(S ? "menu.post") / "post" ::
-        Menu(S ? "menu.browse") / "browse" ::
-        Menu(S ? "menu.feed") / "feed" ::
-        Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))) ::
-        Menu(Loc("Notifications", "notifications" :: Nil, S ? "menu.notifications", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))) ::
-        Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)) ::
-        Menu(Loc("Lang", List("lang-filter") -> true, S ? "menu.lang", Hidden)) ::
-        Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)) ::
-        // Menu entries for the User management stuff
-      User.sitemap :_*)
+      Menu(S ? "menu.home") / "index",
+      Menu(S ? "menu.post") / "post",
+      Menu(S ? "menu.browse") / "browse",
+      Menu(S ? "menu.feed") / "feed",
+      Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))),
+      Menu(Loc("Notifications", "notifications" :: Nil, S ? "menu.notifications", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))),
+      Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)),
+      Menu(Loc("Lang", List("lang-filter") -> true, S ? "menu.lang", Hidden)),
+      Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)),
+      // Menu entries for the User management stuff
+      Menu(helloMessage()) / "user-management" submenus ( User.menus ))
 
     LiftRules.setSiteMapFunc(sitemap)
 

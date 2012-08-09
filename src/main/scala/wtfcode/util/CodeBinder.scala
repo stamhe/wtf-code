@@ -1,7 +1,7 @@
 package wtfcode.util
 
 import xml.NodeSeq
-import wtfcode.model.{LastSeen, Bookmark, User, Post}
+import wtfcode.model._
 import net.liftweb.util.Helpers._
 import net.liftweb.textile.TextileParser
 import net.liftweb.http.{S, SHtml}
@@ -20,6 +20,7 @@ object CodeBinder {
       ".description *" #> TextileParser.toHtml(post.description) &
       ".link_to_author *" #> post.author.map(_.nickName.get).openOr("Guest") &
       ".date *" #> post.createdAt &
+      renderTags(post) &
       ".commentsNum *" #> post.comments.size &
       ".newCommentsNum *" #> LastSeen.unseenCount(User.currentUser, Full(post)) &
       ".bookmark *" #> bookmarkAction(post) &
@@ -48,6 +49,22 @@ object CodeBinder {
           Hide(id)
         }, mkAddBookmarkItem(id))
       }
+    }
+  }
+
+  private def createTag(post: Post, value: String) = {
+    val tag = Tag.find(By(Tag.value, value)).openOr(Tag.create.value(value))
+    tag.save()
+    PostTags.create.post(post).tag(tag).save()
+  }
+
+  private def renderTags(post: Post) = {
+    val tags = Post.tags
+    if (tags.isEmpty) {
+      ".tags" #> <ul></ul>
+    } else {
+      ".tags *" #> ((in: NodeSeq) =>
+        tags.flatMap {t => (".tag *" #> t.value)(in) })
     }
   }
 }

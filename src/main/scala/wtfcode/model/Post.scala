@@ -19,6 +19,8 @@ with SaveIP with Rated with OneToMany[Long, Post] with ManyToMany {
   object comments extends MappedOneToMany(Comment, Comment.post, OrderBy(Comment.createdAt, Ascending))
   object votes extends MappedManyToMany(PostVote, PostVote.post, PostVote.user, User)
 
+  object tags extends MappedManyToMany(PostTags, PostTags.post, PostTags.tag, Tag)
+
   def getLanguage = this.language.obj.map(_.name.toString).openOr("None")
 
   override def currentRating = this.rating.is

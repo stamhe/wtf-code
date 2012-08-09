@@ -18,7 +18,7 @@
   <div class="navbar-inner">
     <div class="container">
       <div class="nav-collapse">
-        <div class="lift:Menu.builder?ul:class=nav;li_item:class=active;linkToSelf=true"></div>
+        <div class="lift:BootstrapMenu"></div>
       </div>
     </div>
   </div>
@@ -34,7 +34,6 @@
 
   <div id="content"></div>
   <div class="lift:msgs"></div>
-
   <!-- Footer -->
   <footer class="footer">
     <hr/>
@@ -43,7 +42,11 @@
   </footer>
 
   <script src="/ui/bootstrap/js/bootstrap.min.js"></script>
-  <script>wtfCode_highlightPage();</script>
+  <script src="/ui/bootstrap/js/bootstrap-dropdown.js"></script>
+  <script>
+    $('.dropdown-toggle').dropdown();
+    wtfCode_highlightPage();
+  </script>
 </div>
 </body>
 </html>
