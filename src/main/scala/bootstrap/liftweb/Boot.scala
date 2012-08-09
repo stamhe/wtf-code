@@ -43,9 +43,7 @@ class Boot {
         Language.create.name(name).code(Language.mangleName(name)).save()
     }
 
-    if (Tag.count == 0) {
-      List("php-dates", "lab", "boolshit").map(Tag.create.value(_).save())
-    }
+    List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
 
     LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
 

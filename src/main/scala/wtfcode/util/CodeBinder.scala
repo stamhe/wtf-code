@@ -52,9 +52,8 @@ object CodeBinder {
     }
   }
 
-  private def createTag(post: Post, value: String) = {
-    val tag = Tag.find(By(Tag.value, value)).openOr(Tag.create.value(value))
-    tag.save()
+  private def createTag(post: Post, name: String) = {
+    val tag = Tag.findOrCreate(name)
     PostTags.create.post(post).tag(tag).save()
   }
 
@@ -64,7 +63,7 @@ object CodeBinder {
       ".tags" #> <ul></ul>
     } else {
       ".tags *" #> ((in: NodeSeq) =>
-        tags.flatMap {t => (".tag *" #> t.value)(in) })
+        tags.flatMap {t => (".tag *" #> t.name)(in) })
     }
   }
 }

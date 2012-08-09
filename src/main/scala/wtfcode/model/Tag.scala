@@ -1,14 +1,11 @@
 package wtfcode.model
 import net.liftweb.mapper._
 
-class Tag extends LongKeyedMapper[Tag] with IdPK {
+class Tag extends ProtoTag[Tag] {
   def getSingleton = Tag
-
-  object value extends MappedString(this, 30) {
-    override def dbIndexed_? = true
-  }
+  def cacheSize = 100
 }
 
-object Tag extends Tag with LongKeyedMetaMapper[Tag] {
+object Tag extends Tag with MetaProtoTag[Tag] {
   override def dbTableName = "tags"
 }
