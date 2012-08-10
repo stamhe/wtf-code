@@ -13,7 +13,7 @@ object CodeBinder {
 
   def apply(post: Post): (NodeSeq => NodeSeq) = {
     val langObj = post.language.obj
-    val ratingTemplate = S.runTemplate(List("templates-hidden", "rating")).open_!
+    val ratingTemplate = S.runTemplate(List("templates-hidden", "rating")).openOrThrowException("template must exist")
     ".entry-id *" #> post.id &
       ".language *" #> post.getLanguage &
       ".content *" #> post.content &
