@@ -5,11 +5,13 @@ import net.liftweb.http._
 import net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
 import net.liftweb.mapper.{Schemifier, DB}
+import net.liftweb.sitemap.Loc._
+
 import wtfcode.model._
-import net.liftweb.sitemap.Loc.Hidden
+import wtfcode.api._
 import wtfcode.atom.AtomDispatcher
 import wtfcode.util.WTFDateTimeConverter
-import net.liftweb.sitemap.Loc.If
+
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -46,6 +48,8 @@ class Boot {
     List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
 
     LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
+
+    LiftRules.statelessDispatchTable.prepend(CommentService)
 
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
       case RewriteRequest(ParsePath("code" :: id :: Nil, _, _, _), _, _) =>
