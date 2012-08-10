@@ -43,23 +43,4 @@ object Comment extends Comment with LongKeyedMetaMapper[Comment] {
   val MinRating = -5
 
   override def dbTableName = "comments"
-
-  override def beforeSave = sendNotifications _ :: super.beforeSave
-
-  private def sendNotifications(comment: Comment) {
-    if (comment.saved_?)
-      return
-
-    //new comment to post
-    comment.post.map { post =>
-      post.author.map { author =>
-          Notification.create.user(author).save()
-    }}
-
-    //new response to comment
-    comment.responseTo.map { to =>
-      to.author.map { author =>
-        Notification.create.user(author).save()
-    }}
-  }
 }

@@ -1,7 +1,7 @@
 package wtfcode.snippet
 
 import xml.NodeSeq
-import wtfcode.model.{LastSeen, User, Comment, Post}
+import wtfcode.model._
 import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{SHtml, S}
@@ -66,8 +66,8 @@ class ViewCode {
     }
 
     def processAdd(): JsCmd = {
-      val newComment = createComment()
-      newComment.save
+      val newComment = createComment().saveMe()
+      Notification.send(newComment)
 
       DeletePreviewCmd &
       EnableAddCommentButton &

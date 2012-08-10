@@ -16,6 +16,7 @@ class Notifications extends PaginatorSnippet[Notification] {
     ".notifications *" #> ((in: NodeSeq) => page.flatMap {notification => bindNotification(notification)(in)})
 
   def bindNotification(notification: Notification): (NodeSeq => NodeSeq) = {
+    ".link [href]" #> notification.link &
     ".date *" #> notification.createdAt
   }
 }

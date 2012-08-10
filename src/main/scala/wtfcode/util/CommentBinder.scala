@@ -16,7 +16,7 @@ object CommentBinder {
     ".author-link [href]" #> comment.author.map(_.link).openOr("#") &
     ".comment-link [href]" #> comment.link &
     ".unseen [class]" #> unseen(comment) &
-    ".anchor-link [href]" #> comment.anchor
+    ".comment [id]" #> comment.anchor
   }
 
   private def unseen(comment: Comment): Option[String] =
