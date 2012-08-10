@@ -40,12 +40,12 @@ class PostSnippet {
       if (!captchaErrors.isEmpty) {
         compilationError(S ? "post.wrongCaptchaAnswer" + ": " + captchaErrors.mkString("\n"))
       } else {
-        val post = createPost()
-        post.save
+        val post = createPost().saveMe()
 
-        val language = post.language.open_!
-        language.postNumber(language.postNumber.is + 1)
-        language.save()
+        post.language map { language =>
+          language.postNumber(language.postNumber.is + 1)
+          language.save()
+        }
 
         S.redirectTo(post.link)
       }
@@ -53,7 +53,7 @@ class PostSnippet {
 
     def processPreview(): JsCmd = {
       val post = createPost()
-      val template = S.runTemplate("templates-hidden" :: "code" :: Nil).open_!
+      val template = S.runTemplate("templates-hidden" :: "code" :: Nil).openOrThrowException("template must exist")
       SetHtml("preview", CodeBinder(post)(template)) & SyntaxHighlighter.highlightPage()
     }
 

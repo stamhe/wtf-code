@@ -33,20 +33,22 @@ object LastSeen extends LastSeen with LongKeyedMetaMapper[LastSeen] {
   }
 
   def unseenCount(user: Box[User], post: Box[Post]): Int = {
-    if (user.isEmpty || post.isEmpty)
-      return 0
+    (user, post) match {
+      case (Full(user), Full(post)) => unseenCount(user, post)
+      case _ => 0
+    }
+  }
 
-    val seenAt = getSeenAt(user.open_!, post.open_!)
-    post.open_!.comments.count(comment => seen(comment, user.open_!, seenAt))
+  def unseenCount(user: User, post: Post): Int = {
+    val seenAt = getSeenAt(user, post)
+    post.comments.count(comment => seen(comment, user, seenAt))
   }
 
   def unseen(comment: Comment): Boolean = {
-    User.currentUser.map { user =>
-      val post = comment.post.foreign.open_!
-      val seenAt = getSeenAt(user, post)
-
-      seen(comment, user, seenAt)
-    } openOr (false)
+    (User.currentUser, comment.post.foreign) match {
+      case (Full(user), Full(post)) => seen(comment, user, getSeenAt(user, post))
+      case _ => false
+    }
   }
 
   def getSeenAt(user: User, post: Post): Long = {
