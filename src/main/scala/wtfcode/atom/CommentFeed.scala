@@ -3,7 +3,7 @@ package wtfcode.atom
 import wtfcode.model.Comment
 import net.liftweb.mapper._
 import net.liftweb.util.Helpers
-import net.liftweb.textile.TextileParser
+import net.liftmodules.textile.TextileParser
 
 class CommentFeed(val param: String) extends AtomFeed[Comment] {
 

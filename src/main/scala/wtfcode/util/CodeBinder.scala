@@ -3,7 +3,7 @@ package wtfcode.util
 import xml.NodeSeq
 import wtfcode.model._
 import net.liftweb.util.Helpers._
-import net.liftweb.textile.TextileParser
+import net.liftmodules.textile.TextileParser
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.mapper.By
 import net.liftweb.http.js.jquery.JqJsCmds.Hide

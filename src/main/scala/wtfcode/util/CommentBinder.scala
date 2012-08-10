@@ -2,7 +2,7 @@ package wtfcode.util
 
 import wtfcode.model.{LastSeen, Comment}
 import net.liftweb.util.Helpers._
-import net.liftweb.textile.TextileParser
+import net.liftmodules.textile.TextileParser
 import net.liftweb.http.S
 
 object CommentBinder {

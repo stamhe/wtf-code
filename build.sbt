@@ -9,25 +9,25 @@ seq(webSettings: _*)
 scanDirectories in Compile := Nil
 
 resolvers ++= Seq(
-  "Scala Tools Releases" at "http://scala-tools.org/repo-releases/",
-  "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
+  "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
+  "releases" at "http://oss.sonatype.org/content/repositories/releases"
 )
 
 libraryDependencies ++= {
-  val liftVersion = "2.4"
+  val liftVersion = "2.5-SNAPSHOT"
   Seq(
-    "net.liftweb" %% "lift-webkit" % liftVersion % "compile->default",
-    "net.liftweb" %% "lift-mapper" % liftVersion % "compile->default",
-    "net.liftweb" %% "lift-wizard" % liftVersion % "compile->default",
-    "net.liftweb" %% "lift-textile" % liftVersion % "compile->default")
+    "net.liftweb" %% "lift-webkit" % liftVersion % "compile",
+    "net.liftweb" %% "lift-mapper" % liftVersion % "compile",
+    "net.liftweb" %% "lift-wizard" % liftVersion % "compile",
+    "net.liftmodules" %% "widgets" % (liftVersion + "-1.1-SNAPSHOT") % "compile",
+    "net.liftmodules" %% "textile" % (liftVersion + "-1.1-SNAPSHOT") % "compile")
 }
 
 libraryDependencies ++= Seq(
-  "org.mortbay.jetty" % "jetty" % "6.1.25" % "container",
-  "org.scala-tools.testing" % "specs_2.9.0" % "1.6.8" % "test",
-  "junit" % "junit" % "4.8" % "test->default",
-  "javax.servlet" % "servlet-api" % "2.5" % "provided->default",
+  "org.eclipse.jetty" % "jetty-webapp" % "7.5.4.v20111024" % "container",
   "com.h2database" % "h2" % "1.2.138",
-  "ch.qos.logback" % "logback-classic" % "0.9.26" % "compile->default",
-  "net.tanesha.recaptcha4j" % "recaptcha4j" % "0.0.7"
+  "ch.qos.logback" % "logback-classic" % "1.0.3" % "compile->default",
+  "net.tanesha.recaptcha4j" % "recaptcha4j" % "0.0.7",
+  "org.specs2" %% "specs2" % "1.11" % "test",
+  "junit" % "junit" % "4.8" % "test->default"
 )

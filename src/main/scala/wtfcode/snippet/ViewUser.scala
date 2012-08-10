@@ -6,7 +6,7 @@ import net.liftweb.http.{NotFoundResponse, S}
 import wtfcode.model.User
 import net.liftweb.mapper.By
 import xml.{Text, NodeSeq}
-import net.liftweb.textile.TextileParser
+import net.liftmodules.textile.TextileParser
 import wtfcode.util.Avatar
 import net.liftweb.common.Full
 
