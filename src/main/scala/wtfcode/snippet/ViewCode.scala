@@ -36,7 +36,7 @@ class ViewCode {
 
   def comments() = {
     "#comments *" #> ((in: NodeSeq) =>
-      code.open_!.comments.flatMap { comment => CommentBinder(comment)(in) }
+      code.map(_.comments.flatMap { comment => CommentBinder(comment)(in) }).openOr(NodeSeq.Empty)
     )
   }
 
@@ -45,7 +45,7 @@ class ViewCode {
     NodeSeq.Empty
   }
 
-  lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).open_!
+  lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).openOrThrowException("template must exist")
 
   private val DeletePreviewCmd = (JqId("preview") ~> JqRemove()).cmd
   private val EnableAddCommentButton = JsRaw("""wtfCode_enableAddCommentButton()""").cmd
