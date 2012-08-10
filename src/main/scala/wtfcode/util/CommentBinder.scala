@@ -7,7 +7,7 @@ import net.liftweb.http.S
 
 object CommentBinder {
   def apply(comment: Comment) = {
-    val ratingTemplate = S.runTemplate(List("templates-hidden", "rating")).open_!
+    val ratingTemplate = S.runTemplate(List("templates-hidden", "rating")).openOrThrowException("template must exist")
     ".comment-text" #> TextileParser.toHtml(comment.content) &
     ".author" #> comment.author.map(_.nickName.get).openOr("Guest") &
     ".date" #> comment.createdAt &
