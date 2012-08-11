@@ -15,6 +15,7 @@ object CommentBinder {
     ".avatar [src]" #> Avatar(comment.author, comment.ipAddress) &
     ".author-link [href]" #> comment.author.map(_.link).openOr("#") &
     ".comment-link [href]" #> comment.link &
+    ".parent-link [href]" #> comment.responseTo.map(_.link).openOr("#") &
     ".unseen [class]" #> unseen(comment) &
     ".comment [id]" #> comment.anchor
   }
