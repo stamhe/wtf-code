@@ -51,6 +51,13 @@ class ViewCode {
   private val EnableAddCommentButton = JsRaw("""wtfCode_enableAddCommentButton()""").cmd
 
   def addComment() = {
+    code.isDefined match {
+      case true => addCommentReal()
+      case false => "#add-comment" #> NodeSeq.Empty
+    }
+  }
+
+  private def addCommentReal() = {
     var content = ""
 
     def createComment(): Comment = {
