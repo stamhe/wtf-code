@@ -36,7 +36,7 @@ class ViewCode {
 
   def comments() = {
     "#comments *" #> ((in: NodeSeq) =>
-      code.map(_.comments.flatMap { comment => CommentBinder(comment)(in) }).openOr(NodeSeq.Empty)
+      code.map(_.comments.filter(_.responseTo.isEmpty).flatMap { comment => CommentBinder(comment)(in) }).openOr(NodeSeq.Empty)
     )
   }
 
@@ -61,7 +61,9 @@ class ViewCode {
     var content = ""
 
     def createComment(): Comment = {
-      Comment.create.author(User.currentUser).post(code).content(content)
+      val parentId = S.param("parentId").openOr("0").toLong
+      val parent = Comment.findByKey(parentId)
+      Comment.create.author(User.currentUser).post(code).content(content).responseTo(parent)
     }
 
     def process(func: () => JsCmd): JsCmd = {

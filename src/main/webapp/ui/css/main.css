@@ -35,6 +35,16 @@ span.language-label {
 ul.comments {
   list-style: none;
 }
+.avatar {
+  width: 48px; height: 48px;
+  border: 1px solid #eee;
+}
+.comment-meta {
+  font-size: 13px;
+}
+.comment-text {
+  margin-left: 80px;
+}
 .compile-error {
   color: red;
   padding-bottom: 20px;
