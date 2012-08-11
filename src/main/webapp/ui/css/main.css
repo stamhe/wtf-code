@@ -5,14 +5,14 @@ body {
 }
 textarea {
   font-family: Monaco,Consolas,monospace;
-  font-size: 14px;
+  font-size: 13px;
   width: 700px;
 }
 code {
-  font-size: 14px;
+  font-size: 13px;
 }
 .post code {
-  maring: 5px;
+  margin: 5px;
 }
 .post pre {
   padding: 0px;
