@@ -48,7 +48,7 @@ class ViewCode {
   lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).openOrThrowException("template must exist")
 
   private val DeletePreviewCmd = (JqId("preview") ~> JqRemove()).cmd
-  private val EnableAddCommentButton = JsRaw("""wtfCode_enableAddCommentButton()""").cmd
+  private val EnableAddCommentButton = JsRaw("""Comments.enableAddButton()""").cmd
 
   def addComment() = {
     code.isDefined match {
@@ -87,7 +87,7 @@ class ViewCode {
       val newComment = createComment()
 
       DeletePreviewCmd &
-      AppendHtml("comments", <div id="preview"/>) &
+      AppendHtml("comments", <li id="preview"/>) &
       SetHtml("preview", CommentBinder(newComment)(commentTemplate)) &
       SyntaxHighlighter.highlightBlock("preview")
     }
