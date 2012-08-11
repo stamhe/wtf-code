@@ -4,7 +4,7 @@ import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers
 import Helpers._
 import wtfcode.model.{Language, Post, User}
-import net.liftweb.common.Empty
+import net.liftweb.common.{Box, Empty}
 import net.liftweb.http.js.JsCmd
 import wtfcode.util._
 import net.liftweb.http.js.JE.Str
@@ -19,16 +19,19 @@ class PostSnippet {
     var content = ""
     var description = ""
     var langId: Long = 0
+    var language: Box[Language] = Empty
 
     def createPost(): Post = {
-      val language = Language.find(langId)
       Post.create.author(User.currentUser).content(content).description(description).language(language)
     }
 
     def process(func: () => JsCmd): JsCmd = {
+      language = Language.find(langId)
 
       val cmd : JsCmd = if (content.trim.length < 1) {
         compilationError(S ? "post.codeNotFound")
+      } else if (language.isEmpty) {
+        compilationError(S ? "post.langNotSelected")
       } else {
         func()
       }
