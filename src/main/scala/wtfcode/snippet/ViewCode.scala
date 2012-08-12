@@ -92,7 +92,8 @@ class ViewCode {
         EnableAddCommentButton &
         JsHideId("add-comment") &
         JsRaw("Comments.clearTextarea()") &
-        AppendHtml(appendToId(newComment), CommentBinder(newComment)(commentTemplate)) &
+        AppendHtml(appendToId(newComment),
+		   CommentBinder.applyRecursively(newComment)(commentTemplate)) &
         SyntaxHighlighter.highlightPage()
     }
 

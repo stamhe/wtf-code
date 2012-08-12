@@ -17,6 +17,9 @@ var Comments;
 	 },
 	 setParent: function(parentId) {
 	     $("#add-comment").find("form input[name='parentId']").val(parentId);
+	     if (parentId > 0) {
+		 this.enableAddButton();
+	     }
 	 },
 	 placeFormTo: function(containerId) {
 	     $("#add-comment").detach().appendTo(containerId);
@@ -25,7 +28,6 @@ var Comments;
      };
      $(function() {
          $("#add-comment-button").live("click", function() {
-	     Comments.clearTextarea();
              $("#add-comment").show();
 	     Comments.setParent(0);
              Comments.disableAddButton();
