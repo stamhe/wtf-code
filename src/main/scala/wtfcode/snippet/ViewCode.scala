@@ -4,7 +4,7 @@ import xml.NodeSeq
 import wtfcode.model._
 import net.liftweb.util.Helpers
 import Helpers._
-import net.liftweb.http.{SHtml, S}
+import net.liftweb.http.{ SHtml, S }
 import net.liftweb.common.Empty
 import wtfcode.util._
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
@@ -36,8 +36,9 @@ class ViewCode {
 
   def comments() = {
     "#comments *" #> ((in: NodeSeq) =>
-      code.map(_.comments.filter(_.responseTo.isEmpty).flatMap { comment => CommentBinder(comment)(in) }).openOr(NodeSeq.Empty)
-    )
+      code.map(_.comments.filter(_.responseTo.isEmpty).flatMap { comment =>
+        CommentBinder.applyRecursively(comment)(in)
+      }).openOr(NodeSeq.Empty))
   }
 
   def updateUnseen() = {
@@ -68,10 +69,10 @@ class ViewCode {
 
     def process(func: () => JsCmd): JsCmd = {
       clearErrors() &
-      (content.trim.length match {
-        case 0 => compilationError(S ? "comment.commentNotFound")
-        case _ => func()
-      })
+        (content.trim.length match {
+          case 0 => compilationError(S ? "comment.commentNotFound")
+          case _ => func()
+        })
     }
 
     def processAdd(): JsCmd = {
@@ -79,33 +80,33 @@ class ViewCode {
       Notification.send(newComment)
 
       DeletePreviewCmd &
-      EnableAddCommentButton &
-      JsHideId("add-comment") &
-      AppendHtml("comments", CommentBinder(newComment)(commentTemplate)) &
-      SyntaxHighlighter.highlightPage()
+        EnableAddCommentButton &
+        JsHideId("add-comment") &
+        AppendHtml("comments", CommentBinder(newComment)(commentTemplate)) &
+        SyntaxHighlighter.highlightPage()
     }
 
     def processPreview(): JsCmd = {
       val newComment = createComment()
 
       DeletePreviewCmd &
-      AppendHtml("comments", <li id="preview"/>) &
-      SetHtml("preview", CommentBinder(newComment)(commentTemplate)) &
-      SyntaxHighlighter.highlightBlock("preview")
+        AppendHtml("comments", <li id="preview"/>) &
+        SetHtml("preview", CommentBinder(newComment)(commentTemplate)) &
+        SyntaxHighlighter.highlightBlock("preview")
     }
 
     def compilationError(s: String): JsCmd = {
       SetHtml("errors", Text(S ? "comment.compilationError" + ": " + s)) &
-      (JqId("errors") ~> JqAddClass(Str ("compile-error"))).cmd
+        (JqId("errors") ~> JqAddClass(Str("compile-error"))).cmd
     }
 
     def clearErrors(): JsCmd = {
       SetHtml("errors", Text("")) &
-      (JqId("errors") ~> JqRemoveClass(Str ("compile-error"))).cmd
+        (JqId("errors") ~> JqRemoveClass(Str("compile-error"))).cmd
     }
 
     ".content" #> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8") &
-    ".submit" #> SHtml.ajaxSubmit(S ? "comment.add", () => process(processAdd), "class" -> "btn btn-primary") &
-    ".preview" #> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn")
+      ".submit" #> SHtml.ajaxSubmit(S ? "comment.add", () => process(processAdd), "class" -> "btn btn-primary") &
+      ".preview" #> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn")
   }
 }
