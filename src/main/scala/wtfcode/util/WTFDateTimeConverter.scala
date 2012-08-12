@@ -4,16 +4,28 @@ import net.liftweb.util.{DefaultDateTimeConverter, DateTimeConverter}
 import java.util.Date
 import net.liftweb.http.S
 import java.text.DateFormat
+import wtfcode.model.User
 
 object WTFDateTimeConverter extends DateTimeConverter {
-  def formatDateTime(d: Date) =
-    DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, S.locale).format(d)
+  def formatDateTime(date: Date) = {
+    val dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, S.locale)
+    format(date, dateFormat)
+  }
 
-  def formatDate(d: Date) =
-    DateFormat.getDateInstance(DateFormat.MEDIUM, S.locale).format(d)
+  def formatDate(date: Date) = {
+    val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, S.locale)
+    format(date, dateFormat)
+  }
 
-  def formatTime(d: Date) =
-    DateFormat.getTimeInstance(DateFormat.MEDIUM, S.locale).format(d)
+  def formatTime(date: Date) = {
+    val dateFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM, S.locale)
+    format(date, dateFormat)
+  }
+
+  private def format(date: Date, format: DateFormat): String = {
+    User.currentUser.map(user => format.setTimeZone(user.timezone.isAsTimeZone))
+    format.format(date)
+  }
 
   def parseDateTime(s: String) = DefaultDateTimeConverter.parseDateTime(s)
 
