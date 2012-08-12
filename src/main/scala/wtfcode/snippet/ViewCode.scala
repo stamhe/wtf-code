@@ -18,6 +18,7 @@ import net.liftweb.http.js.JsCmds.SetHtml
 import net.liftweb.http.js.jquery.JqJE.JqRemove
 import net.liftweb.http.js.JE.Str
 import net.liftweb.http.js.JE.JsRaw
+import net.liftweb.mapper.By
 
 class ViewCode {
   val id = S.param("id") openOr ""
@@ -62,8 +63,12 @@ class ViewCode {
     var content = ""
 
     def createComment(): Comment = {
-      val parentId = S.param("parentId").openOr("0").toLong
-      val parent = Comment.findByKey(parentId)
+      val parentId: Long = try {
+        S.param("parentId").map(_.toLong).openOr(0)
+      } catch {
+        case e: NumberFormatException => 0
+      }
+      val parent = Comment.find(By(Comment.id, parentId), By(Comment.post, code))
       Comment.create.author(User.currentUser).post(code).content(content).responseTo(parent)
     }
 
