@@ -25,6 +25,7 @@ object CommentBinder {
       ".comment-link [href]" #> comment.link &
       ".parent-link [href]" #> comment.responseTo.map(_.link).openOr("#") &
       ".unseen [class]" #> unseen(comment) &
+      ".replies [id]" #> comment.repliesAnchor &
       ".comment [id]" #> comment.anchor
   }
 
@@ -38,6 +39,8 @@ object CommentBinder {
     if (LastSeen.unseen(comment)) Some("unseen") else None
 
   private def repliesBindings(c: Comment): CssSel = {
+    val link = <a class="reply" data-comment-id={c.id.is.toString}>{S ? "comment.reply"}</a>
+    ".reply-container *" #> link &
     ".replies *" #> ((in: NodeSeq) =>
       c.answers.flatMap(a => CommentBinder.applyRecursively(a)(commentTemplate)))
   }

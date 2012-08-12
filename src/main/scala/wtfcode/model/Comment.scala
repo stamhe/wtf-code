@@ -24,6 +24,7 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
   object answers extends MappedOneToMany(Comment, Comment.responseTo, OrderBy(Comment.createdAt, Ascending))
 
   def anchor = "comment_" + id
+  def repliesAnchor = "replies_" + id
   def link = post.foreign.map(_.link).openOr("") + "#" + anchor
 
   override def currentRating = this.rating.is

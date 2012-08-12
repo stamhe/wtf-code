@@ -42,8 +42,15 @@ ul.comments {
 .comment-meta {
   font-size: 13px;
 }
-.comment-text {
+.comment-container {
   margin-left: 80px;
+}
+.reply {
+  display: inline-block;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
 }
 .compile-error {
   color: red;

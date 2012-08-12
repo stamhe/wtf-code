@@ -1,49 +1,50 @@
 <!DOCTYPE html>
 <html>
-<body class="lift:content_id=real_content">
-<div class="lift:surround?with=default;at=content" id="real_content">
-  <div class="lift:ViewCode.view?eager_eval=true">
-    <div class="lift:embed?what=/templates-hidden/code"></div>
-  </div>
-
-  <ul id="comments" class="comments lift:ViewCode.comments?eager_eval=true">
-    <div class="lift:embed?what=/templates-hidden/comment"></div>
-  </ul>
-
-  <span class="lift:ViewCode.updateUnseen"></span>
-
-  <div id="add">
-    <button id="add-comment-button" class="btn">
-      <i class="icon-comment"></i>
-      <lift:loc>comment.add</lift:loc>
-    </button>
-  </div>
-
-  <div class="lift:ViewCode.addComment" id="add-comment" style="display: none;">
-    <form class="lift:form.ajax">
-    <fieldset>
-
-      <div class="content"></div>
-      <div id="errors"></div>
-
-      <p class="help-block">
-        <lift:loc>comment.usingTextile</lift:loc>
-        <a href="http://redcloth.org/hobix.com/textile/" target="_blank">
-          <lift:loc>comment.textileReference</lift:loc>
-        </a>
-      </p>
-
-      <div class="form-actions">
-        <div class="submit"></div>
-        <div class="preview"></div>
-	<input type="hidden" name="parentId" value="0"></input>
-        <button class="btn btn-cancel pull-right">
-          <lift:loc>button.cancel</lift:loc>
-        </button>
+  <body class="lift:content_id=real_content">
+    <div class="lift:surround?with=default;at=content" id="real_content">
+      <div class="lift:ViewCode.view?eager_eval=true">
+	<div class="lift:embed?what=/templates-hidden/code"></div>
       </div>
-    </fieldset>
-    </form>
-  </div>
 
-  <script src="/ui/js/comments.js"></script>
-</div>
+      <ul id="comments" class="comments lift:ViewCode.comments?eager_eval=true">
+	<div class="lift:embed?what=/templates-hidden/comment"></div>
+      </ul>
+
+      <span class="lift:ViewCode.updateUnseen"></span>
+
+      <div id="add">
+	<button id="add-comment-button" class="btn">
+	  <i class="icon-comment"></i>
+	  <lift:loc>comment.add</lift:loc>
+	</button>
+
+
+	<div class="lift:ViewCode.addComment" id="add-comment" style="display: none;">
+	  <form class="lift:form.ajax">
+	    <fieldset>
+
+	      <div class="content"></div>
+	      <div id="errors"></div>
+
+	      <p class="help-block">
+		<lift:loc>comment.usingTextile</lift:loc>
+		<a href="http://redcloth.org/hobix.com/textile/" target="_blank">
+		  <lift:loc>comment.textileReference</lift:loc>
+		</a>
+	      </p>
+
+	      <input type="hidden" name="parentId" value="0"></input>
+
+	      <div class="form-actions">
+		<div class="submit"></div>
+		<div class="preview"></div>
+		<button class="btn btn-cancel pull-right">
+		  <lift:loc>button.cancel</lift:loc>
+		</button>
+	      </div>
+	    </fieldset>
+	  </form>
+	</div>
+      </div>
+      <script src="/ui/js/comments.js"></script>
+    </div>

@@ -62,12 +62,14 @@ class ViewCode {
   private def addCommentReal() = {
     var content = ""
 
+    def getParentId(): Long = try {
+      S.param("parentId").map(_.toLong).openOr(0)
+    } catch {
+      case e: NumberFormatException => 0
+    }
+
     def createComment(): Comment = {
-      val parentId: Long = try {
-        S.param("parentId").map(_.toLong).openOr(0)
-      } catch {
-        case e: NumberFormatException => 0
-      }
+      val parentId: Long = getParentId()
       val parent = Comment.find(By(Comment.id, parentId), By(Comment.post, code))
       Comment.create.author(User.currentUser).post(code).content(content).responseTo(parent)
     }
@@ -80,6 +82,8 @@ class ViewCode {
         })
     }
 
+    def appendToId(comment: Comment) = comment.responseTo.map{ _.repliesAnchor }.openOr("comments")
+
     def processAdd(): JsCmd = {
       val newComment = createComment().saveMe()
       Notification.send(newComment)
@@ -87,7 +91,8 @@ class ViewCode {
       DeletePreviewCmd &
         EnableAddCommentButton &
         JsHideId("add-comment") &
-        AppendHtml("comments", CommentBinder(newComment)(commentTemplate)) &
+        JsRaw("Comments.clearTextarea()") &
+        AppendHtml(appendToId(newComment), CommentBinder(newComment)(commentTemplate)) &
         SyntaxHighlighter.highlightPage()
     }
 
@@ -95,7 +100,7 @@ class ViewCode {
       val newComment = createComment()
 
       DeletePreviewCmd &
-        AppendHtml("comments", <li id="preview"/>) &
+        AppendHtml(appendToId(newComment), <li id="preview"/>) &
         SetHtml("preview", CommentBinder(newComment)(commentTemplate)) &
         SyntaxHighlighter.highlightBlock("preview")
     }
