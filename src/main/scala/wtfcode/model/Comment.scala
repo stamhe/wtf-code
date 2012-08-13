@@ -19,6 +19,8 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
     override def defaultValue = 0
   }
 
+  object deleted extends MappedBoolean(this)
+
   object votes extends MappedManyToMany(CommentVote, CommentVote.comment, CommentVote.user, User)
 
   object answers extends MappedOneToMany(Comment, Comment.responseTo, OrderBy(Comment.createdAt, Ascending))
@@ -37,6 +39,10 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
     rating(func(rating))
     save
     rating
+  }
+
+  def canDelete: Boolean = {
+    User.currentUser.map(_.superUser.is).openOr(false)
   }
 }
 

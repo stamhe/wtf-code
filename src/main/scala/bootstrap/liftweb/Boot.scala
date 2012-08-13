@@ -4,7 +4,7 @@ import net.liftweb.util._
 import net.liftweb.http._
 import net.liftweb.sitemap._
 import net.liftweb.db.{DefaultConnectionIdentifier, StandardDBVendor}
-import net.liftweb.mapper.{Schemifier, DB}
+import net.liftweb.mapper.{By, Schemifier, DB}
 import net.liftweb.sitemap.Loc._
 
 import wtfcode.model._
@@ -44,6 +44,10 @@ class Boot {
       for (name <- List("C", "C++", "C#", "Java", "JavaScript", "PHP", "Python", "Scala"))
         Language.create.name(name).code(Language.mangleName(name)).save()
     }
+
+    //fucking migration
+    if (Comment.count(By(Comment.deleted, true)) == 0)
+      Comment.findAll().foreach(comment => comment.deleted(false).save)
 
     List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
 
