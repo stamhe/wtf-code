@@ -1,50 +1,54 @@
-<div class="lift:surround?with=default;at=content">
-  <div class="row">
-    <div id="preview"></div>
-    <div class="form-horizontal lift:PostSnippet.post">
-      <form class="lift:form.ajax">
-      <fieldset>
-          <div class="control-group">
+<!DOCTYPE html>
+<html>
+<body class="lift:content_id=real_content">
+  <div class="lift:surround?with=default;at=content" id="real_content">
+    <div class="row">
+      <div id="preview"></div>
+      <div class="form-horizontal lift:PostSnippet.post">
+        <form class="lift:form.ajax">
+          <fieldset>
+            <div class="control-group">
               <label class="control-label">
-                  <lift:loc>post.lang</lift:loc>
+                <lift:loc>post.lang</lift:loc>
               </label>
               <div class="controls">
-                  <span class="language"></span>
+                <span class="language"></span>
               </div>
-          </div>
-
-          <div id="content-group" class="control-group">
-              <label class="control-label">
-                  <lift:loc>post.code</lift:loc>
-              </label>
-              <div class="controls">
-                  <div class="content"></div>
-                  <span id="content-inline-help" class="help-inline"></span>
-              </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">
-              <lift:loc>post.description</lift:loc>
-            </label>
-            <div class="controls">
-              <div class="description"></div>
             </div>
-          </div>
-        <div class="control-group">
-          <label class="control-label">
-            <lift:loc>captcha</lift:loc>
-          </label>
-          <div class="controls">
-            <div id="reCaptcha"></div>
-          </div>
-        </div>
-        <div>
-        </div>
-        <div class="form-actions">
-          <div class="submit"></div> <div class="preview"></div>
-        </div>
-      </fieldset>
-      </form>
+
+            <div id="content-group" class="control-group">
+              <label class="control-label">
+                <lift:loc>post.code</lift:loc>
+              </label>
+              <div class="controls">
+                <div class="content"></div>
+                <span id="content-inline-help" class="help-inline"></span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">
+                <lift:loc>post.description</lift:loc>
+              </label>
+              <div class="controls">
+                <div class="description"></div>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">
+                <lift:loc>captcha</lift:loc>
+              </label>
+              <div class="controls">
+                <div id="reCaptcha"></div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <div class="submit"></div>
+              <div class="preview"></div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+</body>
+</html>
