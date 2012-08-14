@@ -24,8 +24,22 @@ var Comments;
             $("#add-comment").detach().appendTo(containerId);
             $("#add-comment").show();
         },
-        toggleSubtree: function(commentId) {
-            $("#comment_" + commentId + " .replies").toggle;
+        foldSubtree: function(commentId) {
+            $("#comment_" + commentId + " .replies").slideUp();
+        },
+        expandSubtree: function(commentId) {
+            $("#comment_" + commentId + " .replies").slideDown();
+        },
+        _mkSlider: function(effect, showOnComplete) {
+            return function() {
+                var self = $(this);
+                var comment = self.closest(".comment");
+                var replies = comment.find(".replies");
+                replies[effect].call(replies, 'fast', function() {
+                    self.hide();
+                    comment.find(showOnComplete).first().show();
+                });
+            };
         }
     };
     $(function() {
@@ -42,19 +56,10 @@ var Comments;
             Comments.enableAddButton();
             Comments.placeFormTo("#add");
         });
-        $(".toggleSubtree").live("click", function() {
-            var foldMarker = "...";
-            var comment = $(this).closest(".comment");
-            var toggleLink = comment.find(".toggleSubtree");
-            var linkText = toggleLink.val() || "";
-            comment.find(".replies").toggle();
-            
-            if (linkText.indexOf(foldMarker) != -1) {
-                toggleLink.val(linkText.replace(foldMarker, ""));
-            } else {
-                toggleLink.val(linkText + "...");
-            }
-        });
+        
+        $(".foldSubtree").live("click", Comments._mkSlider("slideUp", ".expandSubtree"));
+        $(".expandSubtree").live("click", Comments._mkSlider("slideDown", ".foldSubtree"));
+        
         $(".reply").live("click", function() {
             Comments.reply($(this).data("comment-id"));
         });
