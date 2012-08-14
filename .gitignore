@@ -5,6 +5,11 @@
 *.iws
 .idea/
 
+# eclipse
+.project
+.classpath
+.cache
+
 # maven
 
 target/

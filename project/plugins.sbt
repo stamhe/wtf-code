@@ -1,5 +1,7 @@
 addSbtPlugin("org.ensime" % "ensime-sbt-cmd" % "0.0.10")
 
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.0")
+
 libraryDependencies <+= sbtVersion(v => v match {
   case "0.11.0" => "com.github.siasia" %% "xsbt-web-plugin" % "0.11.0-0.2.8"
   case "0.11.1" => "com.github.siasia" %% "xsbt-web-plugin" % "0.11.1-0.2.10"
