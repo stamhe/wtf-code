@@ -17,6 +17,8 @@ class Notifications extends PaginatorSnippet[Notification] {
 
   def bindNotification(notification: Notification): (NodeSeq => NodeSeq) = {
     ".link [href]" #> notification.link &
+    ".from *" #> notification.from.map(_.nickName.get).openOr("Guest") &
+    ".from [href]" #> notification.from.map(_.link).openOr("#") &
     ".date *" #> notification.createdAt
   }
 }

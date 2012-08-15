@@ -11,6 +11,7 @@ class Notification extends LongKeyedMapper[Notification] with IdPK with CreatedT
     override def dbIndexed_? = true
   }
 
+  object from extends MappedLongForeignKey(this, User)
   object read extends MappedBoolean(this)
   object link extends MappedText(this)
 }
@@ -22,13 +23,13 @@ object Notification extends Notification with LongKeyedMetaMapper[Notification] 
     //new comment to post
     newComment.post.map { post =>
       post.author.map { author =>
-          Notification.create.user(author).link(newComment.link).save()
+        Notification.create.user(author).from(newComment.author).link(newComment.link).save()
     }}
 
     //new response to comment
     newComment.responseTo.map { to =>
       to.author.map { author =>
-        Notification.create.user(author).link(newComment.link).save()
+        Notification.create.user(author).from(newComment.author).link(newComment.link).save()
     }}
   }
 }
