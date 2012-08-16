@@ -42,7 +42,14 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
   }
 
   def canDelete: Boolean = {
-    User.currentUser.map(_.superUser.is).openOr(false)
+    val deletable = !deleted
+    val hasPermission = User.currentUser.map(_.superUser.is).openOr(false)
+    deletable && hasPermission
+  }
+
+  def delete() {
+    deleted(true).save
+    Notification.deletedComment(this)
   }
 }
 

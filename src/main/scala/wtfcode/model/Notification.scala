@@ -19,7 +19,7 @@ class Notification extends LongKeyedMapper[Notification] with IdPK with CreatedT
 object Notification extends Notification with LongKeyedMetaMapper[Notification] {
   override def dbTableName = "notifications"
 
-  def send(newComment: Comment) {
+  def newComment(newComment: Comment) {
     //new comment to post
     newComment.post.map { post =>
       post.author.map { author =>
@@ -31,5 +31,9 @@ object Notification extends Notification with LongKeyedMetaMapper[Notification] 
       to.author.map { author =>
         Notification.create.user(author).from(newComment.author).link(newComment.link).save()
     }}
+  }
+
+  def deletedComment(comment: Comment) {
+    Notification.create.user(comment.author).from(User.currentUser).link(comment.link).save()
   }
 }

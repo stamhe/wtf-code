@@ -86,7 +86,7 @@ class ViewCode {
 
     def processAdd(): JsCmd = {
       val newComment = createComment().saveMe()
-      Notification.send(newComment)
+      Notification.newComment(newComment)
 
       DeletePreviewCmd &
         EnableAddCommentButton &

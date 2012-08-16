@@ -40,7 +40,7 @@ object CommentBinder {
 
   private def bindDelete(comment: Comment): CssSel = {
     if (comment.canDelete)
-      "#delete-comment" #> SHtml.a(() => {comment.deleted(true).save; JsCmds.Noop}, Text("!DELETE!"))
+      "#delete-comment" #> SHtml.a(() => {comment.delete(); JsCmds.Noop}, Text("!DELETE!"))
     else
       "#delete-comment" #> NodeSeq.Empty
   }
