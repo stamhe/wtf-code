@@ -34,6 +34,8 @@ object Notification extends Notification with LongKeyedMetaMapper[Notification] 
   }
 
   def deletedComment(comment: Comment) {
-    Notification.create.user(comment.author).from(User.currentUser).link(comment.link).save()
+    comment.author.map { author =>
+      Notification.create.user(author).from(User.currentUser).link(comment.link).save()
+    }
   }
 }
