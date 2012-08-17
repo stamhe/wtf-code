@@ -1,7 +1,7 @@
 package wtfcode.util
 
 import xml.{Text, NodeSeq}
-import wtfcode.model.{Rated, User, Post}
+import wtfcode.model.{Rated, User}
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.http.js.JsCmds.SetHtml
 import net.liftweb.common.Full
@@ -20,12 +20,13 @@ object RateBinder {
       obj.getClass.getSimpleName + "_" + id.toString + "_rating_value"
 
     def applyVote(update: User => Int) = {
-      val maybeUser = User.currentUser
-      if(!maybeUser.isEmpty && model.canVote(maybeUser.open_!)) {
-        update(maybeUser.open_!)
+      User.currentUser.map { user =>
+        if(model.canVote(user)) {
+          update(user)
+        }
       }
 
-      val template = S.runTemplate(List("templates-hidden", "rating")).open_!
+      val template = S.runTemplate(List("templates-hidden", "rating")).openOrThrowException("template must exist")
       SetHtml(voteId(model, model.id.is), apply(template, model))
     }
 
@@ -54,12 +55,13 @@ object RateBinder {
       obj.getClass.getSimpleName + "_" + id.toString + "_rating_value"
 
     def applyVote(update: User => Int) = {
-      val maybeUser = User.currentUser
-      if(!maybeUser.isEmpty && model.canVote(maybeUser.open_!)) {
-        update(maybeUser.open_!)
+      User.currentUser.map { user =>
+        if(model.canVote(user)) {
+          update(user)
+        }
       }
 
-      val template = S.runTemplate(List("templates-hidden", "rating")).open_!
+      val template = S.runTemplate(List("templates-hidden", "rating")).openOrThrowException("template must exist")
       SetHtml(voteId(model, model.id.is), apply(model)(template))
     }
 
