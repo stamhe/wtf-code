@@ -12,7 +12,7 @@ object CommentService extends RestHelper {
     case Req("post" :: AsLong(id) :: "comments" :: Nil, "json", GetRequest) => {
 
       val postId = id.toLong
-      val comments = wtfcode.model.Post.findByKey(postId).map { _.comments.map(c => toJson(c)) }
+      val comments = wtfcode.model.Post.findByKey(postId).map { _.activeComments.map(c => toJson(c)) }
       comments.map(cs => JsonResponse(JArray(cs.toList))) ?~ "Post not found"
     }
   }

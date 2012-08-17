@@ -23,6 +23,10 @@ with SaveIP with Rated with OneToMany[Long, Post] with ManyToMany {
 
   def getLanguage = this.language.obj.map(_.name.toString).openOr("None")
 
+  def activeComments = Comment.findAll(
+      By(Comment.post, this), By(Comment.deleted, false),
+      OrderBy(Comment.createdAt, Ascending))
+
   override def currentRating = this.rating.is
 
   override def canVote(user: User) =

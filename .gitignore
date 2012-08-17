@@ -8,6 +8,7 @@
 # eclipse
 .project
 .classpath
+.settings
 .cache
 
 # maven
