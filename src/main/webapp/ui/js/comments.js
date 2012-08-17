@@ -21,14 +21,10 @@ var Comments;
             $("#add-comment").find("form input[name='parentId']").val(parentId);
         },
         placeFormTo : function(containerId) {
-            $("#add-comment").detach().appendTo(containerId);
-            $("#add-comment").show();
-        },
-        foldSubtree: function(commentId) {
-            $("#comment_" + commentId + " .replies").slideUp();
-        },
-        expandSubtree: function(commentId) {
-            $("#comment_" + commentId + " .replies").slideDown();
+            var addCommentDiv = $("#add-comment");
+            addCommentDiv.detach().appendTo(containerId);
+            addCommentDiv.show();
+            $.scrollTo(addCommentDiv, 500, {"offset": -200});
         },
         _mkSlider: function(effect, showOnComplete) {
             return function() {
