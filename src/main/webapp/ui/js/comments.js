@@ -25,6 +25,7 @@ var Comments;
             addCommentDiv.detach().appendTo(containerId);
             addCommentDiv.show();
             $.scrollTo(addCommentDiv, 500, {"offset": -200});
+            addCommentDiv.find("textarea").focus();
         },
         _mkSlider: function(effect, showOnComplete) {
             return function() {
