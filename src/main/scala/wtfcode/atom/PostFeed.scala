@@ -16,6 +16,8 @@ class PostFeed(val param: String) extends AtomFeed[Post] {
     StartAt(curPage * itemsPerPage),
     MaxRows(itemsPerPage))
 
+  def feedTitle = "WtfCode"
+
   def feedId = "urn:feed:posts:" + entries.headOption.map(_.id).map(_.get).getOrElse(0L)
 
   def feedUpdated = entries.headOption.map(_.createdAt).map(_.get).getOrElse(Helpers.now)

@@ -16,6 +16,8 @@ class CommentFeed(val param: String) extends AtomFeed[Comment] {
     StartAt(curPage * itemsPerPage),
     MaxRows(itemsPerPage))
 
+  def feedTitle = "WtfCode comments"
+
   def feedId = "urn:feed:comments:" + entries.headOption.map(_.id).map(_.get).getOrElse(0L)
 
   def feedUpdated = entries.headOption.map(_.createdAt).map(_.get).getOrElse(Helpers.now)

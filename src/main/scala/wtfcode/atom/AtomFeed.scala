@@ -26,6 +26,8 @@ trait AtomFeed[T] {
 
   def nextLink: NodeSeq = <link rel="next" href={"/atom/" + path + "/" + (curPage + 1) }/>
 
+  def feedTitle: String
+
   def feedId: String
 
   def feedUpdated: Date
@@ -34,7 +36,7 @@ trait AtomFeed[T] {
     <feed xmlns="http://www.w3.org/2005/Atom"
           xmlns:at="http://purl.org/atompub/tombstones/1.0">
       {if (hasNext) nextLink}
-      <title>WtfCode</title>
+      <title>{feedTitle}</title>
       <id>{feedId}</id>
       <updated>{format(feedUpdated)}</updated>
       {entries.flatMap(entryToAtom)}
