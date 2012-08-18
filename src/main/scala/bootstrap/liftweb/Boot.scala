@@ -48,6 +48,9 @@ class Boot {
     //fucking migration
     if (Comment.count(By(Comment.deleted, true)) == 0)
       Comment.findAll().foreach(comment => comment.deleted(false).save)
+    //another fucking migration
+    Comment.findAll(By(Comment.deleted, true)).foreach(comment =>
+      if (comment.deletedAt.is == null) comment.deletedAt(Helpers.now).save)
 
     List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
 

@@ -22,6 +22,10 @@ class CommentFeed(val param: String) extends AtomFeed[Comment] {
 
   def entryId(entry: Comment) = "urn:comment:" + entry.id.is
 
+  def entryDeleted(entry: Comment) = entry.deleted.is
+
+  def entryDeletedAt(entry: Comment) = entry.deletedAt.is
+
   def entryTitle(entry: Comment) = "#" + entry.id.is
 
   def entryUpdated(entry: Comment) = entry.createdAt.is

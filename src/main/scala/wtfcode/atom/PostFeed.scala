@@ -22,6 +22,10 @@ class PostFeed(val param: String) extends AtomFeed[Post] {
 
   def entryId(entry: Post) = "urn:post:" + entry.id.is
 
+  def entryDeleted(entry: Post) = false
+
+  def entryDeletedAt(entry: Post) = null
+
   def entryTitle(entry: Post) = "#" + entry.id.is
 
   def entryUpdated(entry: Post) = entry.createdAt.is
