@@ -1,6 +1,6 @@
 package wtfcode.util
 
-import xml.NodeSeq
+import xml.{Text, NodeSeq}
 import wtfcode.model._
 import net.liftweb.util.Helpers._
 import net.liftmodules.textile.TextileParser
@@ -8,6 +8,8 @@ import net.liftweb.http.{S, SHtml}
 import net.liftweb.mapper.By
 import net.liftweb.http.js.jquery.JqJsCmds.Hide
 import net.liftweb.common.Full
+import net.liftweb.util.CssSel
+import net.liftweb.http.js.JsCmds
 
 object CodeBinder {
 
@@ -29,7 +31,8 @@ object CodeBinder {
       ".link_to_author [href]" #> post.author.map {_.link}.openOr("#") &
       ".link_to_code [href]" #> post.link &
       ".link_to_lang_filter [href]" #> langObj.map {_.link}.openOr("#") &
-      ".lang_code [href]" #> langObj.map {_.code.is}.openOr("")
+      ".lang_code [href]" #> langObj.map {_.code.is}.openOr("") &
+      bindDelete(post)
   }
 
   private def mkAddBookmarkItem(id: String) = <i class="icon-star-empty" id={id} title={S ? "bookmark.add"}></i>
@@ -51,6 +54,13 @@ object CodeBinder {
         }, mkAddBookmarkItem(id))
       }
     }
+  }
+
+  private def bindDelete(post: Post): CssSel = {
+    if (post.canDelete)
+      "#delete-post" #> SHtml.a(() => {post.delete(); JsCmds.Noop}, Text("!DELETE!"))
+    else
+      "#delete-post" #> NodeSeq.Empty
   }
 
   private def createTag(post: Post, name: String) = {
