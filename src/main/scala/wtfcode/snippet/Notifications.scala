@@ -5,7 +5,7 @@ import wtfcode.model.{User, Notification}
 import net.liftweb.util.Helpers._
 import net.liftweb.http.PaginatorSnippet
 
-class Notifications extends PaginatorSnippet[Notification] {
+class Notifications extends BootstrapPaginatorSnippet[Notification] {
   val startAt = curPage * itemsPerPage
 
   override def itemsPerPage = 20

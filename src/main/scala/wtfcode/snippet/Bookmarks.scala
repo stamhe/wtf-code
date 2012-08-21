@@ -1,12 +1,11 @@
 package wtfcode.snippet
 
-import net.liftweb.http.PaginatorSnippet
 import net.liftweb.util.Helpers._
-import wtfcode.model.{Bookmark, User}
+import wtfcode.model.{ Bookmark, User }
 import xml.NodeSeq
 import wtfcode.util.CodeBinder
 
-class Bookmarks extends PaginatorSnippet[Bookmark] {
+class Bookmarks extends BootstrapPaginatorSnippet[Bookmark] {
   val startAt = curPage * itemsPerPage
 
   override def itemsPerPage = 20
@@ -15,7 +14,6 @@ class Bookmarks extends PaginatorSnippet[Bookmark] {
 
   def renderPage() = {
     ".bookmarks *" #> ((in: NodeSeq) =>
-      page.flatMap(bookmark => CodeBinder(bookmark.post.open_!)(in))
-      )
+      page.flatMap(bookmark => CodeBinder(bookmark.post.openOrThrowException("Post not found!"))(in)))
   }
 }

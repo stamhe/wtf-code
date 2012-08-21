@@ -4,7 +4,7 @@ import xml.{Text, NodeSeq}
 import net.liftweb.util.Helpers._
 import wtfcode.model.{Language, Post}
 import net.liftweb.mapper._
-import net.liftweb.http.{SHtml, S, PaginatorSnippet}
+import net.liftweb.http.{SHtml, S}
 import wtfcode.util.CodeBinder
 import net.liftweb.common.{Full, Box, Empty}
 
@@ -12,11 +12,12 @@ import net.liftweb.common.{Full, Box, Empty}
  * List of filters by language.
  * @author <a href="mailto:roman.kashitsyn@gmail.com">Roman Kashitsyn</a>
  */
-class LanguageFilter extends PaginatorSnippet[Post] {
+class LanguageFilter extends BootstrapPaginatorSnippet[Post] {
 
   override def itemsPerPage = 20
   override def count = Post.count(searchCondition, ratingFilter, deletedFilter)
-  override def page = Post.findAll(searchCondition, ratingFilter, deletedFilter, OrderBy(Post.id, Descending))
+  override def page = Post.findAll(searchCondition, ratingFilter, deletedFilter,
+      OrderBy(Post.id, Descending), StartAt(curPage * itemsPerPage), MaxRows(itemsPerPage))
 
   private val lang = S.param("lang") openOr ""
   private val searchCondition = By(Post.language, Language.find(By(Language.code, lang)))

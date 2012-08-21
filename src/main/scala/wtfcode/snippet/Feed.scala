@@ -4,10 +4,9 @@ import xml.NodeSeq
 import wtfcode.model.Comment
 import net.liftweb.util.Helpers._
 import net.liftweb.mapper._
-import wtfcode.util.CommentBinder
-import net.liftweb.http.PaginatorSnippet
+import wtfcode.util.{ CommentBinder }
 
-class Feed extends PaginatorSnippet[Comment] {
+class Feed extends BootstrapPaginatorSnippet[Comment] {
   override def itemsPerPage = 20
   override def count = Comment.count
   override def page = Comment.findAll(
@@ -18,5 +17,5 @@ class Feed extends PaginatorSnippet[Comment] {
     MaxRows(itemsPerPage))
 
   def renderPage =
-  ".comments *" #> ((in : NodeSeq) => page.flatMap { comment => CommentBinder(comment)(in) })
+    ".comments *" #> ((in: NodeSeq) => page.flatMap { comment => CommentBinder(comment)(in) })
 }
