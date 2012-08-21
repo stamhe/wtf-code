@@ -3,7 +3,7 @@ package wtfcode.model
 import net.liftweb.mapper._
 
 class Post extends LongKeyedMapper[Post] with IdPK with CreatedTrait
-with SaveIP with Rated with OneToMany[Long, Post] with ManyToMany {
+with SaveIP with Rated with Deletable with OneToMany[Long, Post] with ManyToMany {
   def getSingleton = Post
 
   object language extends MappedLongForeignKey(this, Language) {
@@ -27,6 +27,8 @@ with SaveIP with Rated with OneToMany[Long, Post] with ManyToMany {
       By(Comment.post, this), By(Comment.deleted, false),
       OrderBy(Comment.createdAt, Ascending))
 
+  def link: String = "/code/" + id
+
   override def currentRating = this.rating.is
 
   override def canVote(user: User) =
@@ -41,7 +43,9 @@ with SaveIP with Rated with OneToMany[Long, Post] with ManyToMany {
     rating
   }
 
-  def link: String = "/code/" + id
+  override protected def onDelete() {
+    Notification.deletedPost(this)
+  }
 }
 
 object Post extends Post with LongKeyedMetaMapper[Post] {

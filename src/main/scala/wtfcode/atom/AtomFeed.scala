@@ -26,14 +26,17 @@ trait AtomFeed[T] {
 
   def nextLink: NodeSeq = <link rel="next" href={"/atom/" + path + "/" + (curPage + 1) }/>
 
+  def feedTitle: String
+
   def feedId: String
 
   def feedUpdated: Date
 
   def feed(): Node = {
-    <feed xmlns="http://www.w3.org/2005/Atom">
+    <feed xmlns="http://www.w3.org/2005/Atom"
+          xmlns:at="http://purl.org/atompub/tombstones/1.0">
       {if (hasNext) nextLink}
-      <title>WtfCode</title>
+      <title>{feedTitle}</title>
       <id>{feedId}</id>
       <updated>{format(feedUpdated)}</updated>
       {entries.flatMap(entryToAtom)}
@@ -41,6 +44,10 @@ trait AtomFeed[T] {
   }
 
   def entryId(entry: T): String
+
+  def entryDeleted(entry: T): Boolean
+
+  def entryDeletedAt(entry: T): Date
 
   def entryTitle(entry: T): String
 
@@ -51,6 +58,13 @@ trait AtomFeed[T] {
   def entryContent(entry: T): NodeSeq
 
   def entryToAtom(entry: T): NodeSeq = {
+    if (entryDeleted(entry))
+      deletedEntry(entry)
+    else
+      normalEntry(entry)
+  }
+
+  def normalEntry(entry: T): NodeSeq = {
     <entry>
       <id>{entryId(entry)}</id>
       <title>{entryTitle(entry)}</title>
@@ -62,6 +76,12 @@ trait AtomFeed[T] {
         <div xmlns="http://www.w3.org/1999/xhtml">{entryContent(entry)}</div>
       </content>
     </entry>
+  }
+
+  def deletedEntry(entry: T): NodeSeq = {
+    <at:deleted-entry
+      ref={entryId(entry)}
+      when={format(entryDeletedAt(entry))}/>
   }
 
   def format(date: Date): String = {

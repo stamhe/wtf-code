@@ -13,6 +13,7 @@ class Browse extends PaginatorSnippet[Post] {
   override def itemsPerPage = 20
   override def count = Post.count
   override def page = Post.findAll(
+    By(Post.deleted, false),
     By_>=(Post.rating, Post.MinRating),
     OrderBy(Post.createdAt, Descending),
     StartAt(curPage * itemsPerPage),

@@ -3,7 +3,7 @@ package wtfcode.model
 import net.liftweb.mapper._
 
 class Comment extends LongKeyedMapper[Comment] with IdPK with CreatedTrait
-with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
+with SaveIP with Rated with Deletable with OneToMany[Long, Comment] with ManyToMany {
   def getSingleton = Comment
 
   override val createdAtIndexed_? = true
@@ -18,8 +18,6 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
   object rating extends MappedInt(this) {
     override def defaultValue = 0
   }
-
-  object deleted extends MappedBoolean(this)
 
   object votes extends MappedManyToMany(CommentVote, CommentVote.comment, CommentVote.user, User)
 
@@ -41,14 +39,7 @@ with SaveIP with Rated with OneToMany[Long, Comment] with ManyToMany {
     rating
   }
 
-  def canDelete: Boolean = {
-    val deletable = !deleted
-    val hasPermission = User.currentUser.map(_.superUser.is).openOr(false)
-    deletable && hasPermission
-  }
-
-  def delete() {
-    deleted(true).save
+  override protected def onDelete() {
     Notification.deletedComment(this)
   }
 }
