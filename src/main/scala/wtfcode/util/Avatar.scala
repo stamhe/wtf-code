@@ -3,6 +3,7 @@ package wtfcode.util
 import wtfcode.model.User
 import net.liftweb.common.Box
 import net.liftweb.util.SecurityHelpers
+import xml.Utility
 
 /**
  * You are free to embed under the terms of the CC-BY license.
@@ -12,7 +13,8 @@ object Avatar {
   val BASE_URL = "http://robohash.org/"
 
   def apply(user: Box[User], ip: String) = {
-    user.map(fromUser _).getOrElse(fromIp(ip))
+    val url = user.map(fromUser _).getOrElse(fromIp(ip))
+    Utility.escape(url)
   }
 
   def fromUser(user: User): String = {
