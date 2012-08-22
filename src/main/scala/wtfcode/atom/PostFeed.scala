@@ -4,6 +4,7 @@ import wtfcode.model.Post
 import net.liftweb.mapper._
 import net.liftweb.util.Helpers
 import net.liftweb.mapper.MaxRows
+import scabb.BbParser
 
 class PostFeed(val param: String) extends AtomFeed[Post] {
 
@@ -35,4 +36,5 @@ class PostFeed(val param: String) extends AtomFeed[Post] {
   def entryAuthorName(entry: Post) = entry.author.foreign.map(_.nickName).map(_.is).openOr("Guest")
 
   def entryContent(entry: Post) = <pre><code>{entry.content.is}</code></pre>
+                                  <p>{BbParser.toHtml(entry.description.is)}</p>
 }
