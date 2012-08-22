@@ -38,7 +38,8 @@ class Boot {
     LiftRules.resourceNames = "i18n/messages" :: LiftRules.resourceNames
 
     Schemifier.schemify(true, Schemifier.infoF _,
-      Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen, Notification, Tag, PostTags)
+      Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen, Notification, Tag, PostTags,
+      ExtSession)
 
     if (Language.count == 0) {
       for (name <- List("C", "C++", "C#", "Java", "JavaScript", "PHP", "Python", "Scala"))
@@ -56,6 +57,8 @@ class Boot {
       Post.findAll().foreach(post => post.deleted(false).save)
 
     List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
+
+    LiftRules.earlyInStateful.append(ExtSession.testCookieEarlyInStateful)
 
     LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
 

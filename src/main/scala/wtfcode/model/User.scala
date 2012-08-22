@@ -50,4 +50,7 @@ object User extends User with MetaMegaProtoUser[User] {
   override def signupFields = List(nickName, email, password)
 
   override def editFields = List(email, locale, timezone, aboutMe)
+
+  onLogIn = List(ExtSession.userDidLogin(_))
+  onLogOut = List(ExtSession.userDidLogout(_))
 }
