@@ -11,7 +11,7 @@ trait BootstrapPaginatorSnippet[T] extends PaginatorSnippet[T] {
 
   override def pageXml(newFirst: Long, ns: NodeSeq): NodeSeq =
     if (first == newFirst || newFirst < 0 || newFirst >= count)
-      <a href="#">{ ns }</a>
+      <span>{ ns }</span>
     else
       <a href={ pageUrl(newFirst) }>{ ns }</a>
 

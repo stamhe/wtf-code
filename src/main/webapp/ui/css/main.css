@@ -65,6 +65,9 @@ ul.comments {
 .comment-text {
   word-wrap: break-word;
 }
+.pagination {
+  font-size: 15px;
+}
 div .unseen {
   background-color: #FFF9DF;
 }
