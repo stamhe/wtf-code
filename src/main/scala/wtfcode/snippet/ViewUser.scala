@@ -6,9 +6,9 @@ import net.liftweb.http.{NotFoundResponse, S}
 import wtfcode.model.User
 import net.liftweb.mapper.By
 import xml.{Text, NodeSeq}
-import net.liftmodules.textile.TextileParser
 import wtfcode.util.Avatar
 import net.liftweb.common.Full
+import scabb.BbParser
 
 class ViewUser {
   val nick = S.param("nick") openOr ""
@@ -21,7 +21,7 @@ class ViewUser {
         ".nick" #> user.nickName &
         ".avatar [src]" #> Avatar(maybeUser, null) &
         ".date" #> user.createdAt &
-        ".aboutMe" #> TextileParser.toHtml(user.aboutMe.get)
+        ".aboutMe" #> BbParser.toHtml(user.aboutMe.get)
       case _ => (in: NodeSeq) => Text("Not Found")
     }
   }

@@ -2,9 +2,9 @@ package wtfcode.util
 
 import xml.{Text, NodeSeq}
 import wtfcode.model.{ LastSeen, Comment }
+import scabb.BbParser
 import net.liftweb.util._
 import net.liftweb.util.Helpers._
-import net.liftmodules.textile.TextileParser
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.http.js.JsCmds
 
@@ -13,7 +13,7 @@ object CommentBinder {
   private lazy val commentTemplate =
     S.runTemplate(List("templates-hidden", "comment")).openOrThrowException("comment template must exists!")
 
-  private lazy val ratingTemplate = 
+  private lazy val ratingTemplate =
     S.runTemplate(List("templates-hidden", "rating")).openOrThrowException("template must exist")
 
   private def defaultBindings(comment: Comment): CssSel = {
@@ -35,7 +35,7 @@ object CommentBinder {
     if (comment.deleted.is)
       <p style="color: red;">{S ? "comment.deleted"}</p>
     else
-      TextileParser.toHtml(comment.content.is)
+      BbParser.toHtml(comment.content.is)
   }
 
   private def bindDelete(comment: Comment): CssSel = {
