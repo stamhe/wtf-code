@@ -6,7 +6,7 @@ import net.liftweb.http.S
 import java.text.DateFormat
 import wtfcode.model.User
 
-object WTFDateTimeConverter extends DateTimeConverter {
+object WtfDateTimeConverter extends DateTimeConverter {
   def formatDateTime(date: Date) = {
     val dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, S.locale)
     format(date, dateFormat)

@@ -19,7 +19,7 @@ object CommentBinder {
   private def defaultBindings(comment: Comment): CssSel = {
     ".comment-text *" #> bindCommentContent(comment) &
       ".author" #> comment.author.map(_.nickName.get).openOr("Guest") &
-      ".date" #> comment.createdAt &
+      ".date" #> TimeSpanFormatter(comment.createdAt) &
       ".comment-rating *" #> RateBinder(comment)(ratingTemplate) &
       ".avatar [src]" #> Avatar(comment.author, comment.ipAddress) &
       ".author-link [href]" #> comment.author.map(_.link).openOr("#") &

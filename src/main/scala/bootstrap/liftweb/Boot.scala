@@ -10,7 +10,7 @@ import net.liftweb.sitemap.Loc._
 import wtfcode.model._
 import wtfcode.api._
 import wtfcode.atom.AtomDispatcher
-import wtfcode.util.WTFDateTimeConverter
+import wtfcode.util.WtfDateTimeConverter
 
 
 /**
@@ -97,7 +97,7 @@ class Boot {
     // Use HTML5 for rendering
     LiftRules.htmlProperties.default.set((r: Req) => new Html5Properties(r.userAgent))
 
-    LiftRules.dateTimeConverter.default.set(() => WTFDateTimeConverter)
+    LiftRules.dateTimeConverter.default.set(() => WtfDateTimeConverter)
   }
 }
 
