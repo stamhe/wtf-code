@@ -20,11 +20,14 @@ var Comments;
         setParent : function(parentId) {
             $("#add-comment").find("form input[name='parentId']").val(parentId);
         },
+        scrollTo: function(target) {
+            return $.scrollTo(target, 500, {"offset": -200});
+        },
         placeFormTo : function(containerId) {
             var addCommentDiv = $("#add-comment");
             addCommentDiv.detach().appendTo(containerId);
             addCommentDiv.show();
-            $.scrollTo(addCommentDiv, 500, {"offset": -200});
+            this.scrollTo(addCommentDiv);
             addCommentDiv.find("textarea").focus();
         },
         _mkSlider: function(effect, showOnComplete) {
@@ -60,5 +63,22 @@ var Comments;
         $(".reply").live("click", function() {
             Comments.reply($(this).data("comment-id"));
         });
+        
+        $(".comment-link").live("click", function() {
+           Comments.scrollTo(this); 
+        });
+        
+        if (document.location.hash) {
+            var document_hash = document.location.hash;
+            var reg = /^\#comment_(\d+)$/;
+            var matches = document_hash.match(reg);
+            var comment;
+            if (matches) {
+                comment = $(document_hash);
+                comment.addClass('highlight');
+                Comments.scrollTo(comment);
+            }
+        }
+
     });
 })(jQuery);
