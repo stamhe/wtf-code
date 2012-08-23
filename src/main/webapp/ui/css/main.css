@@ -35,6 +35,11 @@ span.language-label {
 ul.comments {
   list-style: none;
 }
+.date {
+  font-style: italic;
+  font-size: 14px;
+  color: gray;
+}
 .avatar {
   width: 48px; height: 48px;
   border: 1px solid #eee;

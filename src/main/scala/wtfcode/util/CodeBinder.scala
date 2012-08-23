@@ -15,6 +15,7 @@ object CodeBinder {
 
   def apply(post: Post): (NodeSeq => NodeSeq) = {
     val langObj = post.language.obj
+    val unseenCount = LastSeen.unseenCount(User.currentUser, Full(post))
     val ratingTemplate = S.runTemplate(List("templates-hidden", "rating")).openOrThrowException("template must exist")
     ".entry-id *" #> post.id &
       ".language *" #> post.getLanguage &
@@ -25,9 +26,11 @@ object CodeBinder {
       ".date *" #> post.createdAt &
       renderTags(post) &
       ".commentsNum *" #> post.comments.size &
-      ".newCommentsNum *" #> LastSeen.unseenCount(User.currentUser, Full(post)) &
+      (if (unseenCount > 0) ".newCommentsNum *" #> ("+" + unseenCount)
+      else ".newCommentsNum" #> (None: Option[NodeSeq])) &
       ".bookmark *" #> bookmarkAction(post) &
       ".post-rating *" #> RateBinder(post)(ratingTemplate) &
+      ".avatar [src]" #> Avatar(post.author, post.ipAddress) &
       ".link_to_author [href]" #> post.author.map {_.link}.openOr("#") &
       ".link_to_code [href]" #> post.link &
       ".link_to_lang_filter [href]" #> langObj.map {_.link}.openOr("#") &
