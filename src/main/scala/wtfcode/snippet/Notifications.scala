@@ -24,4 +24,9 @@ class Notifications extends BootstrapPaginatorSnippet[Notification] {
 
   private def read(notification: Notification): Option[String] =
     if (!notification.read) Some("unseen") else None
+
+  def updateRead() = {
+    page.map(_.read(true).save())
+    NodeSeq.Empty
+  }
 }
