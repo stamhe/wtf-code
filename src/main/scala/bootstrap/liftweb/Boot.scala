@@ -103,6 +103,8 @@ class Boot {
 
     LiftRules.setSiteMapFunc(sitemap)
 
+    LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
+
     // Use HTML5 for rendering
     LiftRules.htmlProperties.default.set((r: Req) => new Html5Properties(r.userAgent))
 
