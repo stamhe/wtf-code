@@ -55,6 +55,8 @@ class Boot {
     //yet another fucking migration
     if (Post.count(By(Post.deleted, true)) == 0)
       Post.findAll().foreach(post => post.deleted(false).save)
+    //guess what?
+    User.findAll().map(user => if (user.nickNameLower.is == null) user.nickNameLower(user.nickName.toLowerCase).save)
 
     List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
 

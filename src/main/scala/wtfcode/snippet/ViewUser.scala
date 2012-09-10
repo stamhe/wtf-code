@@ -2,9 +2,8 @@ package wtfcode.snippet
 
 import net.liftweb.util.Helpers
 import Helpers._
-import net.liftweb.http.{NotFoundResponse, S}
+import net.liftweb.http.S
 import wtfcode.model.User
-import net.liftweb.mapper.By
 import xml.{Text, NodeSeq}
 import wtfcode.util.Avatar
 import net.liftweb.common.Full
@@ -13,7 +12,7 @@ import scabb.BbParser
 class ViewUser {
   val nick = S.param("nick") openOr ""
 
-  val maybeUser = User.find(By(User.nickName, nick))
+  val maybeUser = User.findByNickName(nick)
 
   def profile = {
     maybeUser match {

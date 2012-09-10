@@ -2,14 +2,16 @@ package wtfcode.model
 
 import net.liftweb.mapper._
 import net.liftweb.http.S
-import net.liftweb.common.Full
+import net.liftweb.common.{Box, Full}
 import net.liftweb.util.FieldError
 import xml.Text
 
 class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, User] {
   def getSingleton = User
 
-  object nickName extends MappedString(this, 16) {
+  val nickNameLength = 16
+
+  object nickName extends MappedString(this, nickNameLength) {
     def reserved(value: String): List[FieldError] = {
       value match {
         case "Guest" => List(FieldError(this, Text(S ? "user.nicknameReserved")))
@@ -24,10 +26,21 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
       }
     }
 
-    override def dbIndexed_? = true
-    override def validations = valUnique(S ? "user.uniqueNickname") _ :: reserved _ :: allowedChars _ :: super.validations
+    def unique(value: String): List[FieldError] = {
+      findByNickName(value) match {
+        case Full(_) => List(FieldError(this, Text(S ? "user.uniqueNickname")))
+        case _ => Nil
+      }
+    }
+
+    override def validations = unique _ :: reserved _ :: allowedChars _ :: super.validations
     override def displayName = S ? "user.nickname"
   }
+
+  object nickNameLower extends MappedString(this, nickNameLength) {
+    override def dbIndexed_? = true
+  }
+
   object aboutMe extends MappedTextarea(this, 1024) {
     override def displayName = S ? "user.aboutMe"
     override def textareaRows = 10
@@ -37,6 +50,10 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
   object notifications extends MappedOneToMany(Notification, Notification.user, OrderBy(Notification.createdAt, Descending))
 
   def link = "/user/" + nickName
+
+  def findByNickName(nick: String): Box[User] = {
+    User.find(By(User.nickNameLower, nick.toLowerCase))
+  }
 }
 
 object User extends User with MetaMegaProtoUser[User] {
@@ -53,4 +70,9 @@ object User extends User with MetaMegaProtoUser[User] {
 
   onLogIn = List(ExtSession.userDidLogin(_))
   onLogOut = List(ExtSession.userDidLogout(_))
+
+  override protected def actionsAfterSignup(theUser: User, func: () => Nothing): Nothing = {
+    theUser.nickNameLower(theUser.nickName.toLowerCase)
+    super.actionsAfterSignup(theUser, func)
+  }
 }
