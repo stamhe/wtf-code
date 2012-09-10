@@ -14,13 +14,13 @@ object TimeSpanFormatter {
     if (period.getYears >= 1) {
       WtfDateTimeConverter.formatDate(past)
     } else if (period.getMonths > 0) {
-      S ?? ("period.monthsAgo", int(period.getMonths))
+      S ? ("period.monthsAgo", int(period.getMonths))
     } else if (period.getDays > 0) {
-      S ?? ("period.daysAgo", int(period.getDays))
+      S ? ("period.daysAgo", int(period.getDays))
     } else if (period.getHours > 0) {
-      S ?? ("period.hoursAgo", int(period.getHours))
+      S ? ("period.hoursAgo", int(period.getHours))
     } else if (period.getMinutes > 0) {
-      S ?? ("period.minutesAgo", int(period.getMinutes))
+      S ? ("period.minutesAgo", int(period.getMinutes))
     } else S ? "period.justNow"
   }
 }
