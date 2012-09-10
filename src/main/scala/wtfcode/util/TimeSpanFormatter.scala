@@ -15,6 +15,8 @@ object TimeSpanFormatter {
       WtfDateTimeConverter.formatDate(past)
     } else if (period.getMonths > 0) {
       S ? ("period.monthsAgo", int(period.getMonths))
+    } else if (period.getWeeks > 0) {
+      S ? ("period.weeksAgo", int(period.getWeeks))
     } else if (period.getDays > 0) {
       S ? ("period.daysAgo", int(period.getDays))
     } else if (period.getHours > 0) {
