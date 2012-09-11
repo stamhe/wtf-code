@@ -1,11 +1,11 @@
 package wtfcode.util
 
-import scabb.{BbNode, TagNode, BbAst, ExtendableBbParser}
+import scabb.{TagNode, BbAst, ExtendableBbParser}
 import wtfcode.model.User
 import net.liftweb.common.Full
 import xml.Text
 
-object WtfBbParser extends ExtendableBbParser {
+trait UserExtension extends ExtendableBbParser {
 
   case class UserTag(content: String) extends BbAst {
     override val toHtml = User.findByNickName(content) match {
@@ -14,15 +14,10 @@ object WtfBbParser extends ExtendableBbParser {
     }
   }
 
-  object UserTagExtension extends Extension {
-    def isDefinedAt(node: BbNode) = node match {
-      case TagNode("user", None, _) => true
-      case _ => false
-    }
-
-    def apply(node: BbNode) = UserTag(node.asInstanceOf[TagNode].contents.mkString)
-  }
-
-  override def astExtensions = UserTagExtension
+  override def astExtensions = ({
+    case TagNode("user", None, content) => UserTag(content.mkString)
+  }: Extension) orElse super.astExtensions
 
 }
+
+object WtfBbParser extends ExtendableBbParser with UserExtension
