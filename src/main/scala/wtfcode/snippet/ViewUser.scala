@@ -5,9 +5,8 @@ import Helpers._
 import net.liftweb.http.S
 import wtfcode.model.User
 import xml.{Text, NodeSeq}
-import wtfcode.util.Avatar
+import wtfcode.util.{WtfBbParser, Avatar}
 import net.liftweb.common.Full
-import scabb.BbParser
 
 class ViewUser {
   val nick = S.param("nick") openOr ""
@@ -20,7 +19,7 @@ class ViewUser {
         ".nick" #> user.nickName &
         ".avatar [src]" #> Avatar(maybeUser, null) &
         ".date" #> user.createdAt &
-        ".aboutMe" #> BbParser.toHtml(user.aboutMe.get)
+        ".aboutMe" #> WtfBbParser.toHtml(user.aboutMe.get)
       case _ => (in: NodeSeq) => Text("Not Found")
     }
   }

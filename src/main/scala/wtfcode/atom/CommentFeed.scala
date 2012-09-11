@@ -3,7 +3,7 @@ package wtfcode.atom
 import wtfcode.model.Comment
 import net.liftweb.mapper._
 import net.liftweb.util.Helpers
-import scabb.BbParser
+import wtfcode.util.WtfBbParser
 
 class CommentFeed(val param: String) extends AtomFeed[Comment] {
 
@@ -34,5 +34,5 @@ class CommentFeed(val param: String) extends AtomFeed[Comment] {
 
   def entryAuthorName(entry: Comment) = entry.author.foreign.map(_.nickName).map(_.is).openOr("Guest")
 
-  def entryContent(entry: Comment) = BbParser.toHtml(entry.content.is)
+  def entryContent(entry: Comment) = WtfBbParser.toHtml(entry.content.is)
 }

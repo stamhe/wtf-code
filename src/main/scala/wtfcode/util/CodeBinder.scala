@@ -2,7 +2,6 @@ package wtfcode.util
 
 import xml.{Text, NodeSeq}
 import wtfcode.model._
-import scabb.BbParser
 import net.liftweb.util.Helpers._
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.mapper.By
@@ -21,7 +20,7 @@ object CodeBinder {
       ".language *" #> post.getLanguage &
       ".content *" #> post.content &
       ".content [class]" #> post.language.foreign.map("language-" + _.code) &
-      ".description *" #> BbParser.toHtml(post.description) &
+      ".description *" #> WtfBbParser.toHtml(post.description) &
       ".link_to_author *" #> post.author.map(_.nickName.get).openOr("Guest") &
       ".date *" #> post.createdAt &
       renderTags(post) &

@@ -2,7 +2,6 @@ package wtfcode.util
 
 import xml.{Text, NodeSeq}
 import wtfcode.model.{ LastSeen, Comment }
-import scabb.BbParser
 import net.liftweb.util._
 import net.liftweb.util.Helpers._
 import net.liftweb.http.{SHtml, S}
@@ -35,7 +34,7 @@ object CommentBinder {
     if (comment.deleted.is)
       <p style="color: red;">{S ? "comment.deleted"}</p>
     else
-      BbParser.toHtml(comment.content.is)
+      WtfBbParser.toHtml(comment.content.is)
   }
 
   private def bindDelete(comment: Comment): CssSel = {
