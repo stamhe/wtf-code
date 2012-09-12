@@ -5,7 +5,7 @@ import wtfcode.model._
 import net.liftweb.util.Helpers
 import Helpers._
 import net.liftweb.http.{ SHtml, S }
-import net.liftweb.common.Empty
+import net.liftweb.common.{Full, Empty}
 import wtfcode.util._
 import net.liftweb.http.js.jquery.JqJsCmds.AppendHtml
 import net.liftweb.http.js.JsCmd
@@ -21,12 +21,11 @@ import net.liftweb.http.js.JE.JsRaw
 import net.liftweb.mapper.By
 
 class ViewCode {
-  val id = S.param("id") openOr ""
+  val maybeId = asLong(S.param("id"))
 
-  val code = try {
-    Post.findByKey(id.toLong)
-  } catch {
-    case e: NumberFormatException => Empty
+  val code = maybeId match {
+    case Full(id) => Post.findByKey(id)
+    case _ => Empty
   }
 
   def view(in: NodeSeq): NodeSeq = {
@@ -62,14 +61,8 @@ class ViewCode {
   private def addCommentReal() = {
     var content = ""
 
-    def getParentId(): Long = try {
-      S.param("parentId").map(_.toLong).openOr(0)
-    } catch {
-      case e: NumberFormatException => 0
-    }
-
     def createComment(): Comment = {
-      val parentId: Long = getParentId()
+      val parentId: Long = asLong(S.param("parentId")).openOr(0)
       val parent = Comment.find(By(Comment.id, parentId), By(Comment.post, code))
       Comment.create.author(User.currentUser).post(code).content(content).responseTo(parent)
     }

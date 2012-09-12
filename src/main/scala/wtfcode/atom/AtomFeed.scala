@@ -3,16 +3,13 @@ package wtfcode.atom
 import java.util.{TimeZone, Date}
 import xml.{Node, NodeSeq}
 import java.text.SimpleDateFormat
+import net.liftweb.util.BasicTypesHelpers._
 
 trait AtomFeed[T] {
 
   def param: String
 
-  val curPage: Long = try {
-    param.toLong
-  } catch {
-    case e: NumberFormatException => 0
-  }
+  val curPage: Long = asLong(param).openOr(0)
 
   val hasNext = (curPage + 1) * itemsPerPage < count
 
