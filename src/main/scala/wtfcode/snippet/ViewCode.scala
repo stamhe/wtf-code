@@ -78,7 +78,10 @@ class ViewCode {
       clearErrors() &
         (content.trim.length match {
           case 0 => compilationError(S ? "comment.commentNotFound")
-          case _ => func()
+          case _ => {
+            val errors = if (!User.currentUser.isDefined) ReCaptcha.validateCaptcha() else Nil
+            if (errors.isEmpty) func() else compilationError (S ? "post.wrongCaptchaAnswer" + ":" + errors.mkString("\n"))
+          }
         })
     }
 
@@ -94,7 +97,7 @@ class ViewCode {
         JsHideId("add-comment") &
         JsRaw("Comments.clearTextarea()") &
         AppendHtml(appendToId(newComment),
-		   CommentBinder.applyRecursively(newComment)(commentTemplate)) &
+                   CommentBinder.applyRecursively(newComment)(commentTemplate)) &
         SyntaxHighlighter.highlightPage()
     }
 
@@ -109,7 +112,8 @@ class ViewCode {
 
     def compilationError(s: String): JsCmd = {
       SetHtml("errors", Text(S ? "comment.compilationError" + ": " + s)) &
-        (JqId("errors") ~> JqAddClass(Str("compile-error"))).cmd
+        (JqId("errors") ~> JqAddClass(Str("compile-error"))).cmd &
+        (if (!User.currentUser.isDefined) ReCaptcha.reloadCaptcha else Noop)
     }
 
     def clearErrors(): JsCmd = {
@@ -119,6 +123,11 @@ class ViewCode {
 
     ".content" #> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8") &
       ".submit" #> SHtml.ajaxSubmit(S ? "comment.add", () => process(processAdd), "class" -> "btn btn-primary") &
-      ".preview" #> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn")
+      ".preview" #> SHtml.ajaxSubmit(S ? "comment.preview", () => process(processPreview), "class" -> "btn") &
+      bindCaptcha()
   }
+
+  private def bindCaptcha() =
+    if (User.currentUser.isDefined) ".reCaptcha" #> NodeSeq.Empty
+    else ".reCaptcha *" #> ReCaptcha.captchaXhtml
 }
