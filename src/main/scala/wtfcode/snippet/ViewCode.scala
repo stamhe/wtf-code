@@ -79,7 +79,7 @@ class ViewCode {
         (content.trim.length match {
           case 0 => compilationError(S ? "comment.commentNotFound")
           case _ => {
-            val errors = if (!User.currentUser.isDefined) ReCaptcha.validateCaptcha() else Nil
+            val errors = if (!User.loggedIn_?) ReCaptcha.validateCaptcha() else Nil
             if (errors.isEmpty) func() else compilationError (S ? "post.wrongCaptchaAnswer" + ":" + errors.mkString("\n"))
           }
         })
@@ -113,7 +113,7 @@ class ViewCode {
     def compilationError(s: String): JsCmd = {
       SetHtml("errors", Text(S ? "comment.compilationError" + ": " + s)) &
         (JqId("errors") ~> JqAddClass(Str("compile-error"))).cmd &
-        (if (!User.currentUser.isDefined) ReCaptcha.reloadCaptcha else Noop)
+        (if (!User.loggedIn_?) ReCaptcha.reloadCaptcha else Noop)
     }
 
     def clearErrors(): JsCmd = {

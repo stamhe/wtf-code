@@ -89,14 +89,16 @@ class Boot {
       usr.map { u => S ? ("user.hello", u.nickName.is) }.openOr(S ? "user.notLoggedIn")
     }
 
+    val redirectIfNotLoggedIn = If(() => User.loggedIn_?, () => RedirectResponse(User.loginPageURL))
+
     // Build SiteMap
     def sitemap() = SiteMap(
       Menu(S ? "menu.home") / "index",
-      Menu(S ? "menu.post") / "post",
+      Menu(Loc("Post", "post" :: Nil, S ? "menu.post", redirectIfNotLoggedIn)),
       Menu(S ? "menu.browse") / "browse",
       Menu(S ? "menu.feed") / "feed",
-      Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))),
-      Menu(Loc("Notifications", "notifications" :: Nil, notificationsMessage(), If(() => User.loggedIn_?, () => RedirectResponse("/user_mgt/login")))),
+      Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", redirectIfNotLoggedIn)),
+      Menu(Loc("Notifications", "notifications" :: Nil, notificationsMessage(), redirectIfNotLoggedIn)),
       Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)),
       Menu(Loc("Lang", List("lang-filter") -> true, S ? "menu.lang", Hidden)),
       Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)),
