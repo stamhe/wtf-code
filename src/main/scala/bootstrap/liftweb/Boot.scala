@@ -64,7 +64,7 @@ class Boot {
 
     LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
 
-    LiftRules.statelessDispatchTable.prepend(CommentService)
+    LiftRules.statelessDispatchTable.prepend(CommentService).prepend(CodeService)
 
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
       case RewriteRequest(ParsePath("code" :: id :: Nil, _, _, _), _, _) =>

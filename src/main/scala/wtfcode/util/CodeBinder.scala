@@ -73,10 +73,9 @@ object CodeBinder {
   private def renderTags(post: Post) = {
     val tags = Post.tags
     if (tags.isEmpty) {
-      ".tags" #> <ul></ul>
+      ".tags" #> NodeSeq.Empty
     } else {
-      ".tags *" #> ((in: NodeSeq) =>
-        tags.flatMap {t => (".tag *" #> t.name)(in) })
+      ".tags *" #> ((in: NodeSeq) => tags flatMap { t => (".tag *" #> t.name.is).apply(in) })
     }
   }
 }

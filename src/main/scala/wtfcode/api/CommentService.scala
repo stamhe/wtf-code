@@ -4,15 +4,14 @@ import net.liftweb.http._
 import net.liftweb.http.rest._
 import net.liftweb.json.JsonAST._
 import net.liftweb.util.Helpers._
-import wtfcode.model.{Post, Comment}
+import wtfcode.util.WtfDateTimeConverter.formatTimestamp
+import wtfcode.model.{Comment, Post => P}
 
 object CommentService extends RestHelper {
 
   serve {
     case Req("post" :: AsLong(id) :: "comments" :: Nil, "json", GetRequest) => {
-
-      val postId = id.toLong
-      val comments = wtfcode.model.Post.findByKey(postId).map { _.activeComments.map(c => toJson(c)) }
+      val comments = P.findByKey(id).map { _.activeComments.map(c => toJson(c)) }
       comments.map(cs => JsonResponse(JArray(cs.toList))) ?~ "Post not found"
     }
   }
@@ -21,14 +20,9 @@ object CommentService extends RestHelper {
     import net.liftweb.json.JsonDSL._
 
     ("id" -> c.id.toString) ~
-    ("date" -> restTimestamp(c.createdAt.is)) ~
-    ("author" -> c.author.map { _.nickName.is }.openOr("Guest") ) ~
-    ("content" -> c.content.is) ~
-    ("responseTo" -> c.responseTo.map{ _.id.toString }.openOr(null))
-  }
-
-  private def restTimestamp(date: java.util.Date) = {
-    val f = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    f.format(date)
+      ("date" -> formatTimestamp(c.createdAt.is)) ~
+      ("author" -> c.author.map { _.nickName.is }.openOr("Guest") ) ~
+      ("content" -> c.content.is) ~
+      ("responseTo" -> c.responseTo.map{ _.id.toString }.openOr(null))
   }
 }

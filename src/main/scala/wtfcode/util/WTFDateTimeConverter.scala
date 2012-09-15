@@ -22,6 +22,11 @@ object WtfDateTimeConverter extends DateTimeConverter {
     format(date, dateFormat)
   }
 
+  def formatTimestamp(date: Date) = {
+    val f = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+    f.format(date)
+  }
+
   private def format(date: Date, format: DateFormat): String = {
     User.currentUser.map(user => format.setTimeZone(user.timezone.isAsTimeZone))
     format.format(date)
