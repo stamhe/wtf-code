@@ -3,7 +3,7 @@ package wtfcode.snippet
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.util.Helpers
 import Helpers._
-import wtfcode.model.{Language, Post, User}
+import wtfcode.model.{Tag, Language, Post, User}
 import net.liftweb.common.{Box, Empty}
 import net.liftweb.http.js.JsCmd
 import wtfcode.util._
@@ -13,12 +13,15 @@ import wtfcode.util.JqRemoveClass
 import net.liftweb.http.js.jquery.JqJE.JqId
 import xml.Text
 import net.liftweb.http.js.JsCmds.SetHtml
+import net.liftmodules.widgets.autocomplete.AutoComplete
+import net.liftweb.mapper.Like
 
 class PostSnippet {
   def post() = {
     var content = ""
     var description = ""
     var langId: Long = 0
+    var tags = Set()
     var language: Box[Language] = Empty
 
     def createPost(): Post = {
@@ -76,6 +79,7 @@ class PostSnippet {
       ".content" #> SHtml.textarea(content, content = _, "cols" -> "80", "rows" -> "8") &
       ".description" #> SHtml.textarea(description, description = _, "cols" -> "80", "rows" -> "8") &
       "#reCaptcha *" #> ReCaptcha.captchaXhtml() &
+      ".tags-input *" #> AutoComplete("", (input, limit) => Tag.complete(input, limit), value => tags += value) &
       ".submit" #> SHtml.ajaxSubmit(S ? "post.add", () => process(processPost), "class" -> "btn btn-primary") &
       ".preview" #> SHtml.ajaxSubmit(S ? "post.preview", () => process(processPreview), "class" -> "btn btn-primary")
   }

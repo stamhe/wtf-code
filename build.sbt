@@ -19,8 +19,7 @@ libraryDependencies ++= {
     "net.liftweb" %% "lift-webkit" % liftVersion % "compile",
     "net.liftweb" %% "lift-mapper" % liftVersion % "compile",
     "net.liftweb" %% "lift-wizard" % liftVersion % "compile",
-    "net.liftmodules" %% "widgets" % (liftVersion + "-1.1-SNAPSHOT") % "compile",
-    "net.liftmodules" %% "textile" % (liftVersion + "-1.1-SNAPSHOT") % "compile")
+    "net.liftmodules" %% "widgets" % (liftVersion + "-1.1-SNAPSHOT") % "compile")
 }
 
 libraryDependencies ++= Seq(
