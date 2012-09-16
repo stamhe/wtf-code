@@ -27,7 +27,7 @@ with SaveIP with Rated with Deletable with OneToMany[Long, Post] with ManyToMany
       By(Comment.post, this), By(Comment.deleted, false),
       OrderBy(Comment.createdAt, Ascending))
 
-  def link: String = "/code/" + id
+  def link: String = "/post/" + id
 
   override def currentRating = this.rating.is
 
