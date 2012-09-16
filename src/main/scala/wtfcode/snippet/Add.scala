@@ -14,7 +14,7 @@ import net.liftweb.http.js.jquery.JqJE.JqId
 import xml.Text
 import net.liftweb.http.js.JsCmds.SetHtml
 
-class PostSnippet {
+class Add {
   def post() = {
     var content = ""
     var description = ""

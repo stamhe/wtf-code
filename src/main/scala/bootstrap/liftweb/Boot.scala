@@ -94,7 +94,7 @@ class Boot {
     // Build SiteMap
     def sitemap() = SiteMap(
       Menu(S ? "menu.home") / "index",
-      Menu(Loc("Post", "post" :: Nil, S ? "menu.post", redirectIfNotLoggedIn)),
+      Menu(Loc("Add", "add" :: Nil, S ? "menu.add", redirectIfNotLoggedIn)),
       Menu(S ? "menu.browse") / "browse",
       Menu(S ? "menu.feed") / "feed",
       Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", redirectIfNotLoggedIn)),
