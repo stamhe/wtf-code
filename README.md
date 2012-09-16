@@ -1,7 +1,7 @@
-WTFCode
+WtfCode
 =======
 
-WTF is WTFCode
+WTF is WtfCode
 --------------
 
 WTF Code is an implementation of forum for unusual source code
@@ -13,6 +13,23 @@ Ideology
 It is by programmers and for programmers. Programming attributes and
 jokes are awesome, let's do more of those! We also respect nice
 design.
+
+Test Installation
+-----------------
+
+You can make some test-drive on
+[test installation](http://wtfcode-ratvier.rhcloud.com/).
+
+API
+---
+
+Some basic Json API is available:
+
+`/post/by-id/<id>.json` - extract post by post id.
+
+`/post/by-author/<nick>.json` - extract list of posts by author nick name.
+
+`/post/<id>/comments.json` - extract list of comments by post id.
 
 Hacking
 -------
@@ -29,6 +46,11 @@ and execute the following command (assume you have
 This command will start jetty server on 8080 port. Empty h2 database
 will be created on start so you will be able to create users, posts
 and comments.
+
+If you like [Sbt](http://www.scala-sbt.org/), you can build the project
+with it: just execute the following command in sbt console:
+
+    container:start
 
 Happy hacking!
 

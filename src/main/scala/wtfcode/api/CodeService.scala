@@ -11,11 +11,11 @@ import net.liftweb.mapper.{OrderBy, Descending, By}
 object CodeService extends RestHelper {
 
   serve {
-    case Req("code" :: "by-id" :: AsLong(id) :: Nil, "json", GetRequest) => {
+    case Req("post" :: "by-id" :: AsLong(id) :: Nil, "json", GetRequest) => {
       val post = wtfcode.model.Post.findByKey(id)
       post.map(p => JsonResponse(toJson(p))) ?~ "Post not found"
     }
-    case Req("code" :: "by-author" :: author :: Nil, "json", GetRequest) => {
+    case Req("post" :: "by-author" :: author :: Nil, "json", GetRequest) => {
       User.find(By(User.nickName, author)).map { user =>
         val posts = P.findAll(
           By(P.deleted, false),
