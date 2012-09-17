@@ -11,6 +11,18 @@ textarea {
 code {
   font-size: 13px;
 }
+.code-table {
+  width: 100%;
+}
+.num-column {
+  width: 25px;
+}
+.line-nums {
+  list-style: none;
+  font-size: 13px;
+  font-family: Menlo,Monaco,Consolas,Inconsolata,monospace;
+  color: #999;
+}
 .post code {
   margin: 5px;
 }

@@ -9,7 +9,7 @@ import net.liftweb.http.js.JE.JsRaw
  */
 object SyntaxHighlighter {
 
-  def highlightBlock(parentId : String) : JsCmd = JsRaw("wtfCode_highlightBlock('" + parentId + "')").cmd
+  def highlightBlock(parentId : String) : JsCmd = JsRaw("Highlighter.highlightBlock('" + parentId + "')").cmd
 
-  def highlightPage() : JsCmd = JsRaw("wtfCode_highlightPage()").cmd
+  def highlightPage() : JsCmd = JsRaw("Highlighter.highlightPage()").cmd
 }
