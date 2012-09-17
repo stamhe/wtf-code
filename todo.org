@@ -1,0 +1,48 @@
+#+TODO: TODO BUG MAYBE WAIT | DONE CANCELLED
+
+* v1.0
+** DONE Robohash avatars for guests
+** DONE Rating
+** DONE Gravatar integration
+** DONE ReCaptcha integration
+** DONE Atom feed for posts
+** DONE Atom feed for post comments
+** DONE Code highlighting
+** DONE Language filter
+** DONE Bookmarks
+** DONE Comment preview
+** DONE Post preview
+** DONE Notifications
+** DONE Comment tree
+** DONE Comment subree folding
+** DONE Bb-parser for comments
+** DONE Basic comment moderation
+** DONE Json API for posts
+** DONE Json API for post comments
+** DONE User mentions
+** TODO Post tags
+   Need tag autocomplete on post composition
+** TODO Code line numbers
+** TODO Russian translation
+** TODO Configure UI for Login/SignUp forms
+** TODO Start page: statistics, latest posts
+** TODO Improve rating
+   - How much positive and negative votes
+   - List of rated users
+** TODO Send e-mail notification
+** TODO UI to configure e-mail notification
+** TODO Design: logo + favicon
+** TODO Admin mode, edit for
+   - Language list
+   - Tags
+** BUG Comment tree has infinite depth
+   CodeBinder recurse infinitely: need limitation on some depth
+
+
+* v1.1
+** TODO OpenID integration
+** TODO Anti-wipe features
+** MAYBE Edit own comments
+** MAYBE E-mail answers on comments
+** MAYBE GitHub integration: Gist
+** MAYBE Social features: Facebook\Twitter\Google+ integration
