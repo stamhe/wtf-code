@@ -29,7 +29,7 @@ code {
 .post pre {
   padding: 0px;
 }
-span.inc, span.dec {
+span.vote-on, span.vote-against {
   font-size: 14px;
   font-weight: bold;
   padding: 0px 2px;
