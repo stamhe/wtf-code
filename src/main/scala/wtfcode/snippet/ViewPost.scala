@@ -83,7 +83,6 @@ class ViewPost {
     def processAdd(): JsCmd = {
       val newComment = createComment().saveMe()
       Notification.newComment(newComment)
-      //TODO send notifications about mentions
 
       DeletePreviewCmd &
         EnableAddCommentButton &
