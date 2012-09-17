@@ -41,9 +41,23 @@ class Boot {
       Language, User, Post, PostVote, Comment, CommentVote, Bookmark, LastSeen, Notification, Tag, PostTags,
       ExtSession)
 
+    val languages = List(
+      ("C", "language-cpp"), //highlight.js cannot into C
+      ("C++", "language-cpp"),
+      ("C#", "language-cs"),
+      ("Java", "language-java"),
+      ("JavaScript", "language-javascript"),
+      ("PHP", "language-php"),
+      ("Python", "language-python"),
+      ("Scala", "language-scala")
+    )
+
     if (Language.count == 0) {
-      for (name <- List("C", "C++", "C#", "Java", "JavaScript", "PHP", "Python", "Scala"))
-        Language.create.name(name).code(Language.mangleName(name)).save()
+      for (tuple <- languages) {
+        val name = tuple._1
+        val htmlClass = tuple._2
+        Language.create.name(name).code(Language.mangleName(name)).htmlClass(htmlClass).save()
+      }
     }
 
     //fucking migration
@@ -57,6 +71,9 @@ class Boot {
       Post.findAll().foreach(post => post.deleted(false).save)
     //guess what?
     User.findAll().map(user => if (user.nickNameLower.is == null) user.nickNameLower(user.nickName.toLowerCase).save)
+    //...
+    Language.findAll().map(language => if (language.htmlClass.is == null || language.htmlClass.is.isEmpty)
+      language.htmlClass(languages.find(_._1 == language.name.is).map(_._2).getOrElse("")).save())
 
     List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
 

@@ -15,6 +15,15 @@ class Language extends LongKeyedMapper[Language] with IdPK with CreatedTrait wit
     override def dbIndexed_? = true
   }
 
+  /**
+   * Special cases:
+   * "" (empty string) - auto-detection,
+   * "no-highlight" - no highlighting.
+   */
+  object htmlClass extends MappedText(this) {
+    override def defaultValue = ""
+  }
+
   object posts extends MappedOneToMany(Post, Post.language, OrderBy(Post.createdAt, Descending))
 
 

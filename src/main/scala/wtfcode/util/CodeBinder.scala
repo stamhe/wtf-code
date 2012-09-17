@@ -19,7 +19,7 @@ object CodeBinder {
     ".entry-id *" #> post.id &
       ".language *" #> post.getLanguage &
       ".content *" #> post.content &
-      ".content [class]" #> post.language.foreign.map("language-" + _.code) &
+      ".content [class]" #> post.language.map(_.htmlClass.get).openOr("") &
       ".description *" #> WtfBbParser.toHtml(post.description) &
       ".link_to_author *" #> post.author.map(_.nickName.get).openOr("Guest") &
       ".date *" #> post.createdAt &
