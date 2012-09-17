@@ -29,6 +29,7 @@ with SaveIP with Rated with Deletable with OneToMany[Long, Comment] with ManyToM
 
   override def currentRating = this.rating.is
   override def canVote(user: User) =
+    !deleted &&
     author != user &&
       CommentVote.count(By(CommentVote.comment, this), By(CommentVote.user, user)) == 0
 
