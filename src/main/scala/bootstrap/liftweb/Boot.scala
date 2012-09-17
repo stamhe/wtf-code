@@ -18,7 +18,7 @@ import wtfcode.util.WtfDateTimeConverter
  * to modify lift's environment
  */
 class Boot {
-  def boot {
+  def boot() {
     DefaultConnectionIdentifier.jndiName = "java:jboss/datasources/PostgreSQLDS"
     if (!DB.jndiJdbcConnAvailable_?) {
       val vendor =
@@ -64,7 +64,7 @@ class Boot {
 
     LiftRules.dispatch.prepend(AtomDispatcher.dispatch)
 
-    LiftRules.statelessDispatchTable.prepend(CommentService).prepend(CodeService)
+    LiftRules.statelessDispatch.prepend(CommentService).prepend(CodeService)
 
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
       case RewriteRequest(ParsePath("post" :: id :: Nil, _, _, _), _, _) =>
