@@ -67,8 +67,8 @@ class Boot {
     LiftRules.statelessDispatchTable.prepend(CommentService).prepend(CodeService)
 
     LiftRules.statelessRewrite.prepend(NamedPF("PrettyUrlRewriter") {
-      case RewriteRequest(ParsePath("code" :: id :: Nil, _, _, _), _, _) =>
-        RewriteResponse("code" :: Nil, Map("id" -> id))
+      case RewriteRequest(ParsePath("post" :: id :: Nil, _, _, _), _, _) =>
+        RewriteResponse("post" :: Nil, Map("id" -> id))
       case RewriteRequest(ParsePath("lang" :: name :: Nil, _, _, _), _, _) =>
         RewriteResponse("lang-filter" :: Nil, Map("lang" -> name))
       case RewriteRequest(ParsePath("user" :: nick :: Nil, _, _, _), _, _) =>
@@ -94,12 +94,12 @@ class Boot {
     // Build SiteMap
     def sitemap() = SiteMap(
       Menu(S ? "menu.home") / "index",
-      Menu(Loc("Post", "post" :: Nil, S ? "menu.post", redirectIfNotLoggedIn)),
+      Menu(Loc("Add", "add" :: Nil, S ? "menu.add", redirectIfNotLoggedIn)),
       Menu(S ? "menu.browse") / "browse",
       Menu(S ? "menu.feed") / "feed",
       Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", redirectIfNotLoggedIn)),
       Menu(Loc("Notifications", "notifications" :: Nil, notificationsMessage(), redirectIfNotLoggedIn)),
-      Menu(Loc("Code", List("code") -> true, S ? "menu.code", Hidden)),
+      Menu(Loc("Post", List("post") -> true, S ? "menu.post", Hidden)),
       Menu(Loc("Lang", List("lang-filter") -> true, S ? "menu.lang", Hidden)),
       Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)),
       // Menu entries for the User management stuff

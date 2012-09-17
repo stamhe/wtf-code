@@ -2,53 +2,57 @@
 <html>
 <body class="lift:content_id=real_content">
   <div class="lift:surround?with=default;at=content" id="real_content">
-    <div class="row">
-      <div id="preview"></div>
-      <div class="form-horizontal lift:PostSnippet.post">
+    <head_merge>
+      <script src="/ui/jquery/jquery.scrollTo-1.4.2-min.js"></script>
+    </head_merge>
+    <div class="lift:ViewPost.view?eager_eval=true">
+      <div class="lift:embed?what=/templates-hidden/code"></div>
+    </div>
+
+    <ul id="comments" class="comments lift:ViewPost.comments?eager_eval=true">
+      <div class="lift:embed?what=/templates-hidden/comment"></div>
+    </ul>
+
+    <span class="lift:ViewPost.updateUnseen"></span>
+
+    <div id="add">
+      <button id="add-comment-button" class="btn">
+        <i class="icon-comment"></i>
+        <lift:loc>comment.add</lift:loc>
+      </button>
+
+
+      <div class="lift:ViewPost.addComment" id="add-comment"
+        style="display: none;">
         <form class="lift:form.ajax">
           <fieldset>
-            <div class="control-group">
-              <label class="control-label">
-                <lift:loc>post.lang</lift:loc>
-              </label>
-              <div class="controls">
-                <span class="language"></span>
-              </div>
-            </div>
 
-            <div id="content-group" class="control-group">
-              <label class="control-label">
-                <lift:loc>post.code</lift:loc>
-              </label>
-              <div class="controls">
-                <div class="content"></div>
-                <span id="content-inline-help" class="help-inline"></span>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">
-                <lift:loc>post.description</lift:loc>
-              </label>
-              <div class="controls">
-                <div class="description"></div>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">
-                <lift:loc>captcha</lift:loc>
-              </label>
-              <div class="controls">
-                <div id="reCaptcha"></div>
-              </div>
-            </div>
+            <div class="content"></div>
+            <div id="errors"></div>
+
+            <p class="help-block">
+              <lift:loc>comment.usingBbCodes</lift:loc>
+              <a href="http://bbcode.org/reference.php" target="_blank">
+                <lift:loc>comment.bbCodeReference</lift:loc>
+              </a>
+            </p>
+            
+            <div class="reCaptcha"></div>
+
+            <input type="hidden" name="parentId" value="0"></input>
+
             <div class="form-actions">
               <div class="submit"></div>
               <div class="preview"></div>
+              <button class="btn btn-cancel pull-right">
+                <lift:loc>button.cancel</lift:loc>
+              </button>
             </div>
           </fieldset>
         </form>
       </div>
     </div>
+    <script src="/ui/js/comments.js"></script>
   </div>
 </body>
 </html>

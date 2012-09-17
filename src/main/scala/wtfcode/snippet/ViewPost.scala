@@ -20,29 +20,29 @@ import net.liftweb.http.js.JE.Str
 import net.liftweb.http.js.JE.JsRaw
 import net.liftweb.mapper.By
 
-class ViewCode {
+class ViewPost {
   val maybeId = asLong(S.param("id"))
 
-  val code = maybeId match {
+  val post = maybeId match {
     case Full(id) => Post.findByKey(id)
     case _ => Empty
   }
 
   def view(in: NodeSeq): NodeSeq = {
-    code map ({
+    post map ({
       i => CodeBinder(i)(in)
     }) openOr Text("Not found")
   }
 
   def comments() = {
     "#comments *" #> ((in: NodeSeq) =>
-      code.map(_.comments.filter(_.responseTo.isEmpty).flatMap { comment =>
+      post.map(_.comments.filter(_.responseTo.isEmpty).flatMap { comment =>
         CommentBinder.applyRecursively(comment)(in)
       }).openOr(NodeSeq.Empty))
   }
 
   def updateUnseen() = {
-    LastSeen.update(User.currentUser, code)
+    LastSeen.update(User.currentUser, post)
     NodeSeq.Empty
   }
 
@@ -52,7 +52,7 @@ class ViewCode {
   private val EnableAddCommentButton = JsRaw("""Comments.enableAddButton()""").cmd
 
   def addComment() = {
-    code.isDefined match {
+    post.isDefined match {
       case true => addCommentReal()
       case false => "#add-comment" #> NodeSeq.Empty
     }
@@ -63,8 +63,8 @@ class ViewCode {
 
     def createComment(): Comment = {
       val parentId: Long = asLong(S.param("parentId")).openOr(0)
-      val parent = Comment.find(By(Comment.id, parentId), By(Comment.post, code))
-      Comment.create.author(User.currentUser).post(code).content(content).responseTo(parent)
+      val parent = Comment.find(By(Comment.id, parentId), By(Comment.post, post))
+      Comment.create.author(User.currentUser).post(post).content(content).responseTo(parent)
     }
 
     def process(func: () => JsCmd): JsCmd = {

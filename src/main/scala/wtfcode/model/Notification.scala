@@ -1,6 +1,7 @@
 package wtfcode.model
 
 import net.liftweb.mapper._
+import wtfcode.util.MentionsExtractor
 
 class Notification extends LongKeyedMapper[Notification] with IdPK with CreatedTrait {
   def getSingleton = Notification
@@ -31,6 +32,11 @@ object Notification extends Notification with LongKeyedMetaMapper[Notification] 
       to.author.map { author =>
         Notification.create.user(author).from(newComment.author).link(newComment.link).save()
     }}
+
+    //mentions in new comment
+    new MentionsExtractor(newComment.content).mentions.foreach { user =>
+      Notification.create.user(user).from(newComment.author).link(newComment.link).save()
+    }
   }
 
   def deletedComment(comment: Comment) {
