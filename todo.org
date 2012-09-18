@@ -25,7 +25,11 @@
 ** TODO Code line numbers
 ** TODO Russian translation
 ** TODO Configure UI for Login/SignUp forms
+** TODO Post "Comments" must be clickable
+   Post 'Comments' part must be clickable
+   and show/hide comments forest.
 ** TODO Start page: statistics, latest posts
+** TODO "Show code" link in feed
 ** TODO Improve rating
    - How much positive and negative votes
    - List of rated users
@@ -35,6 +39,15 @@
 ** TODO Admin mode, edit for
    - Language list
    - Tags
+** BUG Foldsubtree works bad on nested folds
+   To reproduce:
+   - Fold child subree.
+   - Fold parent subree.
+   - Expand parent subree.
+   Expected result: parent subree expanded up
+   to child subree.
+   Actual result: parent subree expanded fully,
+   and there is "Expand subree" label on child node.
 ** BUG Comment tree has infinite depth
    CodeBinder recurse infinitely: need limitation on some depth
 
