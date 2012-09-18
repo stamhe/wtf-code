@@ -49,7 +49,7 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
   object bookmarks extends MappedOneToMany(Bookmark, Bookmark.user, OrderBy(Bookmark.createdAt, Descending))
   object notifications extends MappedOneToMany(Notification, Notification.user, OrderBy(Notification.createdAt, Descending))
 
-  def link = "/user/" + nickName
+  def link = "/user/" + id
 
   def findByNickName(nick: String): Box[User] = {
     User.find(By(User.nickNameLower, nick.toLowerCase))

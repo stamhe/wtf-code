@@ -2,10 +2,11 @@ package wtfcode.util
 
 import xml.{Text, NodeSeq}
 import wtfcode.model.{ LastSeen, Comment }
-import net.liftweb.util._
 import net.liftweb.util.Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.http.js.JsCmds
+import net.liftweb.common.Full
+import net.liftweb.util.CssSel
 
 object CommentBinder {
 
@@ -20,7 +21,7 @@ object CommentBinder {
       ".author" #> comment.author.map(_.nickName.get).openOr("Guest") &
       ".date" #> TimeSpanFormatter(comment.createdAt) &
       ".comment-rating *" #> RateBinder(comment)(ratingTemplate) &
-      ".avatar [src]" #> Avatar(comment.author, comment.ipAddress) &
+      ".avatar [src]" #> Avatar(comment.author, Full(comment.ipAddress)) &
       ".author-link [href]" #> comment.author.map(_.link).openOr("#") &
       ".comment-link [href]" #> comment.link &
       ".parent-link [href]" #> comment.responseTo.map(_.link).openOr("#") &

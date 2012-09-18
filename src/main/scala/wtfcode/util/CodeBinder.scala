@@ -29,7 +29,7 @@ object CodeBinder {
       else ".newCommentsNum" #> (None: Option[NodeSeq])) &
       ".bookmark *" #> bookmarkAction(post) &
       ".post-rating *" #> RateBinder(post)(ratingTemplate) &
-      ".avatar [src]" #> Avatar(post.author, post.ipAddress) &
+      ".avatar [src]" #> Avatar(post.author, Full(post.ipAddress)) &
       ".link_to_author [href]" #> post.author.map {_.link}.openOr("#") &
       ".link_to_code [href]" #> post.link &
       ".link_to_lang_filter [href]" #> langObj.map {_.link}.openOr("#") &
