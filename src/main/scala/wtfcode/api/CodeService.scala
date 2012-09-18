@@ -15,8 +15,8 @@ object CodeService extends RestHelper {
       val post = wtfcode.model.Post.findByKey(id)
       post.map(p => JsonResponse(toJson(p))) ?~ "Post not found"
     }
-    case Req("post" :: "by-author" :: author :: Nil, "json", GetRequest) => {
-      User.find(By(User.nickName, author)).map { user =>
+    case Req("post" :: "by-author" :: AsLong(id) :: Nil, "json", GetRequest) => {
+      User.findByKey(id).map { user =>
         val posts = P.findAll(
           By(P.deleted, false),
           By(P.author, user),

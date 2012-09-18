@@ -25,11 +25,11 @@ API
 
 Some basic Json API is available:
 
-`/post/by-id/<id>.json` - extract post by post id.
+`/post/by-id/<postId>.json` - extract post by post id.
 
-`/post/by-author/<nick>.json` - extract list of posts by author nick name.
+`/post/by-author/<authorId>.json` - extract list of posts by author id.
 
-`/post/<id>/comments.json` - extract list of comments by post id.
+`/post/<postId>/comments.json` - extract list of comments by post id.
 
 Hacking
 -------
