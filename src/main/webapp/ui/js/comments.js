@@ -34,7 +34,7 @@ var Comments;
             return function() {
                 var self = $(this);
                 var comment = self.closest(".comment");
-                var replies = comment.find(".replies");
+                var replies = comment.children(".replies");
                 replies[effect].call(replies, 'fast', function() {
                     self.hide();
                     comment.find(showOnComplete).first().show();

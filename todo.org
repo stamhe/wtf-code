@@ -39,16 +39,17 @@
 ** TODO Admin mode, edit for
    - Language list
    - Tags
-** BUG Foldsubtree works bad on nested folds
-   To reproduce:
-   - Fold child subree.
-   - Fold parent subree.
-   - Expand parent subree.
-   Expected result: parent subree expanded up
-   to child subree.
-   Actual result: parent subree expanded fully,
-   and there is "Expand subree" label on child node.
-** BUG Comment tree has infinite depth
+
+** TODO Fix bugs
+*** DONE Foldsubtree works bad on nested folds
+    To reproduce:
+    - Fold child subree.
+    - Fold parent subree.
+    - Expand parent subree.
+    Expected result: parent subree expanded up to child subree.
+    Actual result: parent subree expanded fully, and there is "Expand subree"
+    label on child node.
+*** BUG Comment tree has infinite depth
    CodeBinder recurse infinitely: need limitation on some depth
 
 
