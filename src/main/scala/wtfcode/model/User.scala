@@ -1,10 +1,12 @@
-package wtfcode.model
+package wtfcode {
+package model {
 
 import net.liftweb.mapper._
 import net.liftweb.http.S
 import net.liftweb.common.{Box, Full}
 import net.liftweb.util.FieldError
-import xml.Text
+import xml.{NodeSeq, Elem, Text}
+import util.BootstrapForms._
 
 class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, User] {
   def getSingleton = User
@@ -75,4 +77,37 @@ object User extends User with MetaMegaProtoUser[User] {
     theUser.nickNameLower(theUser.nickName.toLowerCase)
     super.actionsAfterSignup(theUser, func)
   }
+
+  // UI specification
+
+  override def loginXhtml = {
+    val recoverPasswordLink = (<a href={lostPasswordPath.mkString("/", "/", "")}>{S.?("recover.password")}</a>)
+
+    <form method="post" action={S.uri} class="form-horizontal">
+      <legend>{S ? "log.in"}</legend>
+      {ControlGroup(userNameFieldString, <user:email/>)}
+      {ControlGroup(S ? "password", <user:password/>)}
+      {ControlGroup(recoverPasswordLink ++ <br/> ++ <user:submit/>)}
+    </form>
+  }
+
+  override def signupXhtml(user: User): Elem = {
+    <form method="post" action={S.uri} class="form-horizontal">
+      <legend>{S ? "sign.up"}</legend>
+      {localForm(user = user, ignorePassword = false, fields = signupFields)}
+      {ControlGroup(<user:submit/>)}
+    </form>
+  }
+
+  override def  localForm(user: TheUserType, ignorePassword: Boolean, fields: List[FieldPointerType]): NodeSeq = {
+    for {
+      pointer <- fields
+      field <- computeFieldFromPointer(user, pointer).toList
+      if field.show_? && (!ignorePassword || !pointer.isPasswordField_?)
+      form <- field.toForm.toList
+    } yield ControlGroup(field.displayName, form)
+  }
+}
+
+}
 }
