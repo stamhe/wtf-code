@@ -6,11 +6,6 @@ var Highlighter;
         return txt.split("\n").length;
     }
 
-    function renderNumber(n) {
-        if (n < 10) return "0" + n + ".";
-        else return n + ".";
-    }
-
     Highlighter = {
 
         /**
@@ -40,7 +35,7 @@ var Highlighter;
             ol.className = "line-nums";
             while (i++ < count) {
                 li = document.createElement("li");
-                li.appendChild(document.createTextNode(renderNumber(i)));
+                li.appendChild(document.createTextNode(String(i)));
                 ol.appendChild(li);
             }
             numTd.appendChild(ol);

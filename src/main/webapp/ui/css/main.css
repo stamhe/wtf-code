@@ -19,6 +19,7 @@ code {
 }
 .line-nums {
   list-style: none;
+  text-align: right;
   font-size: 13px;
   font-family: Menlo,Monaco,Consolas,Inconsolata,monospace;
   color: #999;
