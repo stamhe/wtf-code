@@ -20,7 +20,7 @@ class ViewUser {
     maybeUser match {
       case Full(user) =>
         ".nick" #> user.nickName &
-        ".avatar [src]" #> Avatar(maybeUser, null) &
+        ".avatar [src]" #> Avatar(maybeUser, Empty) &
         ".date" #> user.createdAt &
         ".aboutMe" #> WtfBbParser.toHtml(user.aboutMe.get)
       case _ => (in: NodeSeq) => Text("Not Found")
