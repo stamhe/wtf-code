@@ -88,8 +88,8 @@ class Boot {
         RewriteResponse("post" :: Nil, Map("id" -> id))
       case RewriteRequest(ParsePath("lang" :: name :: Nil, _, _, _), _, _) =>
         RewriteResponse("lang-filter" :: Nil, Map("lang" -> name))
-      case RewriteRequest(ParsePath("user" :: nick :: Nil, _, _, _), _, _) =>
-      RewriteResponse("user" :: Nil, Map("nick" -> nick))
+      case RewriteRequest(ParsePath("user" :: id :: Nil, _, _, _), _, _) =>
+        RewriteResponse("user" :: Nil, Map("id" -> id))
     })
 
     def notificationsMessage() = {

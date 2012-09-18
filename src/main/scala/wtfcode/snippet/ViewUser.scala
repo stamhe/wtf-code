@@ -6,12 +6,15 @@ import net.liftweb.http.S
 import wtfcode.model.User
 import xml.{Text, NodeSeq}
 import wtfcode.util.{WtfBbParser, Avatar}
-import net.liftweb.common.Full
+import net.liftweb.common.{Empty, Full}
 
 class ViewUser {
-  val nick = S.param("nick") openOr ""
+  val maybeId = asLong(S.param("id"))
 
-  val maybeUser = User.findByNickName(nick)
+  val maybeUser = maybeId match {
+    case Full(id) => User.findByKey(id)
+    case _ => Empty
+  }
 
   def profile = {
     maybeUser match {
