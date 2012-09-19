@@ -13,6 +13,18 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
 
   val nickNameLength = 16
 
+  override lazy val password = new MyPassword(this) {
+
+    override def _toForm: Box[NodeSeq] = {
+      S.fmapFunc({s: List[String] => this.setFromAny(s)}){ funcName =>
+        Full(
+          ControlGroup(displayName, appendFieldId(<input type={formInputType} name={funcName} value={is.toString}/>)) ++
+            ControlGroup(S ? "repeat", <input type={formInputType} name={funcName} value={is.toString}/>)
+        )
+      }
+    }
+  }
+
   object nickName extends MappedString(this, nickNameLength) {
     def reserved(value: String): List[FieldError] = {
       value match {
@@ -66,7 +78,7 @@ object User extends User with MetaMegaProtoUser[User] {
 
   override val skipEmailValidation = true //FIXME
 
-  override def signupFields = List(nickName, email, password)
+  override def signupFields = List(nickName, email)
 
   override def editFields = List(email, locale, timezone, aboutMe)
 
@@ -80,6 +92,13 @@ object User extends User with MetaMegaProtoUser[User] {
 
   // UI specification
 
+  override def lostPasswordXhtml =
+    (<form method="post" action={S.uri} class="form-horizontal">
+      <legend>{S ? "lost.password"}</legend>
+      {ControlGroup(userNameFieldString, <user:email/>)}
+      {ControlGroup(<user:submit/>)}
+    </form>)
+
   override def loginXhtml = {
     val recoverPasswordLink = (<a href={lostPasswordPath.mkString("/", "/", "")}>{S.?("recover.password")}</a>)
 
@@ -92,14 +111,17 @@ object User extends User with MetaMegaProtoUser[User] {
   }
 
   override def signupXhtml(user: User): Elem = {
+    val passFields = computeFieldFromPointer(user, password).toList
+
     <form method="post" action={S.uri} class="form-horizontal">
       <legend>{S ? "sign.up"}</legend>
       {localForm(user = user, ignorePassword = false, fields = signupFields)}
+      {for (f <- passFields; field <- f.toForm.toList) yield field}
       {ControlGroup(<user:submit/>)}
     </form>
   }
 
-  override def  localForm(user: TheUserType, ignorePassword: Boolean, fields: List[FieldPointerType]): NodeSeq = {
+  override def localForm(user: TheUserType, ignorePassword: Boolean, fields: List[FieldPointerType]): NodeSeq = {
     for {
       pointer <- fields
       field <- computeFieldFromPointer(user, pointer).toList

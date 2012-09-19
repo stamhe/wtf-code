@@ -25,14 +25,6 @@ object BootstrapForms {
       <input type={t} name={name}>{value}</input>
   }
 
-  object TextField {
-    def apply(name: String): Elem = Control("text", name, "")
-  }
-
-  object Password {
-    def apply(name: String): Elem = Control("password", name, "")
-  }
-
   object Submit {
     def apply(cls: String, inner: NodeSeq): Elem = <button type="submit" class={cls}>{inner}</button>
   }
