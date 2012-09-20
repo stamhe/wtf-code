@@ -20,6 +20,7 @@ class ViewUser {
     maybeUser match {
       case Full(user) =>
         ".nick" #> user.nickName &
+        ".status" #> {if (user.superUser) S ? "user.administrator" else S ? "user.user"} &
         ".avatar [src]" #> Avatar(maybeUser, Empty) &
         ".date" #> user.createdAt &
         ".aboutMe" #> WtfBbParser.toHtml(user.aboutMe.get)
