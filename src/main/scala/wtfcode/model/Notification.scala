@@ -2,6 +2,7 @@ package wtfcode.model
 
 import net.liftweb.mapper._
 import wtfcode.util.MentionsExtractor
+import net.liftweb.common.{Full, Box}
 
 class Notification extends LongKeyedMapper[Notification] with IdPK with CreatedTrait {
   def getSingleton = Notification
@@ -21,21 +22,27 @@ object Notification extends Notification with LongKeyedMetaMapper[Notification] 
   override def dbTableName = "notifications"
 
   def newComment(newComment: Comment) {
+
+    def notify(maybeUser: Box[User]) {
+      maybeUser.map { user =>
+        if (newComment.author != user) //idiotic Box.equals is not symmetric!
+          Notification.create.user(user).from(newComment.author).link(newComment.link).save()
+      }
+    }
+
     //new comment to post
     newComment.post.map { post =>
-      post.author.map { author =>
-        Notification.create.user(author).from(newComment.author).link(newComment.link).save()
-    }}
+      notify(post.author)
+    }
 
     //new response to comment
     newComment.responseTo.map { to =>
-      to.author.map { author =>
-        Notification.create.user(author).from(newComment.author).link(newComment.link).save()
-    }}
+      notify(to.author)
+    }
 
     //mentions in new comment
     new MentionsExtractor(newComment.content).mentions.foreach { user =>
-      Notification.create.user(user).from(newComment.author).link(newComment.link).save()
+      notify(Full(user))
     }
   }
 
