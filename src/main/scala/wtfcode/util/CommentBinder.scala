@@ -7,6 +7,7 @@ import net.liftweb.http.{SHtml, S}
 import net.liftweb.http.js.JsCmds
 import net.liftweb.common.Full
 import net.liftweb.util.CssSel
+import net.liftweb.http.js.JsCmds.SetHtml
 
 object CommentBinders {
 
@@ -79,6 +80,22 @@ object CommentBinders {
     }
   }
 
+  trait PostPreview extends Defaults {
+    lazy val PostTemplate = S.runTemplate(List("templates-hidden", "code"))
+      .openOrThrowException("Post template doesn't exists")
+
+    override def apply(comment: Comment): CssSel = {
+      val post = comment.post.openOrThrowException("Post not found")
+      val previewDivId = "post_" + post.id.is + "_preview"
+      super.apply(comment) &
+        ".post-preview [id]" #> previewDivId &
+        ".post-preview-link *" #> SHtml.a(
+          () => {
+            SetHtml(previewDivId, CodeBinder(post)(PostTemplate))
+          }, <span>{S ? "comment.viewPost"}</span>)
+    }
+  }
+
   def applyToRoots(strategy: BindStrategy, post: Post): NodeSeq =
     post.comments.filter(_.responseTo.isEmpty).flatMap { comment =>
       strategy(comment)(CommentTemplate)
@@ -90,5 +107,7 @@ import CommentBinders._
 class CommentBinder extends Defaults with Rating with CommentDelete
 
 object CommentBinder extends CommentBinder
+
+object PostPreviewCommentBinder extends CommentBinder with PostPreview
 
 object RecursiveCommentBinder extends CommentBinder with RecursiveReplies

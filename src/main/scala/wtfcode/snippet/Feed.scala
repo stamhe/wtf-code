@@ -4,7 +4,7 @@ import xml.NodeSeq
 import wtfcode.model.Comment
 import net.liftweb.util.Helpers._
 import net.liftweb.mapper._
-import wtfcode.util.{ CommentBinder }
+import wtfcode.util.PostPreviewCommentBinder
 
 class Feed extends BootstrapPaginatorSnippet[Comment] {
   override def itemsPerPage = 20
@@ -17,5 +17,5 @@ class Feed extends BootstrapPaginatorSnippet[Comment] {
     MaxRows(itemsPerPage))
 
   def renderPage =
-    ".comments *" #> ((in: NodeSeq) => page.flatMap { comment => CommentBinder(comment)(in) })
+    ".comments *" #> ((in: NodeSeq) => page.flatMap { comment => PostPreviewCommentBinder(comment)(in) })
 }
