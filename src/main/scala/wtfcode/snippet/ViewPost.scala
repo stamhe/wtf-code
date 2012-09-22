@@ -35,16 +35,15 @@ class ViewPost {
   }
 
   def comments() = {
-      post.map(p => "#comments *" #> CommentBinder.applyToPost(p)).openOr("#comments *" #> NodeSeq.Empty)
+      post.map(p =>
+        "#comments *" #>
+          CommentBinders.applyToRoots(RecursiveCommentBinder, p)).openOr("#comments *" #> NodeSeq.Empty)
   }
 
   def updateUnseen() = {
     LastSeen.update(User.currentUser, post)
     NodeSeq.Empty
   }
-
-  lazy val CommentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil)
-    .openOrThrowException("template must exist")
 
   private val DeletePreviewCmd = (JqId("preview") ~> JqRemove()).cmd
   private val EnableAddCommentButton = JsRaw("""Comments.enableAddButton()""").cmd
@@ -87,7 +86,7 @@ class ViewPost {
         JsHideId("add-comment") &
         JsRaw("Comments.clearTextarea()") &
         AppendHtml(appendToId(newComment),
-                   CommentBinder.applyRecursively(newComment)(CommentTemplate)) &
+                   RecursiveCommentBinder(newComment)(CommentBinders.CommentTemplate)) &
         SyntaxHighlighter.highlightPage()
     }
 
@@ -96,14 +95,14 @@ class ViewPost {
 
       DeletePreviewCmd &
         AppendHtml(appendToId(newComment), <li id="preview"/>) &
-        SetHtml("preview", CommentBinder(newComment)(CommentTemplate)) &
+        SetHtml("preview", CommentBinder(newComment)(CommentBinders.CommentTemplate)) &
         SyntaxHighlighter.highlightBlock("preview")
     }
 
     def compilationError(s: String): JsCmd = {
       SetHtml("errors", Text(S ? "comment.compilationError" + ": " + s)) &
         (JqId("errors") ~> JqAddClass(Str("compile-error"))).cmd &
-        (if (!User.loggedIn_?) ReCaptcha.reloadCaptcha else Noop)
+        (if (!User.loggedIn_?) ReCaptcha.reloadCaptcha() else Noop)
     }
 
     def clearErrors(): JsCmd = {
