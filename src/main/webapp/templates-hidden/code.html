@@ -1,8 +1,8 @@
 <div class="post">
     <div class="row">
       <h1 class="span10">
-        <a class="link_to_lang_filter"><span class="language"></span></a> /
-        <a class="link_to_code"><lift:loc>post.post</lift:loc> #<span class="entry-id"></span></a>
+        <a class="link-to-lang-filter"><span class="language"></span></a> /
+        <a class="link-to-code"><lift:loc>post.post</lift:loc> #<span class="entry-id"></span></a>
       </h1>
       <span id="delete-post"></span>
       <span class="span1 bookmark"></span>
@@ -16,19 +16,20 @@
     </div>
     <div>
         <ul class="tags"><li class="label tag"></li></ul>
-        <div class="lift:form.ajax"><span class="addTag"></span></div>
+        <div class="lift:form.ajax"><span class="add-tag"></span></div>
     </div>
     <div>
         <p>
           <img class="avatar" alt="ava"></img>
-          <a class="link_to_author"></a>
+          <a class="link-to-author"></a>
           <span class="date"></span>
         </p>
         <p>
-          <span><lift:loc>post.comments</lift:loc>:</span>
-          <span class="commentsNum badge badge-success"></span>
-          <span class="newCommentsNum badge badge-info"></span>
+          <span class="comments-link"><lift:loc>post.comments</lift:loc>:</span>
+          <span class="comments-num badge badge-success"></span>
+          <span class="new-comments-num badge badge-info"></span>
         </p>
     </div>
+    <ul class="comments"></ul>
     <hr/>
 </div>

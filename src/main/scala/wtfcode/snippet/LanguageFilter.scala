@@ -1,12 +1,11 @@
 package wtfcode.snippet
 
-import xml.{Text, NodeSeq}
+import xml.NodeSeq
 import net.liftweb.util.Helpers._
 import wtfcode.model.{Language, Post}
 import net.liftweb.mapper._
-import net.liftweb.http.{SHtml, S}
-import wtfcode.util.CodeBinder
-import net.liftweb.common.{Full, Box, Empty}
+import net.liftweb.http.S
+import wtfcode.util.AjaxCommentsCodeBinder
 
 /**
  * List of filters by language.
@@ -35,5 +34,5 @@ class LanguageFilter extends BootstrapPaginatorSnippet[Post] {
   }
 
   def renderPage() =
-    ".posts *" #> ((in: NodeSeq) => page.flatMap { p => CodeBinder(p)(in) })
+    ".posts *" #> ((in: NodeSeq) => page.flatMap { p => AjaxCommentsCodeBinder(p)(in) })
 }

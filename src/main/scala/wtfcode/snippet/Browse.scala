@@ -4,7 +4,7 @@ import xml.NodeSeq
 import wtfcode.model.Post
 import net.liftweb.util.Helpers._
 import net.liftweb.mapper._
-import wtfcode.util.CodeBinder
+import wtfcode.util.AjaxCommentsCodeBinder
 import net.liftweb.mapper.StartAt
 import net.liftweb.mapper.MaxRows
 
@@ -19,5 +19,6 @@ class Browse extends BootstrapPaginatorSnippet[Post] {
     MaxRows(itemsPerPage))
 
   def renderPage() =
-    ".posts *" #> ((in: NodeSeq) => page.flatMap { code => CodeBinder(code)(in) })
+    ".posts *" #> ((in: NodeSeq) => page.flatMap { code => AjaxCommentsCodeBinder(code)(in) })
 }
+

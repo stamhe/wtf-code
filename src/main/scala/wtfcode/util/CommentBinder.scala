@@ -1,7 +1,7 @@
 package wtfcode.util
 
 import xml.{Text, NodeSeq}
-import wtfcode.model.{ LastSeen, Comment }
+import wtfcode.model.{Post, LastSeen, Comment}
 import net.liftweb.util.Helpers._
 import net.liftweb.http.{SHtml, S}
 import net.liftweb.http.js.JsCmds
@@ -10,7 +10,7 @@ import net.liftweb.util.CssSel
 
 object CommentBinder {
 
-  private lazy val commentTemplate =
+  private lazy val CommentTemplate =
     S.runTemplate(List("templates-hidden", "comment")).openOrThrowException("comment template must exists!")
 
   private lazy val ratingTemplate =
@@ -45,6 +45,11 @@ object CommentBinder {
       "#delete-comment" #> NodeSeq.Empty
   }
 
+  def applyToPost(post: Post): NodeSeq =
+    post.comments.filter(_.responseTo.isEmpty).flatMap { comment =>
+      CommentBinder.applyRecursively(comment)(CommentTemplate)
+    }
+
   def applyRecursively(comment: Comment): (NodeSeq => NodeSeq) = {
     defaultBindings(comment) & repliesBindings(comment)
   }
@@ -64,6 +69,6 @@ object CommentBinder {
     else
       ".reply-container" #> replyHtml &
         ".replies *" #> ((in: NodeSeq) =>
-          c.answers.flatMap(a => CommentBinder.applyRecursively(a)(commentTemplate)))
+          c.answers.flatMap(a => CommentBinder.applyRecursively(a)(CommentTemplate)))
   }
 }

@@ -35,10 +35,7 @@ class ViewPost {
   }
 
   def comments() = {
-    "#comments *" #> ((in: NodeSeq) =>
-      post.map(_.comments.filter(_.responseTo.isEmpty).flatMap { comment =>
-        CommentBinder.applyRecursively(comment)(in)
-      }).openOr(NodeSeq.Empty))
+      post.map(p => "#comments *" #> CommentBinder.applyToPost(p)).openOr("#comments *" #> NodeSeq.Empty)
   }
 
   def updateUnseen() = {
@@ -46,7 +43,8 @@ class ViewPost {
     NodeSeq.Empty
   }
 
-  lazy val commentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil).openOrThrowException("template must exist")
+  lazy val CommentTemplate = S.runTemplate("templates-hidden" :: "comment" :: Nil)
+    .openOrThrowException("template must exist")
 
   private val DeletePreviewCmd = (JqId("preview") ~> JqRemove()).cmd
   private val EnableAddCommentButton = JsRaw("""Comments.enableAddButton()""").cmd
@@ -89,7 +87,7 @@ class ViewPost {
         JsHideId("add-comment") &
         JsRaw("Comments.clearTextarea()") &
         AppendHtml(appendToId(newComment),
-                   CommentBinder.applyRecursively(newComment)(commentTemplate)) &
+                   CommentBinder.applyRecursively(newComment)(CommentTemplate)) &
         SyntaxHighlighter.highlightPage()
     }
 
@@ -98,7 +96,7 @@ class ViewPost {
 
       DeletePreviewCmd &
         AppendHtml(appendToId(newComment), <li id="preview"/>) &
-        SetHtml("preview", CommentBinder(newComment)(commentTemplate)) &
+        SetHtml("preview", CommentBinder(newComment)(CommentTemplate)) &
         SyntaxHighlighter.highlightBlock("preview")
     }
 
