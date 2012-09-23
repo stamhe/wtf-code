@@ -86,7 +86,7 @@ object CommentBinders {
 
     override def apply(comment: Comment): CssSel = {
       val post = comment.post.openOrThrowException("Post not found")
-      val previewDivId = "post_" + post.id.is + "_preview"
+      val previewDivId = "post_" + post.id.is + "_" + comment.id.is + "_preview"
       super.apply(comment) &
         ".post-preview [id]" #> previewDivId &
         ".post-preview-link *" #> SHtml.a(
