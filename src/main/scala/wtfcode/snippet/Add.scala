@@ -22,7 +22,8 @@ class Add {
     var language: Box[Language] = Empty
 
     def createPost(): Post = {
-      Post.create.author(User.currentUser).content(content).description(description).language(language)
+      val stripped = LeadingWhitespaceStripper(content)
+      Post.create.author(User.currentUser).content(stripped).description(description).language(language)
     }
 
     def process(func: () => JsCmd): JsCmd = {
