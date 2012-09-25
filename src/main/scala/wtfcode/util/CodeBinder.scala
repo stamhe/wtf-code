@@ -6,10 +6,11 @@ import model._
 import net.liftweb.util.Helpers._
 import net.liftweb.http.{S, SHtml}
 import net.liftweb.mapper.By
-import net.liftweb.http.js.jquery.JqJsCmds.{AppendHtml, Hide}
+import net.liftweb.http.js.jquery.JqJsCmds.{Hide}
 import net.liftweb.common.Full
 import net.liftweb.util.CssSel
 import net.liftweb.http.js.JsCmds
+import net.liftweb.http.js.JsCmds.SetHtml
 
 
 object CodeBinders {
@@ -68,7 +69,7 @@ object CodeBinders {
         ".comments [id]" #> commentsDivId &
         ".comments-link *" #> SHtml.a(() => {
           lazy val comments = CommentBinders.applyToRoots(RecursiveCommentBinder, post)
-          AppendHtml(commentsDivId, comments)
+          SetHtml(commentsDivId, comments)
         }, <i class="icon-comment"/> <span>
           {S ? "post.comments"}
         </span>)
