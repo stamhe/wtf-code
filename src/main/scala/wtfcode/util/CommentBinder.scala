@@ -53,6 +53,14 @@ object CommentBinders {
     }
   }
 
+  trait Headers extends Defaults {
+    override def apply(comment: Comment): CssSel = {
+      val postLink = Post.linkTo(comment.post.is)
+      super.apply(comment) &
+        ".comment-header *" #> <a href={postLink}>{S.?("comment.header", comment.post.is)}</a>
+    }
+  }
+
   trait RecursiveReplies extends Defaults {
     override def apply(comment: Comment): CssSel = {
     val replyHtml =
@@ -108,6 +116,6 @@ class CommentBinder extends Defaults with Rating with CommentDelete
 
 object CommentBinder extends CommentBinder
 
-object PostPreviewCommentBinder extends CommentBinder with PostPreview
+object PostPreviewCommentBinder extends CommentBinder with PostPreview with Headers
 
 object RecursiveCommentBinder extends CommentBinder with RecursiveReplies

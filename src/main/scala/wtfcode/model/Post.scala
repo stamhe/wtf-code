@@ -27,7 +27,7 @@ with SaveIP with Rated with Deletable with OneToMany[Long, Post] with ManyToMany
       By(Comment.post, this), By(Comment.deleted, false),
       OrderBy(Comment.createdAt, Ascending))
 
-  def link: String = "/post/" + id
+  def link = Post.linkTo(id)
 
   override def currentRating = this.rating.is
 
@@ -53,4 +53,6 @@ object Post extends Post with LongKeyedMetaMapper[Post] {
   val MinRating = -11
 
   override def dbTableName = "posts"
+
+  def linkTo(id: Long) = "/post/" + id
 }

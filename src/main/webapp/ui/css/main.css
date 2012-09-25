@@ -25,6 +25,7 @@ code {
   list-style: none;
   text-align: right;
   margin-left: 0px;
+  margin-right: 1px;
   font-size: 13px;
   font-family: Menlo,Monaco,Consolas,Inconsolata,monospace;
   color: #0000ff;
@@ -63,6 +64,9 @@ ul.comments {
 .avatar {
   width: 48px; height: 48px;
   border: 1px solid #eee;
+}
+.comment-header {
+  margin-left: 20px;
 }
 .comment-meta {
   font-size: 13px;
