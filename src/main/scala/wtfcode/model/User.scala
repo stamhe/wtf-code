@@ -34,7 +34,7 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
     }
 
     def allowedChars(value: String): List[FieldError] = {
-      value.matches("\\p{Alnum}[\\p{Alnum}-]+\\p{Alnum}") match {
+      value.matches("(\\p{Alnum}|[+-|_]){3,}") match {
         case true => Nil
         case false => List(FieldError(this, Text(S ? "user.nicknameBadChars")))
       }
