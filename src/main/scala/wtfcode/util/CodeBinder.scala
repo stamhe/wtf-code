@@ -32,7 +32,7 @@ object CodeBinders {
         ".link-to-author *" #> post.author.map(_.nickName.get).openOr("Guest") &
         ".date *" #> post.createdAt &
         ".comments-num *" #> post.comments.size &
-        (if (unseenCount > 0) ".newCommentsNum *" #> ("+" + unseenCount)
+        (if (unseenCount > 0) ".new-comments-num *" #> ("+" + unseenCount)
         else ".new-comments-num" #> (None: Option[NodeSeq])) &
         ".avatar [src]" #> Avatar(post.author, Full(post.ipAddress)) &
         ".link-to-author [href]" #> post.author.map(_.link).openOr("#") &
