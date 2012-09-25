@@ -106,7 +106,8 @@ object User extends User with MetaMegaProtoUser[User] {
       <legend>{S ? "log.in"}</legend>
       {ControlGroup(userNameFieldString, <user:email/>)}
       {ControlGroup(S ? "password", <user:password/>)}
-      {ControlGroup(recoverPasswordLink ++ <br/> ++ <user:submit/>)}
+      {ControlGroup(recoverPasswordLink ++ <br/>)}
+      {FormActions(<user:submit/>)}
     </form>
   }
 
@@ -117,9 +118,25 @@ object User extends User with MetaMegaProtoUser[User] {
       <legend>{S ? "sign.up"}</legend>
       {localForm(user = user, ignorePassword = false, fields = signupFields)}
       {for (f <- passFields; field <- f.toForm.toList) yield field}
-      {ControlGroup(<user:submit/>)}
+      {FormActions(<user:submit/>)}
     </form>
   }
+
+  override def editXhtml(user: TheUserType) =
+    <form method="post" action={S.uri} class="form-horizontal">
+      <legend>{S ? "edit"}</legend>
+      {localForm(user = user, ignorePassword = true, fields = editFields)}
+      {FormActions(<user:submit/>)}
+    </form>
+
+  override def changePasswordXhtml =
+    <form method="post" action={S.uri} class="form-horizontal">
+      <legend>{S ? "change.password"}</legend>
+      {ControlGroup(S ? "old.password", <user:old_pwd />)}
+      {ControlGroup(S ? "new.password", <user:new_pwd />)}
+      {ControlGroup(S ? "repeat.password", <user:new_pwd />)}
+      {FormActions(<user:submit/>)}
+    </form>
 
   override def localForm(user: TheUserType, ignorePassword: Boolean, fields: List[FieldPointerType]): NodeSeq = {
     for {

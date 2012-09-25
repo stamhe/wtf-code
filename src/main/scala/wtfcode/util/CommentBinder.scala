@@ -99,7 +99,8 @@ object CommentBinders {
         ".post-preview [id]" #> previewDivId &
         ".post-preview-link *" #> SHtml.a(
           () => {
-            SetHtml(previewDivId, CodeBinder(post)(PostTemplate))
+            SetHtml(previewDivId, CodeBinder(post)(PostTemplate)) &
+              SyntaxHighlighter.highlightBlock(previewDivId)
           }, <span>{S ? "comment.viewPost"}</span>)
     }
   }

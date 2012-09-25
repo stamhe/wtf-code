@@ -25,6 +25,10 @@ object BootstrapForms {
       <input type={t} name={name}>{value}</input>
   }
 
+  object FormActions {
+    def apply(inner: NodeSeq): Elem = <div class="form-actions">{inner}</div>
+  }
+
   object Submit {
     def apply(cls: String, inner: NodeSeq): Elem = <button type="submit" class={cls}>{inner}</button>
   }

@@ -34,7 +34,14 @@ code {
   padding-left: 3px;
   border: none;
 }
-.post pre {
+.post code, .comment code {
+  border: none;
+  background: white;
+}
+.comment code {
+  margin-top: 6px;
+}
+.post pre, .comment pre {
   padding: 0px;
   border: none;
 }
@@ -80,6 +87,10 @@ ul.comments {
   cursor: pointer;
   font-weight: bold;
   font-size: 13px;
+}
+.post-preview-link {
+  font-size: 13px;
+  font-weight: bold;
 }
 .foldSubtree, .expandSubtree {
   cursor: pointer;

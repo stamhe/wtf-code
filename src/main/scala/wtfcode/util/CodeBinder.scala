@@ -69,7 +69,8 @@ object CodeBinders {
         ".comments [id]" #> commentsDivId &
         ".comments-link *" #> SHtml.a(() => {
           lazy val comments = CommentBinders.applyToRoots(RecursiveCommentBinder, post)
-          SetHtml(commentsDivId, comments)
+          SetHtml(commentsDivId, comments) &
+            SyntaxHighlighter.highlightBlock(commentsDivId)
         }, <i class="icon-comment"/> <span>
           {S ? "post.comments"}
         </span>)
