@@ -11,24 +11,31 @@ textarea {
 code {
   font-size: 13px;
 }
+.code-table, .num-column {
+  border: 1px solid #D2D2D2;
+}
 .code-table {
   width: 100%;
+  margin-bottom: 5px;
 }
 .num-column {
-  width: 20px;
+  width: 25px;
 }
 .line-nums {
   list-style: none;
   text-align: right;
+  margin: 0px;
   font-size: 13px;
   font-family: Menlo,Monaco,Consolas,Inconsolata,monospace;
-  color: #999;
+  color: #0000ff;
 }
 .post code {
   padding-left: 3px;
+  border: none;
 }
 .post pre {
   padding: 0px;
+  border: none;
 }
 span.vote-on, span.vote-against {
   font-size: 14px;
@@ -88,7 +95,3 @@ ul.comments {
 }
 div .unseen {
   background-color: #FFF9DF;
-}
-.alert ul {
-  list-style: none;
-}

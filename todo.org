@@ -20,14 +20,14 @@
 ** DONE Json API for posts
 ** DONE Json API for post comments
 ** DONE User mentions
-** TODO Post tags
-   Need tag autocomplete on post composition
-** TODO Code line numbers
-** TODO Russian translation
-** TODO Configure UI for Login/SignUp forms
-** TODO Post "Comments" must be clickable
+** DONE Code line numbers
+** DONE Post "Comments" must be clickable
    Post 'Comments' part must be clickable
    and show/hide comments forest.
+** DONE Configure UI for Login/SignUp forms
+** TODO Post tags
+   Need tag autocomplete on post composition
+** TODO Russian translation
 ** TODO Start page: statistics, latest posts
 ** TODO "Show code" link in feed
 ** TODO Improve rating
