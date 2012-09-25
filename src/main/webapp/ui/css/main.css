@@ -24,7 +24,7 @@ code {
 .line-nums {
   list-style: none;
   text-align: right;
-  margin: 0px;
+  margin-left: 0px;
   font-size: 13px;
   font-family: Menlo,Monaco,Consolas,Inconsolata,monospace;
   color: #0000ff;
