@@ -26,28 +26,6 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
   }
 
   object nickName extends MappedString(this, nickNameLength) {
-    def reserved(value: String): List[FieldError] = {
-      value match {
-        case "Guest" => List(FieldError(this, Text(S ? "user.nicknameReserved")))
-        case _ => Nil
-      }
-    }
-
-    def allowedChars(value: String): List[FieldError] = {
-      value.matches("(\\p{Alnum}|[+-|_]){3,}") match {
-        case true => Nil
-        case false => List(FieldError(this, Text(S ? "user.nicknameBadChars")))
-      }
-    }
-
-    def unique(value: String): List[FieldError] = {
-      findByNickName(value) match {
-        case Full(_) => List(FieldError(this, Text(S ? "user.uniqueNickname")))
-        case _ => Nil
-      }
-    }
-
-    override def validations = unique _ :: reserved _ :: allowedChars _ :: super.validations
     override def displayName = S ? "user.nickname"
   }
 
@@ -88,6 +66,32 @@ object User extends User with MetaMegaProtoUser[User] {
   override protected def actionsAfterSignup(theUser: User, func: () => Nothing): Nothing = {
     theUser.nickNameLower(theUser.nickName.toLowerCase)
     super.actionsAfterSignup(theUser, func)
+  }
+
+  override def validateSignup(user: User): List[FieldError] = {
+    def reserved(value: String): List[FieldError] = {
+      value match {
+        case "Guest" => List(FieldError(user.nickName, Text(S ? "user.nicknameReserved")))
+        case _ => Nil
+      }
+    }
+
+    def allowedChars(value: String): List[FieldError] = {
+      value.matches("(\\p{Alnum}|[+-|_]){3,}") match {
+        case true => Nil
+        case false => List(FieldError(user.nickName, Text(S ? "user.nicknameBadChars")))
+      }
+    }
+
+    def unique(value: String): List[FieldError] = {
+      findByNickName(value) match {
+        case Full(_) => List(FieldError(user.nickName, Text(S ? "user.uniqueNickname")))
+        case _ => Nil
+      }
+    }
+    val nickName = user.nickName.is
+
+    user.validate ++ reserved(nickName) ++ allowedChars(nickName) ++ unique(nickName)
   }
 
   // UI specification
