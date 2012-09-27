@@ -110,3 +110,7 @@ ul.comments {
 }
 div .unseen {
   background-color: #FFF9DF;
+}
+.markup pre {
+  padding: 0px;
+}

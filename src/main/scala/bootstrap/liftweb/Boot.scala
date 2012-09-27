@@ -117,7 +117,7 @@ class Boot {
       Menu(Loc("Bookmarks", "bookmarks" :: Nil, S ? "menu.bookmarks", redirectIfNotLoggedIn)),
       Menu(Loc("Notifications", "notifications" :: Nil, notificationsMessage(), redirectIfNotLoggedIn)),
       Menu(Loc("Post", List("post") -> true, S ? "menu.post", Hidden)),
-      Menu(Loc("BbRef", List("bbcodes") -> true, S ? "bbcodes.title", Hidden)),
+      Menu(Loc("Markup", List("markup") -> true, S ? "markup.title", Hidden)),
       Menu(Loc("Lang", List("lang-filter") -> true, S ? "menu.lang", Hidden)),
       Menu(Loc("User", List("user") -> true, S ? "menu.user", Hidden)),
       // Menu entries for the User management stuff
