@@ -17,6 +17,7 @@ class Notifications extends BootstrapPaginatorSnippet[Notification] {
   def bindNotification(notification: Notification): (NodeSeq => NodeSeq) = {
     ".read [class]" #> read(notification) &
     ".link [href]" #> notification.link &
+    ".preview *" #> notification.preview &
     ".from *" #> notification.from.map(_.nickName.get).openOr("Guest") &
     ".from [href]" #> notification.from.map(_.link).openOr("#") &
     ".date *" #> notification.createdAt
