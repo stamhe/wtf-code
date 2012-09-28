@@ -5,8 +5,6 @@ import wtfcode.util.MentionsExtractor
 import net.liftweb.common.{Full, Box}
 
 class Notification extends LongKeyedMapper[Notification] with IdPK with CreatedTrait {
-  val PREVIEW_LENGTH = 80
-
   def getSingleton = Notification
 
   override val createdAtIndexed_? = true
@@ -15,7 +13,6 @@ class Notification extends LongKeyedMapper[Notification] with IdPK with CreatedT
     override def dbIndexed_? = true
   }
 
-  object preview extends MappedString(this, PREVIEW_LENGTH)
   object from extends MappedLongForeignKey(this, User)
   object read extends MappedBoolean(this)
   object link extends MappedText(this)
@@ -29,13 +26,7 @@ object Notification extends Notification with LongKeyedMetaMapper[Notification] 
     def notify(maybeUser: Box[User]) {
       maybeUser.map { user =>
         if (newComment.author != user) //idiotic Box.equals is not symmetric!
-          Notification
-            .create
-            .user(user)
-            .preview(newComment.content.substring(0, PREVIEW_LENGTH))
-            .from(newComment.author)
-            .link(newComment.link)
-            .save()
+          Notification.create.user(user).from(newComment.author).link(newComment.link).save()
       }
     }
 
