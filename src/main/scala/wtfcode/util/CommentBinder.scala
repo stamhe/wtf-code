@@ -37,7 +37,7 @@ object CommentBinders {
 
     private def bindCommentContent(comment: Comment): NodeSeq = {
       if (comment.deleted.is)
-        <p style="color: red;">{S ? "comment.deleted"}</p>
+        <p style="color: red;">{S ? "moderator.deletedBy"}</p>
       else
         WtfBbParser.toHtml(comment.content.is)
     }

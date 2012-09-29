@@ -74,6 +74,8 @@ class Boot {
     //...
     Language.findAll().map(language => if (language.htmlClass.is == null || language.htmlClass.is.isEmpty)
       language.htmlClass(languages.find(_._1 == language.name.is).map(_._2).getOrElse("")).save())
+    //oh...
+    Notification.findAll().map(n => if (n.preview.is == null) n.preview("").save())
 
     List("php-dates", "lab", "boolshit").foreach(Tag.findOrCreate(_).save())
 
