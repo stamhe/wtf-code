@@ -1,6 +1,7 @@
 package wtfcode.util
 
 import net.liftweb.util.Props
+import net.tanesha.recaptcha.ReCaptchaResponse
 
 /**
  * Copy-pasted from lift wiki
@@ -57,7 +58,7 @@ object ReCaptcha {
       val reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse)
       reCaptchaResponse.isValid match {
         case true => Empty
-        case false => Full(reCaptchaResponse.getErrorMessage)
+        case false => Full(humanReadableErrorMsg(reCaptchaResponse))
       }
     }
     val res = for (
@@ -81,5 +82,11 @@ object ReCaptcha {
   def reloadCaptcha(): JsCmd = JsFunc("Recaptcha.reload").cmd
 
   case class FakeFieldIdentifier(override val uniqueFieldId: Box[String]) extends FieldIdentifier
+
+  private def humanReadableErrorMsg(reCaptchaResponse: ReCaptchaResponse) =
+    reCaptchaResponse.getErrorMessage match {
+      case "incorrect-captcha-sol" => S ? "recaptcha.wrongAnswer"
+      case _ => S ? "recaptcha.unexpectedError"
+    }
 
 }
