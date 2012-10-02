@@ -70,7 +70,7 @@ class ViewPost {
           case 0 => compilationError(S ? "comment.commentNotFound")
           case _ => {
             val errors = if (!User.loggedIn_?) ReCaptcha.validateCaptcha() else Nil
-            if (errors.isEmpty) func() else compilationError (S ? "post.wrongCaptchaAnswer" + ":" + errors.mkString("\n"))
+            if (errors.isEmpty) func() else compilationError (errors.map(_.msg).mkString("\n"))
           }
         })
     }
