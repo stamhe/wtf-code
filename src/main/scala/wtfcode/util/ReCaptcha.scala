@@ -1,12 +1,15 @@
 package wtfcode.util
 
 import net.liftweb.util.Props
+import java.net.NoRouteToHostException
+import net.liftweb.common.Logger
+import net.tanesha.recaptcha.ReCaptchaException
 
 /**
  * Copy-pasted from lift wiki
  * @author <a href="mailto:roman.kashitsyn@gmail.com">Roman Kashitsyn</a>
  */
-object ReCaptcha {
+object ReCaptcha extends Logger {
 
   import net.liftweb.common.{Box, Empty, Full, Failure}
   import net.liftweb.util.{FieldError, FieldIdentifier}
@@ -53,18 +56,26 @@ object ReCaptcha {
   }
 
   def validateCaptcha(): List[FieldError] = {
-    def checkAnswer(remoteAddr: String, challenge: String, uresponse: String): Box[String] = {
-      val reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse)
-      reCaptchaResponse.isValid match {
-        case true => Empty
-        case false => Full(reCaptchaResponse.getErrorMessage)
+    def checkAnswer(remoteAddr: String, challenge: String, response: String): Box[String] = {
+      try {
+        val reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, response)
+        reCaptchaResponse.isValid match {
+          case true => Empty
+          case false => Full(reCaptchaResponse.getErrorMessage)
+        }
+      } catch {
+        case e: ReCaptchaException => {
+          warn("Can not validate ReCaptcha: wrong server config", e)
+          Empty
+        }
+        case e => throw e
       }
     }
     val res = for (
       remoteAddr <- S.containerRequest.map(_.remoteAddress);
       challenge <- S.param("recaptcha_challenge_field");
-      uresponse <- S.param("recaptcha_response_field");
-      b <- checkAnswer(remoteAddr, challenge, uresponse)
+      response <- S.param("recaptcha_response_field");
+      b <- checkAnswer(remoteAddr, challenge, response)
     ) yield b
 
     res match {

@@ -19,6 +19,7 @@ import net.liftweb.http.js.jquery.JqJE.JqRemove
 import net.liftweb.http.js.JE.Str
 import net.liftweb.http.js.JE.JsRaw
 import net.liftweb.mapper.By
+import wtfcode.comet.CommentServer
 
 class ViewPost {
   val maybeId = asLong(S.param("id"))
@@ -55,6 +56,8 @@ class ViewPost {
     }
   }
 
+
+
   private def addCommentReal() = {
     var content = ""
 
@@ -75,26 +78,27 @@ class ViewPost {
         })
     }
 
-    def appendToId(comment: Comment) = comment.responseTo.map{ _.repliesAnchor }.openOr("comments")
+
 
     def processAdd(): JsCmd = {
       val newComment = createComment().saveMe()
       Notification.newComment(newComment)
 
+      CommentServer ! newComment
+
       DeletePreviewCmd &
         EnableAddCommentButton &
         JsHideId("add-comment") &
         JsRaw("Comments.clearTextarea()") &
-        AppendHtml(appendToId(newComment),
-                   RecursiveCommentBinder(newComment)(CommentBinders.CommentTemplate)) &
-        SyntaxHighlighter.highlightPage()
+        ViewPost.appendCommentHtml(newComment)
+
     }
 
     def processPreview(): JsCmd = {
       val newComment = createComment()
 
       DeletePreviewCmd &
-        AppendHtml(appendToId(newComment), <li id="preview"/>) &
+        AppendHtml(ViewPost.appendToId(newComment), <li id="preview"/>) &
         SetHtml("preview", CommentBinder(newComment)(CommentBinders.CommentTemplate)) &
         SyntaxHighlighter.highlightBlock("preview")
     }
@@ -119,4 +123,12 @@ class ViewPost {
   private def bindCaptcha() =
     if (User.currentUser.isDefined) ".reCaptcha" #> NodeSeq.Empty
     else ".reCaptcha *" #> ReCaptcha.captchaXhtml
+}
+
+object ViewPost {
+  private def appendToId(comment: Comment) = comment.responseTo.map{ _.repliesAnchor }.openOr("comments")
+
+  private [wtfcode] def appendCommentHtml(newComment: Comment): JsCmd =
+    AppendHtml(appendToId(newComment), RecursiveCommentBinder(newComment)(CommentBinders.CommentTemplate)) &
+      SyntaxHighlighter.highlightPage()
 }
