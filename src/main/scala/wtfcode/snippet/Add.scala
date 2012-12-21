@@ -42,7 +42,7 @@ class Add {
     def processPost(): JsCmd = {
       val captchaErrors = ReCaptcha.validateCaptcha()
       if (!captchaErrors.isEmpty) {
-        compilationError(S ? "post.wrongCaptchaAnswer" + ": " + captchaErrors.mkString("\n"))
+        compilationError(captchaErrors.map(_.msg).mkString("\n"))
       } else {
         val post = createPost().saveMe()
 

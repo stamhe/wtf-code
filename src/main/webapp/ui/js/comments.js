@@ -51,10 +51,10 @@ var Comments;
             Comments.placeFormTo("#add");
         });
         $("#add-comment .btn-cancel").live("click", function() {
-            $("#add-comment").hide();
             $("#preview").remove();
             Comments.enableAddButton();
             Comments.placeFormTo("#add");
+            $("#add-comment").hide();
         });
         
         $(".foldSubtree").live("click", Comments._mkSlider("slideUp", ".expandSubtree"));

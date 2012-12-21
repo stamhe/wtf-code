@@ -25,9 +25,10 @@
    Post 'Comments' part must be clickable
    and show/hide comments forest.
 ** DONE Configure UI for Login/SignUp forms
+** DONE Russian translation
+** DONE Comet post page updates
 ** TODO Post tags
    Need tag autocomplete on post composition
-** TODO Russian translation
 ** TODO Start page: statistics, latest posts
 ** TODO "Show code" link in feed
 ** TODO Improve rating

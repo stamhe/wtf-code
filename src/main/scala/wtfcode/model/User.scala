@@ -19,7 +19,7 @@ class User extends MegaProtoUser[User] with CreatedTrait with OneToMany[Long, Us
       S.fmapFunc({s: List[String] => this.setFromAny(s)}){ funcName =>
         Full(
           controlGroup(displayName, appendFieldId(<input type={formInputType} name={funcName} value={is.toString}/>)) ++
-            controlGroup(S ? "repeat", <input type={formInputType} name={funcName} value={is.toString}/>)
+            controlGroup(S ? "repeat.password", <input type={formInputType} name={funcName} value={is.toString}/>)
         )
       }
     }
@@ -119,7 +119,7 @@ object User extends User with MetaMegaProtoUser[User] {
     val passFields = computeFieldFromPointer(user, password).toList
 
     <form method="post" action={S.uri} class="form-horizontal">
-      <legend>{S ? "sign.up"}</legend>
+      <legend>{S ? "signup.form"}</legend>
       {localForm(user = user, ignorePassword = false, fields = signupFields)}
       {for (f <- passFields; field <- f.toForm.toList) yield field}
       {formActions(<user:submit/>)}
@@ -128,7 +128,7 @@ object User extends User with MetaMegaProtoUser[User] {
 
   override def editXhtml(user: TheUserType) =
     <form method="post" action={S.uri} class="form-horizontal">
-      <legend>{S ? "edit"}</legend>
+      <legend>{S ? "edit.form"}</legend>
       {localForm(user = user, ignorePassword = true, fields = editFields)}
       {formActions(<user:submit/>)}
     </form>

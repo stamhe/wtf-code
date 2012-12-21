@@ -13,7 +13,8 @@ class Markup {
     "some [code]inline code[/code] here",
     "[code]multiline\ncode\nworks[/code]",
     "just [url]http://some.url[/url]",
-    "link [url=http://google.com]to Google[/url]"
+    "link [url=http://google.com]to Google[/url]",
+    "sudo cast [user]test[/user]"
   )
 
   def examples = {
